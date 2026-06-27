@@ -1,6 +1,53 @@
 {
   "posts": [
     {
+      "slug": "wheel-hub-speed",
+      "title": "Rollerskates, Skateboards, and Why Movement Speed Is a Design Decision",
+      "subtitle": "A lending station for vehicles, a daily special rotation of 22 options including a Rideable Capybara, and why free speed is an equity decision.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "UX", "equity", "exploration"],
+      "project": "Wheel Hub",
+      "readTime": "6 min",
+      "demo": "../demos/wheel-hub-demo.html"
+    },
+    {
+      "slug": "fishing-celebrations",
+      "title": "Joy as Feedback — Why We Celebrate Fish",
+      "subtitle": "Golden banners for legendary catches, milestone toasts for streaks, and zero extrinsic rewards. Because joy should be the incentive, not gems.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "UX", "motivation", "psychology"],
+      "project": "Fishing System",
+      "readTime": "5 min",
+      "demo": "../demos/fishing-celebrations-demo.html"
+    },
+    {
+      "slug": "living-npc-system",
+      "title": "NPCs That Live Here — Making AI Characters Feel Like Neighbors",
+      "subtitle": "State machines, personality-driven movement, proactive engagement, and matchmaking. Seven principles for NPCs that feel like community members.",
+      "date": "2026-06-27",
+      "tags": ["AI", "game-design", "NPC", "architecture"],
+      "project": "Living NPC System",
+      "readTime": "8 min"
+    },
+    {
+      "slug": "backrooms-noclip",
+      "title": "We Hid a Horror Game Inside Our Learning Platform",
+      "subtitle": "After-hours noclip triggers, 10 procedural Backrooms levels, a Glitch Stalker, and progressive Wingdings corruption. Secrets make spaces feel deep.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "procedural", "horror", "community"],
+      "project": "The Backrooms",
+      "readTime": "8 min"
+    },
+    {
+      "slug": "campus-aquarium",
+      "title": "An Aquarium You Can Swim In",
+      "subtitle": "Eight tanks, WASD swimming, velocity-based fish AI with boids flocking, caustic lighting, and aquatic pets that wait for you when you leave.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "AI", "canvas-api", "atmosphere"],
+      "project": "Campus Aquarium",
+      "readTime": "7 min"
+    },
+    {
       "slug": "building-the-ocean",
       "title": "Tides, Tide Pools, and Messages in a Bottle",
       "subtitle": "How an ocean grew across three commits into a living shoreline with real-time tides, self-care messages, and bioluminescent night magic.",
