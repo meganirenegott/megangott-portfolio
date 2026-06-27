@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎣 Fishing Celebrations Demo — Multiverse Campus</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #020c1a; color: #e0e0e0; font-family: 'Inter', system-ui, sans-serif; overflow: hidden; height: 100vh; }
+    canvas { display: block; width: 100vw; height: 100vh; }
+
+    #panel {
+      position: fixed; top: 14px; left: 14px;
+      background: rgba(2, 12, 26, 0.92); border: 1px solid rgba(56,189,248,0.22);
+      border-radius: 14px; padding: 14px 18px; font-size: 12px; z-index: 10;
+      max-width: 240px; backdrop-filter: blur(16px);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.7);
+    }
+    #panel h3 {
+      font-size: 15px; font-weight: 900; margin-bottom: 10px;
+      background: linear-gradient(135deg, #38bdf8, #34d399);
+      background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    #panel p { margin: 4px 0; color: #5a6a8a; line-height: 1.5; }
+    .key { color: #38bdf8; font-weight: 700; }
+    .milestone-list { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.07); }
+    .milestone-list p { font-size: 10px; color: #475569; margin: 3px 0; }
+    .milestone-list .active-m { color: #fbbf24; }
+
+    /* Celebration banner */
+    #celebration {
+      position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
+      z-index: 20; pointer-events: none;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      opacity: 0; transition: opacity 0.4s;
+    }
+    #celebration.show { opacity: 1; }
+
+    .cel-banner {
+      background: linear-gradient(135deg, rgba(251,191,36,0.18), rgba(251,146,60,0.18));
+      border: 1px solid rgba(251,191,36,0.45);
+      border-radius: 16px; padding: 14px 28px; text-align: center;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 8px 40px rgba(251,191,36,0.2), 0 0 60px rgba(251,191,36,0.08);
+      animation: pulseGlow 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes pulseGlow {
+      from { box-shadow: 0 8px 40px rgba(251,191,36,0.2), 0 0 40px rgba(251,191,36,0.05); }
+      to   { box-shadow: 0 8px 40px rgba(251,191,36,0.4), 0 0 80px rgba(251,191,36,0.15); }
+    }
+    .cel-type { font-size: 10px; font-weight: 700; color: #fbbf24; letter-spacing: 0.8px; margin-bottom: 4px; }
+    .cel-text { font-size: 18px; font-weight: 900; color: #fef3c7; letter-spacing: -0.3px; }
+    .cel-sub  { font-size: 12px; color: #d97706; margin-top: 4px; }
+    .cel-catch { font-size: 12px; color: #92400e; margin-top: 2px; font-style: italic; }
+
+    /* Catch log */
+    #log {
+      position: fixed; bottom: 14px; right: 14px;
+      background: rgba(2,12,26,0.92); border: 1px solid rgba(56,189,248,0.15);
+      border-radius: 14px; padding: 12px 16px; font-size: 11px; z-index: 10;
+      max-width: 240px; backdrop-filter: blur(16px); max-height: 180px; overflow: hidden;
+    }
+    #log h4 { font-size: 11px; color: #38bdf8; font-weight: 700; margin-bottom: 8px; }
+    .log-entry { color: #475569; line-height: 1.8; border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 3px; }
+    .log-entry.legendary { color: #fbbf24; }
+    .log-entry.milestone { color: #a78bfa; }
+
+    #triggerBtn {
+      position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
+      padding: 12px 28px; border-radius: 12px; border: none;
+      background: linear-gradient(135deg, #0ea5e9, #0891b2);
+      color: white; font-size: 14px; font-weight: 700; cursor: pointer;
+      font-family: 'Inter', sans-serif; z-index: 20;
+      box-shadow: 0 4px 20px rgba(14,165,233,0.35);
+      transition: all 0.2s;
+    }
+    #triggerBtn:hover { transform: translate(-50%, -2px); box-shadow: 0 6px 28px rgba(14,165,233,0.5); }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="panel">
+  <h3>🎣 Fishing Celebrations</h3>
+  <p><span class="key">Space / Click button</span> Cast line</p>
+  <p><span class="key">Text-only</span> No gems awarded</p>
+  <div class="milestone-list">
+    <p>Milestones:</p>
+    <p>🐟 Catch #10, 25, 50, 100, 250...</p>
+    <p>🔥 Streak: 7, 14, 30, 60, 90 days</p>
+    <p>⭐ Legendary catch</p>
+  </div>
+</div>
+
+<div id="celebration">
+  <div class="cel-banner">
+    <div class="cel-type" id="celType">LEGENDARY CATCH</div>
+    <div class="cel-text" id="celText">You caught something incredible!</div>
+    <div class="cel-sub" id="celSub">A rare arxiv paper surfaces from the deep.</div>
+    <div class="cel-catch" id="celCatch">📄 "Attention Is All You Need" (Vaswani et al., 2017)</div>
+  </div>
+</div>
+
+<div id="log">
+  <h4>📋 Recent Catches</h4>
+  <div id="logList"></div>
+</div>
+
+<button id="triggerBtn" onclick="castLine()">🎣 Cast Line</button>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const dpr = window.devicePixelRatio || 1;
+function resize() {
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener('resize', resize); resize();
+const W = () => window.innerWidth, H = () => window.innerHeight;
+
+window.addEventListener('keydown', e => { if (e.key === ' ') { e.preventDefault(); castLine(); } });
+
+// ── State ──
+let catchCount = 0;
+let streak = 7;
+let celTimer = null;
+let lineY = null;
+let lineCast = false;
+let lineAnim = 0;
+const logEntries = [];
+
+const ARXIV_PAPERS = [
+  '"Attention Is All You Need" (Vaswani et al., 2017)',
+  '"ImageNet Classification with Deep CNNs" (Krizhevsky, 2012)',
+  '"BERT: Pre-training of Deep Bidirectional Transformers" (Devlin, 2019)',
+  '"Playing Atari with Deep Reinforcement Learning" (Mnih, 2013)',
+  '"Generative Adversarial Nets" (Goodfellow et al., 2014)',
+  '"Dropout: A Simple Way to Prevent Overfitting" (Srivastava, 2014)',
+  '"ResNets: Deep Residual Learning" (He et al., 2015)',
+  '"GPT-3: Language Models are Few-Shot Learners" (Brown et al., 2020)',
+];
+
+const CELEBRATIONS = [
+  { type:'LEGENDARY CATCH', text:'You reeled in something extraordinary.', sub:'A landmark paper breaks the surface.', cls:'legendary' },
+  { type:'CATCH MILESTONE', text:'🎉 10 Catches! You\'re hooked.', sub:'Keep fishing — streaks await.', cls:'milestone' },
+  { type:'CATCH MILESTONE', text:'🎉 25 Catches! Getting serious.', sub:'You\'ve read more than most.', cls:'milestone' },
+  { type:'STREAK — 7 DAYS', text:'🔥 One Week Streak!', sub:'Seven days of daily discoveries.', cls:'milestone' },
+  { type:'STREAK — 14 DAYS', text:'🔥 Two Week Streak!', sub:'You\'re a regular researcher.', cls:'milestone' },
+  { type:'STREAK — 30 DAYS', text:'🔥 30-Day Streak!', sub:'A whole month of daily fishing.', cls:'milestone' },
+  { type:'ORDINARY CATCH', text:'A new paper caught!', sub:'Added to your research wall.', cls:'' },
+  { type:'ORDINARY CATCH', text:'Something interesting surfaces.', sub:'Another day, another paper.', cls:'' },
+];
+
+function castLine() {
+  lineCast = true;
+  lineAnim = 0;
+  lineY = H() * 0.45;
+
+  setTimeout(() => {
+    catchCount++;
+    const paper = ARXIV_PAPERS[Math.floor(Math.random() * ARXIV_PAPERS.length)];
+    let cel;
+    const roll = Math.random();
+
+    if (roll < 0.08) {
+      cel = CELEBRATIONS[0]; // legendary
+    } else if (catchCount === 10) {
+      cel = CELEBRATIONS[1];
+    } else if (catchCount === 25) {
+      cel = CELEBRATIONS[2];
+    } else if (streak === 7 && roll < 0.3) {
+      cel = CELEBRATIONS[3];
+    } else if (roll < 0.3) {
+      cel = CELEBRATIONS[Math.floor(Math.random() * 2) + 6]; // ordinary
+    } else {
+      cel = CELEBRATIONS[Math.floor(Math.random() * 2) + 6]; // ordinary
+    }
+
+    showCelebration(cel, paper);
+    addLog(paper, cel.cls);
+    lineCast = false;
+    lineY = null;
+  }, 1200 + Math.random() * 800);
+}
+
+function showCelebration(cel, paper) {
+  document.getElementById('celType').textContent = cel.type;
+  document.getElementById('celText').textContent = cel.text;
+  document.getElementById('celSub').textContent = cel.sub;
+  document.getElementById('celCatch').textContent = `📄 ${paper}`;
+
+  const div = document.getElementById('celebration');
+  div.classList.add('show');
+
+  if (celTimer) clearTimeout(celTimer);
+  celTimer = setTimeout(() => div.classList.remove('show'), 3500);
+}
+
+function addLog(paper, cls) {
+  logEntries.unshift({ paper, cls });
+  if (logEntries.length > 4) logEntries.pop();
+  const list = document.getElementById('logList');
+  list.innerHTML = logEntries.map(e =>
+    `<div class="log-entry ${e.cls}">📄 ${e.paper.slice(0, 38)}…</div>`
+  ).join('');
+}
+
+// ── Render ──
+const FISH = Array.from({length: 12}, (_, i) => ({
+  x: Math.random() * 1200 + 100, y: 0.55 + Math.random() * 0.35,
+  vx: (Math.random() < 0.5 ? 1 : -1) * (0.3 + Math.random() * 0.5),
+  size: 0.7 + Math.random() * 0.5, depth: Math.random(),
+}));
+
+function render() {
+  const t = performance.now();
+  const w = W(), h = H();
+
+  // Sky
+  const sky = ctx.createLinearGradient(0, 0, 0, h * 0.4);
+  sky.addColorStop(0, '#010810'); sky.addColorStop(1, '#021428');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, w, h * 0.4);
+
+  // Stars
+  ctx.save();
+  for (let i = 0; i < 80; i++) {
+    const sx = (i * 137.5) % w, sy = (i * 73.1) % (h * 0.38);
+    const tw = 0.3 + 0.7 * Math.sin(t / 1000 + i) * Math.sin(t / 1000 + i);
+    ctx.globalAlpha = tw * 0.7;
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(sx, sy, 0.8, 0, Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
+
+  // Moon
+  ctx.save();
+  ctx.globalAlpha = 0.85;
+  const mx = w * 0.8, my = h * 0.1;
+  const mg = ctx.createRadialGradient(mx, my, 10, mx, my, 60);
+  mg.addColorStop(0, 'rgba(220,240,255,0.15)'); mg.addColorStop(1, 'transparent');
+  ctx.fillStyle = mg; ctx.beginPath(); ctx.arc(mx, my, 60, 0, Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#d8e8f8'; ctx.beginPath(); ctx.arc(mx, my, 18, 0, Math.PI*2); ctx.fill();
+  ctx.restore();
+
+  // Water
+  const waterY = h * 0.4;
+  const waterGrad = ctx.createLinearGradient(0, waterY, 0, h);
+  waterGrad.addColorStop(0, '#0c2a4a'); waterGrad.addColorStop(1, '#021020');
+  ctx.fillStyle = waterGrad; ctx.fillRect(0, waterY, w, h - waterY);
+
+  // Water shimmer
+  for (let i = 0; i < 6; i++) {
+    const wy = waterY + 8 + i * 40 + Math.sin(t / 800 + i) * 4;
+    ctx.save(); ctx.globalAlpha = 0.08;
+    ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, wy); ctx.lineTo(w, wy); ctx.stroke();
+    ctx.restore();
+  }
+
+  // Bioluminescent sparkles
+  for (let i = 0; i < 40; i++) {
+    const bx = (i * 239 + t * 0.02) % w;
+    const by = waterY + 20 + (i * 47) % (h - waterY - 20);
+    const ba = 0.05 + 0.1 * Math.sin(t / 400 + i * 0.5) * Math.sin(t / 400 + i * 0.5);
+    ctx.save(); ctx.globalAlpha = ba;
+    ctx.fillStyle = '#00e6d2';
+    ctx.beginPath(); ctx.arc(bx, by, 1.5, 0, Math.PI*2); ctx.fill();
+    ctx.restore();
+  }
+
+  // Fish
+  for (const f of FISH) {
+    f.x += f.vx;
+    if (f.x > w + 30) f.x = -30;
+    if (f.x < -30) f.x = w + 30;
+    const fy = h * f.y + Math.sin(t / 1000 + f.x * 0.01) * 8;
+    if (fy < waterY + 5) continue;
+    ctx.save();
+    ctx.globalAlpha = 0.15 + f.depth * 0.25;
+    ctx.font = `${20 * f.size}px sans-serif`; ctx.textAlign = 'center';
+    if (f.vx < 0) { ctx.scale(-1, 1); ctx.fillText('🐟', -f.x, fy); }
+    else ctx.fillText('🐟', f.x, fy);
+    ctx.restore();
+  }
+
+  // Dock
+  ctx.save();
+  ctx.fillStyle = '#5c3d1e';
+  ctx.fillRect(w/2 - 80, waterY - 8, 160, 20);
+  ctx.fillRect(w/2 - 5, waterY + 12, 10, h * 0.15);
+  ctx.restore();
+
+  // Player on dock
+  ctx.font = '28px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('🧑‍🦰', w/2, waterY - 10);
+
+  // Fishing line
+  if (lineCast || lineY !== null) {
+    lineAnim = Math.min(lineAnim + 0.04, 1);
+    const lx = w/2 + 8, ly1 = waterY - 10;
+    const lx2 = w/2 + 40, ly2 = waterY + (lineY ? 40 : 0) * lineAnim;
+    ctx.save(); ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(lx, ly1); ctx.lineTo(lx2, ly2); ctx.stroke();
+    // Bobber
+    ctx.globalAlpha = lineAnim;
+    ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(lx2, ly2, 4, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(lx2, ly2 - 1.5, 2.5, Math.PI, 0); ctx.fill();
+    ctx.restore();
+  }
+
+  requestAnimationFrame(render);
+}
+render();
+</script>
+</body>
+</html>

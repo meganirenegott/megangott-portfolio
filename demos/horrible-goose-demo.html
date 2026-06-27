@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪿 Horrible Goose — Admin Event Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a1a;
+            color: #e0e0e0;
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        #hud {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 380px;
+        }
+
+        .panel {
+            background: rgba(10, 10, 30, 0.92);
+            border: 1px solid rgba(255, 100, 100, 0.25);
+            border-radius: 14px;
+            padding: 14px 18px;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        .panel h2 {
+            font-size: 16px;
+            font-weight: 900;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ff6b6b, #ffcc00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .panel p {
+            font-size: 11.5px;
+            line-height: 1.55;
+            color: #9090b0;
+            margin-bottom: 6px;
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .status-bar.idle {
+            background: rgba(100, 100, 200, 0.08);
+            border-left: 3px solid #6666aa;
+            color: #8888cc;
+        }
+
+        .status-bar.flying {
+            background: rgba(255, 100, 100, 0.08);
+            border-left: 3px solid #ff4444;
+            color: #ff6b6b;
+        }
+
+        .status-bar.mischief {
+            background: rgba(255, 204, 0, 0.08);
+            border-left: 3px solid #ffcc00;
+            color: #ffcc00;
+        }
+
+        .status-bar.chasing {
+            background: rgba(255, 60, 60, 0.1);
+            border-left: 3px solid #ff2222;
+            color: #ff4444;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #1a1a30, #252540);
+            border: 1px solid rgba(255, 100, 100, 0.3);
+            color: #ff8888;
+            padding: 7px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11.5px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #252540, #353560);
+            border-color: rgba(255, 100, 100, 0.6);
+            transform: translateY(-1px);
+        }
+
+        button.release {
+            background: linear-gradient(135deg, #3a1515, #5a2020);
+            border-color: #ff4444;
+            color: #ffaaaa;
+        }
+
+        button.recall {
+            background: linear-gradient(135deg, #152a15, #205020);
+            border-color: #44ff44;
+            color: #aaffaa;
+        }
+
+        .cluster-info {
+            font-size: 10px;
+            color: #666680;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        #legend {
+            position: fixed;
+            bottom: 16px;
+            left: 16px;
+            z-index: 10;
+        }
+
+        #legend .panel {
+            padding: 10px 14px;
+            border-color: rgba(255, 100, 100, 0.15);
+        }
+
+        #legend .item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            margin: 3px 0;
+            color: #a0a0b0;
+        }
+
+        #legend .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        #event-log {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 10;
+            width: 260px;
+        }
+
+        #event-log .panel {
+            padding: 10px 14px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        #event-log h3 {
+            font-size: 11px;
+            color: #ff8888;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .log-entry {
+            font-size: 10px;
+            color: #8080a0;
+            margin: 2px 0;
+            padding: 2px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .log-entry.honk {
+            color: #ffcc00;
+        }
+
+        .log-entry.steal {
+            color: #ff6b6b;
+        }
+
+        .log-entry.chase {
+            color: #ff4444;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+
+    <div id="hud">
+        <div class="panel">
+            <h2>🪿 Horrible Goose — Admin Event</h2>
+            <p>The goose is an <b>admin-only event creature</b>. It finds the biggest crowd, <b>steals items</b>,
+                <b>chases users</b>, and causes maximum chaos.</p>
+            <p style="color:#ff8888">⚡ Not a selectable pet. Admin-controlled only.</p>
+            <div class="btn-row">
+                <button class="release" id="btnRelease">🪿 Release Goose</button>
+                <button class="recall" id="btnRecall">✋ Recall Goose</button>
+                <button id="btnAddUsers">👥 +3 Users</button>
+                <button id="btnScatter">🔀 Scatter</button>
+            </div>
+            <div id="statusBar" class="status-bar idle">🔒 Goose not released</div>
+            <div id="clusterInfo" class="cluster-info"></div>
+        </div>
+    </div>
+
+    <div id="event-log">
+        <div class="panel">
+            <h3>🪿 Goose Activity Log</h3>
+            <div id="logEntries"></div>
+        </div>
+    </div>
+
+    <div id="legend">
+        <div class="panel">
+            <div class="item"><span class="dot" style="background:#ff4444"></span> Horrible Goose (admin event)</div>
+            <div class="item"><span class="dot" style="background:#4488ff"></span> Campus users (simulated)</div>
+            <div class="item"><span class="dot" style="background:#ffcc00"></span> HONK! blast</div>
+            <div class="item"><span class="dot" style="background:#8b6508"></span> 💩 Goose droppings</div>
+            <div class="item"><span class="dot" style="background:#ff6b6b"></span> 🪶 Stolen items</div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const statusBar = document.getElementById('statusBar');
+        const clusterInfoEl = document.getElementById('clusterInfo');
+        const logEntries = document.getElementById('logEntries');
+
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resize();
+        window.addEventListener('resize', resize);
+
+        // =====================================================================
+        // HORRIBLE GOOSE RULES
+        // =====================================================================
+        // 1. The goose moves with REAL VELOCITY, not lerp. It accelerates, darts, stops suddenly.
+        // 2. It targets the DENSEST cluster of users.
+        // 3. Once near people, it cycles through behaviors:
+        //    a. PROWL: circles the crowd menacingly
+        //    b. DART: suddenly rushes at a specific user
+        //    c. STEAL: grabs an item from a user and runs away with it
+        //    d. HONK: stops and honks obnoxiously at everyone
+        //    e. POOP: drops a poop and waddles away smugly
+        // 4. After causing enough trouble, it picks a new cluster.
+
+        const CLUSTER_RADIUS = 250;
+        const GOOSE_MAX_SPEED = 4.5;
+        const GOOSE_ACCEL = 0.15;
+        const GOOSE_FRICTION = 0.94;
+        const GOOSE_DART_SPEED = 7;
+        const PROWL_RADIUS = 100;
+        const PROWL_SPEED = 0.008;
+        const RETARGET_INTERVAL = 12000;
+        const BEHAVIOR_CHANGE_MIN = 2000;
+        const BEHAVIOR_CHANGE_MAX = 5000;
+
+        function dist(a, b) { return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2); }
+
+        // =====================================================================
+        // USERS
+        // =====================================================================
+        const EMOJIS = ['👩', '👨', '👩‍💻', '🧑‍💻', '👩‍🎨', '🧑‍🔬', '🧑‍🎤', '🧑‍💼', '👩‍🔧', '🧑‍🏫'];
+        const NAMES = ['Alice', 'Bob', 'Carol', 'Dave', 'Eve', 'Frank', 'Grace', 'Hannah', 'Ivy', 'Jack', 'Kim', 'Leo', 'Maya', 'Noah', 'Olivia', 'Pat'];
+        const ITEMS = ['📱', '💻', '☕', '📚', '🎒', '🧢', '🔑', '🍕', '🥤', '✏️', '📓', '🎧'];
+
+        let users = [];
+        function addUser(x, y) {
+            users.push({
+                id: 'u' + Date.now() + Math.random(),
+                x, y,
+                emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
+                name: NAMES[Math.floor(Math.random() * NAMES.length)],
+                item: ITEMS[Math.floor(Math.random() * ITEMS.length)],
+                hasItem: true,
+                phase: Math.random() * Math.PI * 2,
+                scaredTimer: 0,       // > 0 means running away
+                scaredDx: 0,
+                scaredDy: 0,
+            });
+        }
+
+        // Initial crowd: big group + small group + lone person
+        // Group A (big)
+        for (let i = 0; i < 5; i++) addUser(220 + Math.random() * 80, 220 + Math.random() * 60);
+        // Group B (small)
+        for (let i = 0; i < 3; i++) addUser(700 + Math.random() * 60, 350 + Math.random() * 50);
+        // Lone
+        addUser(500, 550);
+
+        // =====================================================================
+        // GOOSE STATE
+        // =====================================================================
+        const BEHAVIORS = ['prowl', 'dart', 'steal', 'honk', 'poop'];
+
+        const goose = {
+            active: false,
+            x: 0, y: 0,
+            vx: 0, vy: 0,
+            // Targeting
+            clusterCenter: null,
+            clusterSize: 0,
+            lastRetarget: 0,
+            // Behavior
+            behavior: 'prowl',    // current behavior
+            behaviorTimer: 0,     // when to switch
+            prowlAngle: 0,        // angle around cluster
+            dartTarget: null,     // user being darted at
+            stolenItem: null,     // currently carrying
+            stolenFrom: null,     // who we stole from
+            runAwayTarget: null,  // where to run after stealing
+            // Mischief
+            isHonking: false,
+            honkEnd: 0,
+            poops: [],
+            // Animation
+            bobPhase: 0,
+            facing: 1,  // 1 = right, -1 = left
+            mischiefCount: 0,
+        };
+
+        // Particles
+        const particles = [];
+        function addParticle(x, y, emoji, size, vx, vy, life) {
+            particles.push({ x, y, emoji, size, vx: vx || 0, vy: vy || 0, life: life || 1 });
+        }
+
+        // Event log
+        function logEvent(text, cls) {
+            const el = document.createElement('div');
+            el.className = 'log-entry ' + (cls || '');
+            el.textContent = text;
+            logEntries.prepend(el);
+            if (logEntries.children.length > 20) logEntries.lastChild.remove();
+        }
+
+        // =====================================================================
+        // CLUSTER DETECTION
+        // =====================================================================
+        function findDensestCluster() {
+            if (users.length === 0) return null;
+            let best = null, bestN = 0;
+            for (const u of users) {
+                let n = 0;
+                for (const o of users) { if (dist(u, o) <= CLUSTER_RADIUS) n++; }
+                if (n > bestN) { bestN = n; best = u; }
+            }
+            if (!best) return null;
+            let cx = 0, cy = 0, n = 0;
+            for (const u of users) {
+                if (dist(u, best) <= CLUSTER_RADIUS) { cx += u.x; cy += u.y; n++; }
+            }
+            return { center: { x: cx / n, y: cy / n }, size: n };
+        }
+
+        // =====================================================================
+        // GOOSE AI
+        // =====================================================================
+        let lastTime = performance.now();
+
+        function updateGoose(now) {
+            const dt = Math.min((now - lastTime) / 16.67, 3); // normalize to ~60fps, cap at 3x
+            lastTime = now;
+            if (!goose.active) return;
+
+            goose.bobPhase += 0.06 * dt;
+
+            // --- RETARGET ---
+            if (!goose.clusterCenter || now - goose.lastRetarget > RETARGET_INTERVAL) {
+                const cluster = findDensestCluster();
+                if (cluster) {
+                    goose.clusterCenter = cluster.center;
+                    goose.clusterSize = cluster.size;
+                }
+                goose.lastRetarget = now;
+            }
+
+            // --- FLY TO CLUSTER if far away ---
+            if (goose.clusterCenter) {
+                const dToCluster = dist(goose, goose.clusterCenter);
+
+                if (dToCluster > PROWL_RADIUS * 2 && goose.behavior !== 'steal') {
+                    // Fly toward cluster with acceleration
+                    const angle = Math.atan2(goose.clusterCenter.y - goose.y, goose.clusterCenter.x - goose.x);
+                    goose.vx += Math.cos(angle) * GOOSE_ACCEL * dt;
+                    goose.vy += Math.sin(angle) * GOOSE_ACCEL * dt;
+                    // Cap speed
+                    const spd = Math.sqrt(goose.vx ** 2 + goose.vy ** 2);
+                    if (spd > GOOSE_MAX_SPEED) {
+                        goose.vx = (goose.vx / spd) * GOOSE_MAX_SPEED;
+                        goose.vy = (goose.vy / spd) * GOOSE_MAX_SPEED;
+                    }
+                } else {
+                    // At cluster — run behaviors
+                    runBehavior(now, dt);
+                }
+            }
+
+            // Apply velocity + friction
+            goose.x += goose.vx * dt;
+            goose.y += goose.vy * dt;
+            goose.vx *= GOOSE_FRICTION;
+            goose.vy *= GOOSE_FRICTION;
+
+            // Facing direction
+            if (Math.abs(goose.vx) > 0.3) goose.facing = goose.vx > 0 ? 1 : -1;
+
+            // Honk timer
+            if (goose.isHonking && now > goose.honkEnd) goose.isHonking = false;
+
+            // Clean old poops
+            goose.poops = goose.poops.filter(p => now - p.t < 25000);
+
+            // Keep on screen
+            goose.x = Math.max(10, Math.min(canvas.width - 10, goose.x));
+            goose.y = Math.max(10, Math.min(canvas.height - 10, goose.y));
+
+            // Drop feathers when moving fast
+            const speed = Math.sqrt(goose.vx ** 2 + goose.vy ** 2);
+            if (speed > 3 && Math.random() < 0.08) {
+                addParticle(goose.x, goose.y, '🪶', 10, (Math.random() - 0.5) * 2, -1 - Math.random(), 0.8);
+            }
+        }
+
+        function runBehavior(now, dt) {
+            // Switch behavior on timer
+            if (now > goose.behaviorTimer) {
+                pickNewBehavior(now);
+            }
+
+            switch (goose.behavior) {
+                case 'prowl': doProwl(dt); break;
+                case 'dart': doDart(now, dt); break;
+                case 'steal': doSteal(now, dt); break;
+                case 'honk': doHonk(now); break;
+                case 'poop': doPoop(now); break;
+            }
+        }
+
+        function pickNewBehavior(now) {
+            // Weight behaviors: prowl is most common, steal/dart are exciting
+            const weights = [
+                { b: 'prowl', w: 3 },
+                { b: 'dart', w: 2 },
+                { b: 'steal', w: 2 },
+                { b: 'honk', w: 2 },
+                { b: 'poop', w: 1 },
+            ];
+            const total = weights.reduce((s, w) => s + w.w, 0);
+            let r = Math.random() * total;
+            let pick = 'prowl';
+            for (const w of weights) { r -= w.w; if (r <= 0) { pick = w.b; break; } }
+
+            goose.behavior = pick;
+            goose.behaviorTimer = now + BEHAVIOR_CHANGE_MIN + Math.random() * (BEHAVIOR_CHANGE_MAX - BEHAVIOR_CHANGE_MIN);
+            goose.dartTarget = null;
+            goose.stolenItem = null;
+            goose.runAwayTarget = null;
+
+            // Setup for specific behaviors
+            if (pick === 'dart' || pick === 'steal') {
+                // Pick a random nearby user
+                const nearby = users.filter(u => dist(u, goose) < CLUSTER_RADIUS * 1.5);
+                if (nearby.length > 0) {
+                    goose.dartTarget = nearby[Math.floor(Math.random() * nearby.length)];
+                } else {
+                    goose.behavior = 'prowl'; // fallback
+                }
+            }
+        }
+
+        function doProwl(dt) {
+            // Circle the cluster center menacingly
+            if (!goose.clusterCenter) return;
+            goose.prowlAngle += PROWL_SPEED * dt;
+            const tx = goose.clusterCenter.x + Math.cos(goose.prowlAngle) * PROWL_RADIUS;
+            const ty = goose.clusterCenter.y + Math.sin(goose.prowlAngle) * PROWL_RADIUS;
+            const angle = Math.atan2(ty - goose.y, tx - goose.x);
+            goose.vx += Math.cos(angle) * 0.08 * dt;
+            goose.vy += Math.sin(angle) * 0.08 * dt;
+        }
+
+        function doDart(now, dt) {
+            if (!goose.dartTarget) { goose.behavior = 'prowl'; return; }
+            const target = goose.dartTarget;
+            const d = dist(goose, target);
+
+            if (d > 20) {
+                // Rush at the user!
+                const angle = Math.atan2(target.y - goose.y, target.x - goose.x);
+                goose.vx += Math.cos(angle) * 0.4 * dt;
+                goose.vy += Math.sin(angle) * 0.4 * dt;
+                const spd = Math.sqrt(goose.vx ** 2 + goose.vy ** 2);
+                if (spd > GOOSE_DART_SPEED) {
+                    goose.vx = (goose.vx / spd) * GOOSE_DART_SPEED;
+                    goose.vy = (goose.vy / spd) * GOOSE_DART_SPEED;
+                }
+            } else {
+                // Reached — scare them!
+                target.scaredTimer = now + 2000;
+                target.scaredDx = (target.x - goose.x) * 0.05;
+                target.scaredDy = (target.y - goose.y) * 0.05;
+                addParticle(target.x, target.y - 20, '😱', 16, 0, -1.5, 1.2);
+                logEvent(`🪿 Goose darted at ${target.name}!`, 'chase');
+                goose.behavior = 'prowl';
+                goose.behaviorTimer = now + 1500; // quick transition
+                // Bounce back
+                goose.vx = -goose.vx * 0.5;
+                goose.vy = -goose.vy * 0.5;
+                goose.mischiefCount++;
+            }
+        }
+
+        function doSteal(now, dt) {
+            if (!goose.dartTarget) { goose.behavior = 'prowl'; return; }
+            const target = goose.dartTarget;
+
+            if (!goose.stolenItem) {
+                // Phase 1: approach to steal
+                const d = dist(goose, target);
+                if (d > 15) {
+                    const angle = Math.atan2(target.y - goose.y, target.x - goose.x);
+                    goose.vx += Math.cos(angle) * 0.35 * dt;
+                    goose.vy += Math.sin(angle) * 0.35 * dt;
+                    const spd = Math.sqrt(goose.vx ** 2 + goose.vy ** 2);
+                    if (spd > GOOSE_DART_SPEED * 0.8) {
+                        goose.vx = (goose.vx / spd) * GOOSE_DART_SPEED * 0.8;
+                        goose.vy = (goose.vy / spd) * GOOSE_DART_SPEED * 0.8;
+                    }
+                } else if (target.hasItem) {
+                    // STEAL!
+                    goose.stolenItem = target.item;
+                    goose.stolenFrom = target.name;
+                    target.hasItem = false;
+                    target.scaredTimer = now + 3000;
+                    target.scaredDx = (target.x - goose.x) * 0.03;
+                    target.scaredDy = (target.y - goose.y) * 0.03;
+                    addParticle(goose.x, goose.y - 15, '❗', 18, 0, -2, 1.5);
+                    logEvent(`🪿 Goose stole ${goose.stolenItem} from ${target.name}!`, 'steal');
+
+                    // Pick a run-away point (opposite direction from cluster)
+                    const cx = goose.clusterCenter ? goose.clusterCenter.x : canvas.width / 2;
+                    const cy = goose.clusterCenter ? goose.clusterCenter.y : canvas.height / 2;
+                    const awayAngle = Math.atan2(goose.y - cy, goose.x - cx);
+                    goose.runAwayTarget = {
+                        x: goose.x + Math.cos(awayAngle) * 200,
+                        y: goose.y + Math.sin(awayAngle) * 200,
+                    };
+                    goose.behaviorTimer = now + 4000;
+                    goose.mischiefCount++;
+                } else {
+                    // User has no item — just dart at them
+                    goose.behavior = 'dart';
+                }
+            } else {
+                // Phase 2: run away with stolen item!
+                if (goose.runAwayTarget) {
+                    const d = dist(goose, goose.runAwayTarget);
+                    if (d > 20) {
+                        const angle = Math.atan2(goose.runAwayTarget.y - goose.y, goose.runAwayTarget.x - goose.x);
+                        goose.vx += Math.cos(angle) * 0.3 * dt;
+                        goose.vy += Math.sin(angle) * 0.3 * dt;
+                    } else {
+                        // Drop the item and go back to prowling
+                        addParticle(goose.x, goose.y, goose.stolenItem, 14, 0, 0, 3);
+                        logEvent(`🪿 Goose dropped ${goose.stolenItem} and waddled away smugly`, '');
+                        goose.stolenItem = null;
+                        goose.behavior = 'prowl';
+                        goose.behaviorTimer = now + 2000;
+                    }
+                }
+            }
+        }
+
+        function doHonk(now) {
+            if (!goose.isHonking) {
+                goose.isHonking = true;
+                goose.honkEnd = now + 1200;
+                // Burst of honk particles
+                for (let i = 0; i < 3; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    addParticle(
+                        goose.x + Math.cos(angle) * 15,
+                        goose.y + Math.sin(angle) * 15 - 10,
+                        '📢', 12 + Math.random() * 6,
+                        Math.cos(angle) * 1.5, Math.sin(angle) * 1.5 - 0.5, 1.2
+                    );
+                }
+                logEvent(`🪿 HONK HONK HONK!!!`, 'honk');
+                // Scare nearby users
+                for (const u of users) {
+                    if (dist(u, goose) < 120) {
+                        u.scaredTimer = now + 1500;
+                        u.scaredDx = (u.x - goose.x) * 0.02;
+                        u.scaredDy = (u.y - goose.y) * 0.02;
+                    }
+                }
+                goose.vx *= 0.1; goose.vy *= 0.1; // stop to honk
+                goose.mischiefCount++;
+            }
+            // Stay still while honking
+            goose.vx *= 0.8;
+            goose.vy *= 0.8;
+            // Auto-advance after honk
+            if (now > goose.honkEnd) {
+                goose.behavior = 'prowl';
+                goose.behaviorTimer = now + 1000 + Math.random() * 2000;
+            }
+        }
+
+        function doPoop(now) {
+            goose.poops.push({ x: goose.x, y: goose.y + 8, t: now });
+            if (goose.poops.length > 10) goose.poops.shift();
+            logEvent(`🪿 Goose left a present 💩`, '');
+            addParticle(goose.x, goose.y + 8, '💩', 14, 0, 0, 2);
+            goose.mischiefCount++;
+            // Waddle away
+            const angle = Math.random() * Math.PI * 2;
+            goose.vx += Math.cos(angle) * 2;
+            goose.vy += Math.sin(angle) * 2;
+            goose.behavior = 'prowl';
+            goose.behaviorTimer = now + 2000 + Math.random() * 3000;
+        }
+
+        // =====================================================================
+        // USER UPDATE
+        // =====================================================================
+        function updateUsers(now) {
+            for (const u of users) {
+                u.phase += 0.012;
+                if (u.scaredTimer > now) {
+                    // Running away from goose!
+                    u.x += u.scaredDx;
+                    u.y += u.scaredDy;
+                    u.x = Math.max(30, Math.min(canvas.width - 30, u.x));
+                    u.y = Math.max(30, Math.min(canvas.height - 30, u.y));
+                }
+                // Slowly return stolen items
+                if (!u.hasItem && Math.random() < 0.0003) {
+                    u.hasItem = true;
+                    u.item = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+                }
+            }
+        }
+
+        // PARTICLES
+        function updateParticles() {
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx; p.y += p.vy; p.life -= 0.012;
+                if (p.life <= 0) particles.splice(i, 1);
+            }
+        }
+
+        // =====================================================================
+        // CONTROLS
+        // =====================================================================
+        document.getElementById('btnRelease').onclick = () => {
+            goose.active = true;
+            goose.x = 20; goose.y = canvas.height / 2;
+            goose.vx = 3; goose.vy = 0;
+            goose.clusterCenter = null;
+            goose.lastRetarget = 0;
+            goose.behavior = 'prowl';
+            goose.behaviorTimer = performance.now() + 3000;
+            goose.poops = [];
+            goose.stolenItem = null;
+            goose.mischiefCount = 0;
+            goose.isHonking = false;
+            logEvent('⚡ ADMIN released the Horrible Goose!', 'chase');
+            addParticle(40, canvas.height / 2, '🪶', 14, 2, -1, 1);
+            addParticle(30, canvas.height / 2 + 10, '🪶', 12, 1, -1.5, 0.9);
+        };
+        document.getElementById('btnRecall').onclick = () => {
+            goose.active = false;
+            goose.poops = [];
+            goose.stolenItem = null;
+            logEvent('✋ Admin recalled the goose. Peace restored.', '');
+        };
+        document.getElementById('btnAddUsers').onclick = () => {
+            const cluster = findDensestCluster();
+            const cx = cluster ? cluster.center.x + (Math.random() - 0.5) * 100 : 300 + Math.random() * 400;
+            const cy = cluster ? cluster.center.y + (Math.random() - 0.5) * 100 : 200 + Math.random() * 300;
+            for (let i = 0; i < 3; i++) addUser(cx + (Math.random() - 0.5) * 60, cy + (Math.random() - 0.5) * 60);
+        };
+        document.getElementById('btnScatter').onclick = () => {
+            for (const u of users) {
+                u.x = 60 + Math.random() * (canvas.width - 120);
+                u.y = 60 + Math.random() * (canvas.height - 120);
+            }
+        };
+
+        // =====================================================================
+        // RENDER
+        // =====================================================================
+        function draw() {
+            const now = performance.now();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Background
+            ctx.fillStyle = '#0d0d20';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Subtle grid
+            ctx.strokeStyle = 'rgba(100,130,200,0.025)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < canvas.width; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+            for (let y = 0; y < canvas.height; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
+
+            // Cluster indicator (soft radius)
+            if (goose.active && goose.clusterCenter) {
+                ctx.save();
+                ctx.globalAlpha = 0.03;
+                const cg = ctx.createRadialGradient(goose.clusterCenter.x, goose.clusterCenter.y, 20, goose.clusterCenter.x, goose.clusterCenter.y, CLUSTER_RADIUS);
+                cg.addColorStop(0, '#ff4444');
+                cg.addColorStop(1, 'transparent');
+                ctx.fillStyle = cg;
+                ctx.beginPath();
+                ctx.arc(goose.clusterCenter.x, goose.clusterCenter.y, CLUSTER_RADIUS, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // Poops
+            for (const p of goose.poops) {
+                const age = (now - p.t) / 25000;
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, 1 - age * 0.6);
+                ctx.font = '14px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('💩', p.x, p.y);
+                ctx.restore();
+            }
+
+            // Users
+            for (const u of users) {
+                const sway = Math.sin(u.phase) * 1.5;
+                const scared = u.scaredTimer > now;
+
+                // Glow
+                ctx.save();
+                ctx.globalAlpha = scared ? 0.15 : 0.06;
+                const ug = ctx.createRadialGradient(u.x, u.y + sway, 3, u.x, u.y + sway, 22);
+                ug.addColorStop(0, scared ? '#ff6666' : '#4488ff');
+                ug.addColorStop(1, 'transparent');
+                ctx.fillStyle = ug;
+                ctx.beginPath();
+                ctx.arc(u.x, u.y + sway, 22, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                // Emoji
+                ctx.font = `${scared ? 24 : 20}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(scared ? '😱' : u.emoji, u.x, u.y + sway);
+
+                // Name
+                ctx.font = '600 8px Inter, sans-serif';
+                ctx.fillStyle = scared ? '#ff8888' : '#6677aa';
+                ctx.textBaseline = 'alphabetic';
+                ctx.fillText(u.name, u.x, u.y + sway + 18);
+
+                // Item
+                if (u.hasItem) {
+                    ctx.font = '10px sans-serif';
+                    ctx.fillText(u.item, u.x + 14, u.y + sway - 10);
+                }
+            }
+
+            // ===== GOOSE =====
+            if (goose.active) {
+                const gx = goose.x;
+                const gy = goose.y + Math.sin(goose.bobPhase) * 3;
+                const speed = Math.sqrt(goose.vx ** 2 + goose.vy ** 2);
+
+                // Warning aura
+                ctx.save();
+                const pulseAlpha = 0.05 + Math.sin(goose.bobPhase * 1.5) * 0.03;
+                ctx.globalAlpha = pulseAlpha;
+                const ga = ctx.createRadialGradient(gx, gy, 10, gx, gy, 50 + speed * 5);
+                ga.addColorStop(0, goose.isHonking ? '#ffcc00' : '#ff4444');
+                ga.addColorStop(1, 'transparent');
+                ctx.fillStyle = ga;
+                ctx.beginPath();
+                ctx.arc(gx, gy, 50 + speed * 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                // Goose body
+                ctx.save();
+                ctx.translate(gx, gy);
+                ctx.scale(goose.facing, 1); // flip by facing
+                ctx.font = '28px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('🪿', 0, 0);
+                ctx.restore();
+
+                // Stolen item (carried above head)
+                if (goose.stolenItem) {
+                    const wobble = Math.sin(goose.bobPhase * 3) * 4;
+                    ctx.font = '16px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(goose.stolenItem, gx + wobble, gy - 22);
+                }
+
+                // Label
+                ctx.font = '900 9px Inter, sans-serif';
+                ctx.fillStyle = goose.isHonking ? '#ffcc00' : '#ff6b6b';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'alphabetic';
+                ctx.fillText('HORRIBLE GOOSE', gx, gy + 24);
+
+                ctx.font = '7px Inter, sans-serif';
+                ctx.fillStyle = '#ff444480';
+                ctx.fillText('⚡ admin event', gx, gy + 32);
+
+                // HONK visual
+                if (goose.isHonking) {
+                    const honkPhase = (goose.honkEnd - now) / 1200;
+                    const honkSize = 14 + Math.sin(goose.bobPhase * 6) * 4;
+                    ctx.save();
+                    ctx.font = `900 ${honkSize}px Inter, sans-serif`;
+                    ctx.fillStyle = '#ffcc00';
+                    ctx.shadowColor = '#ffcc00';
+                    ctx.shadowBlur = 15;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('HONK!', gx + 35 * goose.facing, gy - 18);
+                    if (honkPhase > 0.3) ctx.fillText('HONK!', gx - 25 * goose.facing, gy - 30);
+                    ctx.restore();
+                }
+
+                // Speed lines when darting
+                if (speed > 4) {
+                    ctx.save();
+                    ctx.globalAlpha = 0.2;
+                    ctx.strokeStyle = '#ff6666';
+                    ctx.lineWidth = 1;
+                    for (let i = 0; i < 3; i++) {
+                        const ox = (Math.random() - 0.5) * 10;
+                        const oy = (Math.random() - 0.5) * 10;
+                        ctx.beginPath();
+                        ctx.moveTo(gx - goose.vx * 3 + ox, gy - goose.vy * 3 + oy);
+                        ctx.lineTo(gx - goose.vx * 6 + ox, gy - goose.vy * 6 + oy);
+                        ctx.stroke();
+                    }
+                    ctx.restore();
+                }
+
+                // Behavior indicator
+                const behaviorLabel = {
+                    prowl: '👁️ prowling...',
+                    dart: '💨 CHARGING!',
+                    steal: goose.stolenItem ? `🏃 running with ${goose.stolenItem}!` : '🤏 sneaking...',
+                    honk: '📢 HONKING!',
+                    poop: '💩 depositing...',
+                }[goose.behavior];
+                ctx.font = '600 8px Inter, sans-serif';
+                ctx.fillStyle = '#ffffff40';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'alphabetic';
+                ctx.fillText(behaviorLabel, gx, gy + 40);
+            }
+
+            // Particles
+            for (const p of particles) {
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, p.life);
+                ctx.font = `${p.size}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(p.emoji, p.x, p.y);
+                ctx.restore();
+            }
+
+            // Status bar
+            if (!goose.active) {
+                statusBar.className = 'status-bar idle';
+                statusBar.innerHTML = '🔒 Goose not released — admin only';
+                clusterInfoEl.textContent = '';
+            } else {
+                const dToCluster = goose.clusterCenter ? dist(goose, goose.clusterCenter) : 999;
+                if (dToCluster > PROWL_RADIUS * 2) {
+                    statusBar.className = 'status-bar flying';
+                    statusBar.innerHTML = `🪿✈️ Flying to crowd of ${goose.clusterSize}... (${Math.round(dToCluster)}px)`;
+                } else if (goose.behavior === 'dart' || goose.behavior === 'steal') {
+                    statusBar.className = 'status-bar chasing';
+                    statusBar.innerHTML = `🪿💥 ${goose.behavior === 'steal' ? 'STEALING!' : 'CHARGING!'} — ${goose.mischiefCount} mischief`;
+                } else {
+                    statusBar.className = 'status-bar mischief';
+                    statusBar.innerHTML = `🪿🔥 Causing chaos near ${goose.clusterSize} users — ${goose.mischiefCount} mischief`;
+                }
+                const cluster = findDensestCluster();
+                clusterInfoEl.textContent = cluster
+                    ? `Target: ${cluster.size} users at (${Math.round(cluster.center.x)}, ${Math.round(cluster.center.y)})`
+                    : 'No users detected';
+            }
+        }
+
+        // =====================================================================
+        // LOOP
+        // =====================================================================
+        function loop() {
+            const now = performance.now();
+            updateGoose(now);
+            updateUsers(now);
+            updateParticles();
+            draw();
+            requestAnimationFrame(loop);
+        }
+        loop();
+    </script>
+</body>
+
+</html>

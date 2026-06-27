@@ -478,6 +478,30 @@ section {
     var(--bg-surface);
 }
 
+.card-accent--red {
+  background: linear-gradient(90deg, #ff4444, #ffcc00);
+}
+
+.card-visual--goose {
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(255, 68, 68, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 70%, rgba(255, 204, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 30%, rgba(255, 68, 68, 0.06) 0%, transparent 40%),
+    var(--bg-surface);
+}
+
+.card-accent--teal {
+  background: linear-gradient(90deg, #38bdf8, #34d399);
+}
+
+.card-visual--fishing {
+  background:
+    radial-gradient(ellipse at 50% 60%, rgba(56, 189, 248, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 30%, rgba(52, 211, 153, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 70%, rgba(56, 189, 248, 0.06) 0%, transparent 40%),
+    var(--bg-surface);
+}
+
 /* Animated grid pattern in card visuals */
 .card-visual::before {
   content: '';

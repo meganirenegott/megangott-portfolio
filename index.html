@@ -288,6 +288,93 @@
           </div>
         </article>
 
+        <!-- Project 6: Horrible Goose -->
+        <article class="project-card reveal reveal-delay-2" id="project-goose">
+          <div class="card-accent card-accent--red"></div>
+          <div class="card-visual card-visual--goose">
+            <span class="card-icon" aria-hidden="true">🪿</span>
+          </div>
+          <div class="card-body">
+            <p class="card-repo">multiversecampus</p>
+            <h3 class="card-title">Horrible Goose</h3>
+            <p class="card-oneliner">An admin-triggered chaos event with AI crowd-seeking, item theft, and honk mechanics.</p>
+            <p class="card-description">
+              Built an autonomous event creature with a multi-behavior state machine: 
+              the goose finds the densest player cluster, flies to it, then cycles through 
+              prowling, darting, item stealing, honking, and — yes — pooping. Users scatter 
+              in fear. Admin-only controls for release and recall.
+            </p>
+            <div class="card-decision">
+              <p class="card-decision-label">Key Decision</p>
+              <p>
+                Used a density-based cluster detection algorithm (sliding window over user 
+                positions) to pick the goose’s target — it always finds the biggest crowd, 
+                creating maximum chaos per event trigger.
+              </p>
+            </div>
+            <div class="card-tags">
+              <span class="card-tag">Canvas API</span>
+              <span class="card-tag">State Machine</span>
+              <span class="card-tag">AI Behavior</span>
+              <span class="card-tag">Physics</span>
+              <span class="card-tag">Admin Events</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-demo" data-demo="demos/horrible-goose-demo.html" data-title="🪿 Horrible Goose" type="button">
+                <span class="play-icon" aria-hidden="true">▶</span>
+                Try the Demo
+              </button>
+              <a href="https://github.com/lizTheDeveloper/multiversecampus/commit/cb3eea82" target="_blank" rel="noopener noreferrer" class="card-link">
+                View commit <span class="arrow-icon" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 7: Fishing Research -->
+        <article class="project-card reveal reveal-delay-3" id="project-fishing">
+          <div class="card-accent card-accent--teal"></div>
+          <div class="card-visual card-visual--fishing">
+            <span class="card-icon" aria-hidden="true">🎣</span>
+          </div>
+          <div class="card-body">
+            <p class="card-repo">multiversecampus</p>
+            <h3 class="card-title">Fishing for Research</h3>
+            <p class="card-oneliner">A gamified research discovery system where students fish for arxiv papers.</p>
+            <p class="card-description">
+              Built the full feature end-to-end: PostgreSQL migration for catch history, 
+              Express API routes for fishing state, celebration milestone engine (catch count 
+              + daily streak tracking), legendary/rare paper discovery rolls, and a canvas 
+              demo with animated ocean, dock, bobber physics, and celebration banners.
+            </p>
+            <div class="card-decision">
+              <p class="card-decision-label">Key Decision</p>
+              <p>
+                Designed the milestone system to be composable — catch count milestones, 
+                daily streak milestones, and legendary rolls are independent triggers that 
+                can stack, so a player can hit a streak + legendary catch in the same session 
+                without one celebration clobbering the other.
+              </p>
+            </div>
+            <div class="card-tags">
+              <span class="card-tag">PostgreSQL</span>
+              <span class="card-tag">Express API</span>
+              <span class="card-tag">Canvas API</span>
+              <span class="card-tag">Gamification</span>
+              <span class="card-tag">Full-Stack</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-demo" data-demo="demos/fishing-celebrations-demo.html" data-title="🎣 Fishing for Research" type="button">
+                <span class="play-icon" aria-hidden="true">▶</span>
+                Try the Demo
+              </button>
+              <a href="https://github.com/lizTheDeveloper/multiversecampus/commit/3d4bd43a" target="_blank" rel="noopener noreferrer" class="card-link">
+                View commit <span class="arrow-icon" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
       </div>
     </div>
   </section>
