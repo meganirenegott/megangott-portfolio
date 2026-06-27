@@ -1,6 +1,123 @@
 {
   "posts": [
     {
+      "slug": "rock-garden",
+      "title": "A Room Full of Rocks and Nothing Else",
+      "subtitle": "The Rock Garden has no quests, no collectibles, no mini-games. It's a contemplation space with one lore whisper. Here's why designing negative space matters.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "UX", "atmosphere", "philosophy"],
+      "project": "Rock Garden",
+      "readTime": "3 min"
+    },
+    {
+      "slug": "wild-plants-greenway",
+      "title": "Teaching the Campus to Grow Things",
+      "subtitle": "Wild plant density, seasonal flower palettes, canvas-drawn botanical shapes, and why environmental texture turns tiles into meadows.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "canvas-api", "procedural", "atmosphere"],
+      "project": "Wild Plants",
+      "readTime": "4 min"
+    },
+    {
+      "slug": "crow-perching",
+      "title": "The Pet That Doesn't Follow You",
+      "subtitle": "Crows perch on rooftops and watch from a distance. Designing animal companions that have their own relationship to proximity.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "AI", "behavior-systems", "pets"],
+      "project": "Crow Pet",
+      "readTime": "3 min"
+    },
+    {
+      "slug": "dynamic-city-layout",
+      "title": "Buildings That Move Based on Popularity",
+      "subtitle": "A medieval city layout where popular rooms drift toward center and new rooms earn their place. The campus map as a real-time popularity graph.",
+      "date": "2026-06-27",
+      "tags": ["architecture", "game-design", "algorithms", "community"],
+      "project": "Dynamic Layout",
+      "readTime": "4 min"
+    },
+    {
+      "slug": "growing-tower",
+      "title": "A Building That Gets Taller Every Year",
+      "subtitle": "The Alabaster Tower grows one segment per year — marble, crystal, neon-veined, holographic. Time as visible architecture.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "architecture", "procedural", "philosophy"],
+      "project": "Growing Tower",
+      "readTime": "3 min"
+    },
+    {
+      "slug": "shoulders-of-giants",
+      "title": "A Hall of Portraits for Every Cited Author",
+      "subtitle": "In the basement of the research library, every author your campus has ever cited gets a portrait. The gallery grows one frame at a time.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "community", "research", "UX"],
+      "project": "Shoulders of Giants",
+      "readTime": "3 min"
+    },
+    {
+      "slug": "zeppelin-lecture-hall",
+      "title": "The Lecture Hall That Flies Away",
+      "subtitle": "A zeppelin that lands for large lectures, boards students with a countdown timer, and lifts off. Missing the zeppelin feels like missing the boat.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "architecture", "video", "UX"],
+      "project": "Zeppelin",
+      "readTime": "3 min"
+    },
+    {
+      "slug": "project-gardens",
+      "title": "Your Garden Is Your Living Resume",
+      "subtitle": "Plants tied to real projects — cacti for finished repos, ferns for live services. Watering means verifying your deploy is still up.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "full-stack", "AI", "community"],
+      "project": "Project Gardens",
+      "readTime": "5 min"
+    },
+    {
+      "slug": "portal-gun-travel",
+      "title": "Portal 2-Inspired Fast Travel",
+      "subtitle": "Shoot two portals, link two locations, let anyone walk through. Fast travel as collaborative infrastructure, not a menu.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "UX", "community", "exploration"],
+      "project": "Portal Gun",
+      "readTime": "3 min"
+    },
+    {
+      "slug": "agent-pet-companionship",
+      "title": "The Infinite Game — When AI Agents Have Real Pets",
+      "subtitle": "Agent pets with hunger, happiness, and trust. Pets that petition their owners. Relationships that deepen but never end.",
+      "date": "2026-06-27",
+      "tags": ["AI", "game-design", "behavior-systems", "philosophy"],
+      "project": "Agent Pets",
+      "readTime": "4 min"
+    },
+    {
+      "slug": "animal-ecosystem",
+      "title": "A Rain World-Inspired Living Fauna System",
+      "subtitle": "Six behavior trait categories, JSON species definitions, and weekly procedural generation of new creatures. An ecosystem that evolves.",
+      "date": "2026-06-27",
+      "tags": ["AI", "game-design", "procedural", "behavior-systems"],
+      "project": "Animal Ecosystem",
+      "readTime": "5 min"
+    },
+    {
+      "slug": "ctf-tower-defense",
+      "title": "A Cybersecurity Game Where the Campus IS a Computer Network",
+      "subtitle": "Ports as entry points, firewalls as towers, bots as attackers. Red vs Blue social deduction with quiz-gated CVEs and capturable capybaras.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "security", "full-stack", "education"],
+      "project": "CTF Tower Defense",
+      "readTime": "6 min"
+    },
+    {
+      "slug": "mutual-aid-database",
+      "title": "Sometimes the Most Important Feature Is a Directory",
+      "subtitle": "A searchable database of housing, food, healthcare, and legal resources organized by state. No capybaras. Just help.",
+      "date": "2026-06-27",
+      "tags": ["community", "UX", "accessibility", "full-stack"],
+      "project": "Mutual Aid",
+      "readTime": "4 min"
+    },
+    {
       "slug": "wheel-hub-speed",
       "title": "Rollerskates, Skateboards, and Why Movement Speed Is a Design Decision",
       "subtitle": "A lending station for vehicles, a daily special rotation of 22 options including a Rideable Capybara, and why free speed is an equity decision.",
