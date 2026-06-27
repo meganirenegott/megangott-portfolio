@@ -1,10 +1,8 @@
-The Office Pizza is a slice of cold pizza with no NPC drop source. You can't earn it from any character on campus. It just... appears in your inventory sometimes. Nobody knows the exact conditions. Students have theories.
+The Office Pizza has no NPC source. You can't earn it from any character on campus. It just... appears in your inventory sometimes. Nobody knows the exact conditions. Students have theories. And those theories — the conversations, the speculation, the "I think it shows up at midnight" — are the entire point.
 
-This mystery is the entire point.
+## Items that bring people together
 
-## The items that make people talk
-
-Some items in our inventory aren't about what they do — they're about the conversations they create. When a student gets a Hot Potato that auto-passes to the nearest player every 30 seconds, they aren't just interacting with a game mechanic. They're learning the name of the person sitting next to them in the virtual quad.
+Some items in our inventory aren't really about what they do. They're about the connections they create. When a student gets a Hot Potato that playfully passes to a nearby friend, they're not just interacting with a game mechanic — they're learning the name of the person next to them in the virtual quad.
 
 ### 🥔 Hot Potato
 
@@ -12,11 +10,11 @@ Some items in our inventory aren't about what they do — they're about the conv
 
 *"It is extremely hot. Why is it so hot? Just a potato."*
 
-The Hot Potato is the purest social mechanic in the game. Every 30 seconds, it passes itself to the nearest player. That player now has the Hot Potato. It keeps going. The last person holding it when it expires "loses" — where "losing" is purely cosmetic and involves a small explosion animation.
+The Hot Potato playfully passes itself to a nearby player every 30 seconds. It keeps going, person to person, creating a little chain of connection across the campus. When it finally expires, there's a small cosmetic pop — and everyone laughs.
 
-![The Hot Potato — auto-passes every 30 seconds to the nearest player](images/odd-items-hot-potato.png)
+![The Hot Potato — passes to a nearby friend every 30 seconds](images/odd-items-hot-potato.png)
 
-What actually happens: a chain of students starts frantically moving around campus, trying to be near someone else when the timer ticks. People cluster. People scatter. People yell in chat. Nobody is thinking about code; everyone is thinking about proximity. And then when the potato pops, everyone laughs, and they go back to coding with a story to tell.
+What actually happens: students start noticing each other. They cluster together. They laugh about who has the potato. They type each other's names in chat for the first time. And then it's over, and they go back to coding — but now they know someone new. That's the design working exactly as intended.
 
 ### 🧦 Unmatched Sock
 
@@ -24,9 +22,9 @@ What actually happens: a chain of students starts frantically moving around camp
 
 *"Somehow warm. Where is the other one?"*
 
-The Unmatched Sock can be traded for any item of equal or lesser rarity. This one mechanic turned the item system into a barter economy overnight. Students started negotiating trades: "I'll give you two Unmatched Socks for a Consulting Duck." "Three socks for a Glitter Bomb?"
+The Unmatched Sock can be traded for any item of equal or lesser rarity. This one little mechanic turned the item system into a friendly barter economy overnight. Students started making offers: "I'll trade you two Unmatched Socks for a Consulting Duck." "Three socks for a Glitter Bomb?"
 
-I didn't plan this economy. The Sock created it. Once you have a tradeable common item, people start thinking about value, scarcity, and negotiation — which are, it turns out, useful things to think about.
+I didn't design this economy. The Sock created it. Once people have something tradeable, they start thinking about value and negotiation — and more importantly, they start talking to each other.
 
 ### 🍕 Office Pizza
 
@@ -34,17 +32,17 @@ I didn't plan this economy. The Sock created it. Once you have a tradeable commo
 
 *"Two hours old. Cold. Still kind of good?"*
 
-The Office Pizza grants +2 slices to your Pizza Book Club membership — but only if you actually have the membership. This creates a cross-feature connection: the item system talks to the club system, which means students who join the Pizza Book Club get more value from random drops.
+The Office Pizza grants +2 slices to your Pizza Book Club membership — but only if you've joined the club. This creates a sweet connection between different parts of campus: the item system talks to the club system, rewarding students who explore multiple features.
 
-The mysterious spawn condition is the best part. Students have formed actual theories: "It appears after your third consecutive hour on campus." "I think it spawns at midnight." "It only appears if you're alone." None of these are confirmed. The mystery keeps people exploring.
+But the real magic is the mystery. Where does it come from? Students have formed genuine theories: "It appears after your third consecutive hour studying." "I think it shows up at midnight." "It only spawns when you're the only one in a room." None of these are confirmed. The wonder keeps people exploring.
 
 ### 📜 Haunted Syllabus
 
 **Rarity:** Uncommon · **Source:** Prof Ada (30%)
 
-*"Lists 47 assignments. None of them are real. Or are they?"*
+*"47 pages. All due dates were yesterday. You don't know how you got this."*
 
-The Haunted Syllabus grants +1 to all skill checks and -1 to all sanity checks. The stat system is cosmetic, but students treat it with the gravity of a real RPG buff. People who hold a Haunted Syllabus act like they've been cursed. People who want one act like it's a blessing. The ambiguity is the point.
+The spec says the flavor text reads: *"47 pages. All due dates were yesterday. You don't know how you got this."* Every student who reads that laughs, because they've all felt that moment of academic overwhelm. The Haunted Syllabus turns a universal student experience into a collectible — a way of saying "we've all been there, and it's okay to laugh about it."
 
 ### 📋 Vague Feedback
 
@@ -52,26 +50,16 @@ The Haunted Syllabus grants +1 to all skill checks and -1 to all sanity checks. 
 
 *"'Interesting work.' That is the entirety of the feedback."*
 
-When you hold Vague Feedback, nearby players periodically say "hmm" in ambient chat. It's the subtlest item in the game. Most players don't even realize it's happening at first. When they do figure out that someone near them has the item, the reaction is always the same: a slow, dawning "wait... was that YOU making me say hmm?"
+When you hold Vague Feedback, nearby players periodically say "hmm" in ambient chat. It's the subtlest, most gentle item in the whole game. Most people don't even notice at first. When they figure out where the "hmm" is coming from, the reaction is always a delighted "wait... was that YOU?"
 
-### 🪪 Expired Hall Pass
+### 🪪 Expired Hall Pass & Others
 
-**Rarity:** Common · **Source:** Buck (20%)
-
-*"It expired in 2019. Somehow no one has noticed."*
-
-The Expired Hall Pass gives you a 50% chance to skip the next mandatory event. Fifty-fifty. You might get out of it, you might not. Students use this with the intensity of people placing bets — half the fun is the coin flip.
-
-### 🎒 Heavy Backpack & 💬 Group Chat (Muted)
-
-The Heavy Backpack adds a cosmetic weight animation to your character — they lean forward slightly and move like they're carrying something. It's purely visual but players love the detail.
-
-Group Chat (Muted) silences notification sounds in your vicinity for 5 minutes. In a campus full of ambient pings and message alerts, 5 minutes of silence is genuinely valuable. The item description — *"247 unread messages. It is fine. Everything is fine."* — is the most relatable text in the entire game.
+The **Expired Hall Pass** gives you a friendly 50/50 coin flip on whether you skip an event — half the fun is the anticipation. The **Heavy Backpack** adds a cosmetic lean to your character (no gameplay effect, just a charming animation). **Group Chat (Muted)** silences notification pings for 5 minutes — and its description (*"247 unread messages. It is fine. Everything is fine."*) is the most relatable text in the entire game.
 
 ## The accidental economy
 
-I didn't set out to build an economy. I set out to build conversation starters. But when you give people items with different rarities, different mechanics, and a way to trade them, an economy emerges on its own.
+I didn't set out to build an economy. I set out to build conversation starters — little moments of "hey, look at this!" that give students a reason to talk to each other.
 
-Students started valuing items. They started negotiating. They started learning each other's names because they needed to ask "do you have a Sock?" The item system became a social layer that sits on top of the educational platform — invisible to the curriculum, essential to the community.
+But when you give people items with different rarities and a way to trade them, something beautiful happens on its own: they start connecting. They learn each other's names because they want to ask "do you have a Sock?" They explore campus because they heard Rinley drops something cool. They come back tomorrow because they're curious what they'll find.
 
-The best educational features don't feel educational. They feel like play. And play is where people learn to trust each other, which is where real learning begins.
+The best features in educational software don't feel like education. They feel like play. And play is where people learn to trust each other, which is where real learning begins.
