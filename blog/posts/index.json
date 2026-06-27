@@ -1,6 +1,16 @@
 {
   "posts": [
     {
+      "slug": "bubble-wand-checkin",
+      "title": "The Bubble Wand — How a Check-In Became the Most-Loved Feature on Campus",
+      "subtitle": "A textarea, a database table, and some really good CSS turned into the campus's favorite daily ritual.",
+      "date": "2026-06-26",
+      "tags": ["CSS", "full-stack", "game-design", "UX"],
+      "project": "Bubble Wand",
+      "readTime": "6 min",
+      "demo": "../demos/bubble-wand-demo.html"
+    },
+    {
       "slug": "the-wall-at-catch-15",
       "title": "The Wall at Catch #15",
       "subtitle": "How a fishing minigame ran out of research papers — and the fix that made it scale to 200+ catches.",

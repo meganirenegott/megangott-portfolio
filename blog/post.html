@@ -78,6 +78,11 @@
         return `<pre><code class="language-${lang || 'text'}">${escaped.trim()}</code></pre>`;
       });
 
+      // Images ![alt](src)
+      html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => {
+        return `<figure class="post-figure"><img src="${src}" alt="${alt}" loading="lazy"><figcaption>${alt}</figcaption></figure>`;
+      });
+
       // Inline code
       html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
 
@@ -107,7 +112,7 @@
       html = blocks.map(block => {
         const trimmed = block.trim();
         if (!trimmed) return '';
-        if (/^<(?:h[1-6]|pre|ul|ol|li|blockquote|div)/.test(trimmed)) return trimmed;
+        if (/^<(?:h[1-6]|pre|ul|ol|li|blockquote|div|figure)/.test(trimmed)) return trimmed;
         return `<p>${trimmed}</p>`;
       }).join('\n');
 
@@ -162,6 +167,20 @@
 
         // Render
         document.getElementById('post-content').innerHTML = renderMarkdown(mdText);
+
+        // If the post has a demo, add an interactive embed section
+        if (post.demo) {
+          const demoSection = document.createElement('div');
+          demoSection.className = 'post-demo-embed';
+          demoSection.innerHTML = `
+            <h2>Try it yourself</h2>
+            <p class="post-demo-description">Click the bubble wand sculpture to write a reflection and watch the bubbles fly.</p>
+            <div class="post-demo-frame-wrapper">
+              <iframe src="${post.demo}" class="post-demo-frame" title="Interactive Demo" allow="fullscreen"></iframe>
+            </div>
+          `;
+          document.querySelector('.post-content').appendChild(demoSection);
+        }
       } catch (e) {
         console.error('Failed to load post:', e);
         document.getElementById('post-content').innerHTML = '<p>Failed to load post.</p>';
