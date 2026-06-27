@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dev Blog — Megan Gott</title>
+  <meta name="description" content="Writing about the process behind what I'm building and why — debugging stories, architecture decisions, and lessons from shipping features.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="blog.css">
+</head>
+<body>
+
+  <!-- ======================== NAV ======================== -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">MG</a>
+      <div class="nav-links">
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#skills">Skills</a>
+        <a href="index.html" class="nav-active">Blog</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======================== BLOG HEADER ======================== -->
+  <header class="blog-header">
+    <div class="container">
+      <p class="section-label">Dev Blog</p>
+      <h1 class="blog-hero-title">Building in Public</h1>
+      <p class="blog-hero-subtitle">
+        Writing about the process behind what I'm building and why — debugging stories, 
+        architecture decisions, and lessons from shipping features.
+      </p>
+    </div>
+  </header>
+
+  <!-- ======================== POSTS ======================== -->
+  <main class="blog-main">
+    <div class="container">
+      <div class="blog-grid" id="blog-grid">
+        <!-- Posts are rendered by JS from index.json -->
+      </div>
+    </div>
+  </main>
+
+  <!-- ======================== FOOTER ======================== -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <p>Megan Gott · 2026</p>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/meganirenegott" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/in/megan-gott/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="mailto:meganirenegott@gmail.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================== PARTICLES ======================== -->
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <script src="../script.js"></script>
+  <script>
+    // Load and render blog post cards
+    (async function() {
+      try {
+        const res = await fetch('posts/index.json');
+        const data = await res.json();
+        const grid = document.getElementById('blog-grid');
+
+        const tagColors = {
+          'debugging': '#38bdf8',
+          'full-stack': '#34d399',
+          'PostgreSQL': '#4c7bd9',
+          'API design': '#a78bfa',
+          'security': '#f87171',
+          'incident-response': '#fbbf24',
+          'git': '#fb923c',
+          'game-design': '#c084fc',
+          'algorithms': '#22d3ee',
+          'state-machines': '#818cf8',
+          'canvas': '#2dd4bf',
+          'architecture': '#f472b6',
+          'canvas-api': '#2dd4bf',
+          'sprite-rendering': '#a3e635',
+        };
+
+        data.posts.forEach((post, i) => {
+          const card = document.createElement('article');
+          card.className = `blog-card reveal reveal-delay-${(i % 3) + 1}`;
+
+          const tagsHtml = post.tags.map(tag => {
+            const color = tagColors[tag] || '#64748b';
+            return `<span class="blog-tag" style="--tag-color: ${color}">${tag}</span>`;
+          }).join('');
+
+          const dateStr = new Date(post.date + 'T00:00:00').toLocaleDateString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric'
+          });
+
+          card.innerHTML = `
+            <div class="blog-card-meta">
+              <time datetime="${post.date}">${dateStr}</time>
+              <span class="blog-read-time">${post.readTime} read</span>
+            </div>
+            <h2 class="blog-card-title">
+              <a href="post.html?slug=${post.slug}">${post.title}</a>
+            </h2>
+            <p class="blog-card-subtitle">${post.subtitle}</p>
+            <div class="blog-card-tags">${tagsHtml}</div>
+            <div class="blog-card-project">
+              <span class="blog-project-label">Project:</span> ${post.project}
+            </div>
+          `;
+
+          grid.appendChild(card);
+        });
+
+        // Stagger the card reveal animation
+        const cards = document.querySelectorAll('.blog-card');
+        cards.forEach((card, i) => {
+          card.style.transitionDelay = `${i * 0.1}s`;
+          // Small delay to allow the DOM to paint first
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              card.classList.add('visible');
+            });
+          });
+        });
+      } catch (e) {
+        console.error('Failed to load blog posts:', e);
+      }
+    })();
+  </script>
+</body>
+</html>

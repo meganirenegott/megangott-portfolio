@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loading... — Megan Gott</title>
+  <meta name="description" content="A dev blog post by Megan Gott.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="blog.css">
+</head>
+<body>
+
+  <!-- ======================== NAV ======================== -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="../index.html" class="nav-logo">MG</a>
+      <div class="nav-links">
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#skills">Skills</a>
+        <a href="index.html" class="nav-active">Blog</a>
+        <a href="../index.html#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======================== POST ======================== -->
+  <article class="post">
+    <header class="post-header">
+      <div class="container">
+        <a href="index.html" class="post-back">← Back to Blog</a>
+        <div class="post-meta" id="post-meta"></div>
+        <h1 class="post-title" id="post-title">Loading...</h1>
+        <p class="post-subtitle" id="post-subtitle"></p>
+        <div class="post-tags" id="post-tags"></div>
+      </div>
+    </header>
+    <div class="post-body container">
+      <div class="post-content" id="post-content">
+        <div class="post-loading">Loading post...</div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ======================== FOOTER ======================== -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <p>Megan Gott · 2026</p>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/meganirenegott" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/in/megan-gott/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="mailto:meganirenegott@gmail.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================== PARTICLES ======================== -->
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <script src="../script.js"></script>
+  <script>
+    // Lightweight markdown-to-HTML renderer (no dependencies)
+    function renderMarkdown(md) {
+      let html = md;
+
+      // Code blocks (``` fenced)
+      html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
+        const escaped = code
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        return `<pre><code class="language-${lang || 'text'}">${escaped.trim()}</code></pre>`;
+      });
+
+      // Inline code
+      html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+      // Headers
+      html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+      html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+
+      // Bold + italic
+      html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+      // Ordered lists
+      html = html.replace(/^(\d+)\. (.+)$/gm, '<li>$2</li>');
+
+      // Unordered lists
+      html = html.replace(/^- \*\*(.+?)\*\*(.*)$/gm, '<li><strong>$1</strong>$2</li>');
+      html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+
+      // Wrap consecutive <li> in <ul> or <ol>
+      html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, (match) => {
+        return '<ul>' + match + '</ul>';
+      });
+
+      // Paragraphs — split by double newline, wrap non-block content
+      const blocks = html.split(/\n\n+/);
+      html = blocks.map(block => {
+        const trimmed = block.trim();
+        if (!trimmed) return '';
+        if (/^<(?:h[1-6]|pre|ul|ol|li|blockquote|div)/.test(trimmed)) return trimmed;
+        return `<p>${trimmed}</p>`;
+      }).join('\n');
+
+      // Clean up stray single newlines inside paragraphs
+      html = html.replace(/<p>([\s\S]*?)<\/p>/g, (_, content) => {
+        return '<p>' + content.replace(/\n/g, ' ') + '</p>';
+      });
+
+      return html;
+    }
+
+    // Load and render the post
+    (async function() {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('slug');
+      if (!slug) {
+        document.getElementById('post-content').innerHTML = '<p>Post not found.</p>';
+        return;
+      }
+
+      try {
+        // Load metadata
+        const indexRes = await fetch('posts/index.json');
+        const indexData = await indexRes.json();
+        const post = indexData.posts.find(p => p.slug === slug);
+
+        if (!post) {
+          document.getElementById('post-content').innerHTML = '<p>Post not found.</p>';
+          return;
+        }
+
+        // Set page title
+        document.title = `${post.title} — Megan Gott`;
+
+        // Render header
+        const dateStr = new Date(post.date + 'T00:00:00').toLocaleDateString('en-US', {
+          year: 'numeric', month: 'long', day: 'numeric'
+        });
+        document.getElementById('post-meta').innerHTML = `
+          <time datetime="${post.date}">${dateStr}</time>
+          <span class="post-read-time">${post.readTime} read</span>
+          <span class="post-project">Project: ${post.project}</span>
+        `;
+        document.getElementById('post-title').textContent = post.title;
+        document.getElementById('post-subtitle').textContent = post.subtitle;
+        document.getElementById('post-tags').innerHTML = post.tags
+          .map(t => `<span class="blog-tag">${t}</span>`).join('');
+
+        // Load markdown content
+        const mdRes = await fetch(`posts/${slug}.md`);
+        const mdText = await mdRes.text();
+
+        // Render
+        document.getElementById('post-content').innerHTML = renderMarkdown(mdText);
+      } catch (e) {
+        console.error('Failed to load post:', e);
+        document.getElementById('post-content').innerHTML = '<p>Failed to load post.</p>';
+      }
+    })();
+  </script>
+</body>
+</html>

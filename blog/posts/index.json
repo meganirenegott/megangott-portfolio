@@ -1,0 +1,40 @@
+{
+  "posts": [
+    {
+      "slug": "the-wall-at-catch-15",
+      "title": "The Wall at Catch #15",
+      "subtitle": "How a fishing minigame ran out of research papers — and the fix that made it scale to 200+ catches.",
+      "date": "2026-06-20",
+      "tags": ["debugging", "full-stack", "PostgreSQL", "API design"],
+      "project": "Fishing for Research",
+      "readTime": "5 min"
+    },
+    {
+      "slug": "unauthorized-push",
+      "title": "I Caught an Unauthorized Push and Reverted It",
+      "subtitle": "Someone pushed 4 commits to our repo that would have exfiltrated student data. Here's how I found it and what I did.",
+      "date": "2026-06-18",
+      "tags": ["security", "incident-response", "git"],
+      "project": "Resource Commons",
+      "readTime": "4 min"
+    },
+    {
+      "slug": "teaching-a-goose",
+      "title": "Teaching a Goose to Find a Crowd",
+      "subtitle": "Designing an AI behavior system for a campus event creature that maximizes chaos.",
+      "date": "2026-06-14",
+      "tags": ["game-design", "algorithms", "state-machines", "canvas"],
+      "project": "Horrible Goose",
+      "readTime": "6 min"
+    },
+    {
+      "slug": "baba-yaga-architecture",
+      "title": "Why Baba Yaga's Hut Has 19 Sprites and One Canvas",
+      "subtitle": "Architecture decisions behind a 1,200-line interactive NPC encounter.",
+      "date": "2026-06-10",
+      "tags": ["architecture", "canvas-api", "game-design", "sprite-rendering"],
+      "project": "Baba Yaga's Hut",
+      "readTime": "7 min"
+    }
+  ]
+}
