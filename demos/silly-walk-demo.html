@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦩 Hall of Silly Walks — Dev Testing</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0d0d1a;
+      color: #e0e0f0;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* ── Campus canvas (left side) ─────────────────────────────── */
+    #campus-area {
+      flex: 1;
+      position: relative;
+      background:
+        radial-gradient(circle at 20% 70%, #1a3a2a 0%, transparent 45%),
+        radial-gradient(circle at 75% 25%, #1e3a4a 0%, transparent 40%),
+        linear-gradient(180deg, #0d1a1a 0%, #111f2a 50%, #0d1a1a 100%);
+    }
+
+    #campus-area::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    /* Buildings */
+    .building {
+      position: absolute;
+      border-radius: 4px;
+      border: 2px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    }
+
+    /* Paths */
+    .path { position: absolute; background: rgba(180,160,100,0.15); border-radius: 2px; }
+    .path-h { height: 22px; }
+    .path-v { width: 22px; }
+
+    /* Trees */
+    .tree { position: absolute; width: 36px; height: 46px; }
+    .tree-trunk { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 7px; height: 18px; background: #4a2e1a; border-radius: 2px; }
+    .tree-canopy { position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle, #2a6a3a 30%, #1e5a2e 70%); box-shadow: 0 0 8px rgba(42,106,58,0.3); }
+
+    /* Hall of Silly Walks building */
+    .hall-building {
+      top: 38%; left: 38%;
+      width: 160px; height: 100px;
+      background: linear-gradient(135deg, #3a1a6a, #5a2a9a);
+      border-color: rgba(180,100,255,0.4) !important;
+      box-shadow: 0 4px 24px rgba(140,60,220,0.3), 0 0 40px rgba(140,60,220,0.1) !important;
+      cursor: pointer;
+      transition: box-shadow 0.2s;
+    }
+    .hall-building:hover {
+      box-shadow: 0 4px 32px rgba(180,100,255,0.5), 0 0 60px rgba(180,100,255,0.2) !important;
+    }
+    .hall-building-label { font-size: 11px; font-weight: 700; color: #d8a0ff; text-align: center; line-height: 1.3; }
+    .hall-building-icon { font-size: 24px; display: block; margin-bottom: 4px; }
+
+    /* Player sprite */
+    #player {
+      position: absolute;
+      width: 32px; height: 40px;
+      z-index: 10;
+      transition: none;
+    }
+    #player-canvas {
+      image-rendering: pixelated;
+      width: 32px; height: 32px;
+    }
+    #player-name {
+      font-size: 9px; color: #fff; background: rgba(0,0,0,0.6);
+      padding: 1px 4px; border-radius: 3px; margin-top: 2px;
+      text-align: center; white-space: nowrap;
+    }
+    #walk-indicator {
+      position: absolute;
+      top: -18px; left: 50%; transform: translateX(-50%);
+      background: rgba(180,100,255,0.9);
+      color: #fff; font-size: 8px; font-weight: 700;
+      padding: 1px 5px; border-radius: 8px;
+      white-space: nowrap;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    #walk-indicator.visible { opacity: 1; }
+
+    /* Controls hint */
+    #controls-hint {
+      position: absolute; bottom: 12px; left: 12px;
+      background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 8px 12px;
+      font-size: 10px; color: #888; line-height: 1.7;
+    }
+
+    /* ── Sidebar panel ─────────────────────────────────────────── */
+    #sidebar {
+      width: 380px;
+      background: rgba(10, 10, 25, 0.95);
+      border-left: 1px solid rgba(180,100,255,0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #sidebar-header {
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(135deg, rgba(60,20,100,0.5), rgba(30,10,60,0.5));
+    }
+    #sidebar-header h1 { font-size: 16px; font-weight: 700; color: #d8a0ff; }
+    #sidebar-header p { font-size: 11px; color: #888; margin-top: 2px; }
+
+    /* Dev tools banner */
+    #dev-banner {
+      margin: 10px 14px 0;
+      background: rgba(255,200,40,0.08);
+      border: 1px solid rgba(255,200,40,0.25);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 10px;
+      color: #c8a040;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    /* Credits bar */
+    #credits-bar {
+      margin: 12px 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    #credits-bar .label { font-size: 11px; color: #888; }
+    #credits-count { font-size: 22px; font-weight: 700; color: #d8a0ff; }
+    #grant-btn {
+      font-size: 11px; font-weight: 600;
+      background: rgba(180,100,255,0.15);
+      border: 1px solid rgba(180,100,255,0.35);
+      color: #c080ff; border-radius: 6px;
+      padding: 5px 10px; cursor: pointer;
+      transition: all 0.15s; font-family: inherit;
+    }
+    #grant-btn:hover {
+      background: rgba(180,100,255,0.25);
+      border-color: rgba(180,100,255,0.6);
+      color: #e0b0ff;
+    }
+
+    /* Generate form */
+    #generate-section {
+      margin: 0 14px 8px;
+    }
+    #generate-section label {
+      font-size: 10px; font-weight: 600;
+      color: #888; text-transform: uppercase; letter-spacing: 0.7px;
+      display: block; margin-bottom: 5px;
+    }
+    #prompt-row { display: flex; gap: 6px; }
+    #prompt-input {
+      flex: 1; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 7px; padding: 7px 10px;
+      color: #e0e0f0; font-size: 12px; font-family: inherit;
+      outline: none; transition: border-color 0.15s;
+    }
+    #prompt-input:focus { border-color: rgba(180,100,255,0.5); }
+    #prompt-input::placeholder { color: #444; }
+    #generate-btn {
+      background: linear-gradient(135deg, #7a30d0, #5a20a0);
+      border: none; color: #fff; font-size: 12px; font-weight: 600;
+      padding: 7px 14px; border-radius: 7px; cursor: pointer;
+      font-family: inherit; transition: all 0.15s; white-space: nowrap;
+    }
+    #generate-btn:hover { background: linear-gradient(135deg, #9a50f0, #7a40c0); }
+    #generate-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    #generate-status {
+      font-size: 10px; color: #888; margin-top: 5px; min-height: 14px;
+    }
+
+    /* Sprites list */
+    #sprites-section {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 14px 14px;
+    }
+    #sprites-section::-webkit-scrollbar { width: 4px; }
+    #sprites-section::-webkit-scrollbar-track { background: transparent; }
+    #sprites-section::-webkit-scrollbar-thumb { background: rgba(180,100,255,0.3); border-radius: 4px; }
+
+    #sprites-header {
+      font-size: 10px; font-weight: 600; color: #666;
+      text-transform: uppercase; letter-spacing: 0.7px;
+      padding: 8px 0 6px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    #sprites-header span { color: #888; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 10px; }
+
+    .sprite-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 8px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .sprite-card.active {
+      border-color: rgba(180,100,255,0.5);
+      background: rgba(180,100,255,0.06);
+    }
+    .sprite-card-top {
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+
+    /* 4-direction preview grid */
+    .sprite-preview {
+      display: grid;
+      grid-template-columns: 32px 32px;
+      grid-template-rows: 32px 32px;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+    .sprite-preview canvas {
+      image-rendering: pixelated;
+      width: 32px; height: 32px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 3px;
+    }
+    .sprite-preview-placeholder {
+      width: 66px; height: 66px;
+      background: rgba(255,255,255,0.04);
+      border: 1px dashed rgba(255,255,255,0.1);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; color: #333; flex-shrink: 0;
+    }
+
+    .sprite-meta { flex: 1; min-width: 0; }
+    .sprite-prompt {
+      font-size: 12px; color: #ccc; line-height: 1.4;
+      margin-bottom: 4px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .sprite-status {
+      font-size: 10px; font-weight: 600;
+      padding: 2px 6px; border-radius: 10px;
+      display: inline-block; margin-bottom: 5px;
+    }
+    .status-pending  { background: rgba(200,160,40,0.15); color: #c8a028; }
+    .status-processing { background: rgba(60,120,220,0.15); color: #60a0f0; }
+    .status-completed { background: rgba(40,180,100,0.15); color: #30d080; }
+    .status-failed   { background: rgba(220,60,60,0.15); color: #e06060; }
+
+    .sprite-actions { display: flex; gap: 5px; margin-top: 6px; }
+    .btn-activate {
+      font-size: 10px; font-weight: 600;
+      background: rgba(180,100,255,0.12);
+      border: 1px solid rgba(180,100,255,0.3);
+      color: #c080ff; border-radius: 5px;
+      padding: 4px 9px; cursor: pointer;
+      transition: all 0.15s; font-family: inherit;
+    }
+    .btn-activate:hover {
+      background: rgba(180,100,255,0.25);
+      border-color: rgba(180,100,255,0.6);
+    }
+    .btn-activate.is-active {
+      background: rgba(180,100,255,0.25);
+      border-color: rgba(180,100,255,0.6);
+      color: #e0b0ff;
+      cursor: default;
+    }
+    .sprite-date {
+      font-size: 9px; color: #444; margin-top: 4px;
+    }
+
+    #empty-state {
+      text-align: center; padding: 40px 20px;
+      color: #444; font-size: 13px; line-height: 1.7;
+    }
+    #empty-state .emoji { font-size: 36px; display: block; margin-bottom: 10px; }
+
+    #toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: rgba(60,30,90,0.95); border: 1px solid rgba(180,100,255,0.4);
+      color: #e0b0ff; border-radius: 8px; padding: 8px 16px;
+      font-size: 12px; font-weight: 500;
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
+      z-index: 9999; white-space: nowrap;
+    }
+    #toast.show { opacity: 1; }
+
+    /* Config modal */
+    #config-modal {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.7); align-items: center; justify-content: center;
+    }
+    #config-modal.open { display: flex; }
+    #config-box {
+      background: #13131f;
+      border: 1px solid rgba(180,100,255,0.3);
+      border-radius: 14px; padding: 24px;
+      width: 340px;
+    }
+    #config-box h2 { font-size: 15px; color: #d8a0ff; margin-bottom: 4px; }
+    #config-box p { font-size: 11px; color: #666; margin-bottom: 16px; }
+    .cfg-row { margin-bottom: 12px; }
+    .cfg-row label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.6px; display: block; margin-bottom: 4px; }
+    .cfg-row input {
+      width: 100%; background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 7px; padding: 7px 10px;
+      color: #e0e0f0; font-size: 12px; font-family: inherit; outline: none;
+    }
+    .cfg-row input:focus { border-color: rgba(180,100,255,0.5); }
+    .cfg-actions { display: flex; gap: 8px; margin-top: 16px; justify-content: flex-end; }
+    .cfg-save {
+      background: linear-gradient(135deg, #7a30d0, #5a20a0);
+      border: none; color: #fff; font-family: inherit;
+      font-size: 12px; font-weight: 600; padding: 7px 16px;
+      border-radius: 7px; cursor: pointer;
+    }
+    .cfg-cancel {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+      color: #888; font-family: inherit; font-size: 12px;
+      padding: 7px 12px; border-radius: 7px; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Campus world ──────────────────────────────────────────────── -->
+<div id="campus-area">
+
+  <!-- Paths -->
+  <div class="path path-h" style="top:47%; left:5%; width:90%;"></div>
+  <div class="path path-v" style="top:10%; left:46%; height:80%;"></div>
+
+  <!-- Buildings -->
+  <div class="building" style="top:12%;left:8%;width:130px;height:80px;background:#2a3a5a;">Library</div>
+  <div class="building" style="top:20%;left:58%;width:150px;height:90px;background:#3a4a2a;">Lecture Hall</div>
+  <div class="building" style="top:60%;left:10%;width:110px;height:75px;background:#5a3a2a;">Dorm Block A</div>
+  <div class="building" style="top:62%;left:65%;width:130px;height:80px;background:#2a5a4a;">Science Lab</div>
+  <div class="building" style="top:12%;left:30%;width:90px;height:60px;background:#4a3a5a;">Café</div>
+
+  <!-- ★ Hall of Silly Walks ★ -->
+  <div class="building hall-building" id="hall-building" title="Enter the Hall of Silly Walks" onclick="focusPanel()">
+    <div class="hall-building-label">
+      <span class="hall-building-icon">🦩</span>
+      Hall of Silly Walks
+    </div>
+  </div>
+
+  <!-- Trees -->
+  <div class="tree" style="top:30%;left:7%;"><div class="tree-canopy"></div><div class="tree-trunk"></div></div>
+  <div class="tree" style="top:12%;left:22%;"><div class="tree-canopy"></div><div class="tree-trunk"></div></div>
+  <div class="tree" style="top:70%;left:18%;"><div class="tree-canopy"></div><div class="tree-trunk"></div></div>
+  <div class="tree" style="top:35%;left:80%;"><div class="tree-canopy"></div><div class="tree-trunk"></div></div>
+  <div class="tree" style="top:78%;left:50%;"><div class="tree-canopy"></div><div class="tree-trunk"></div></div>
+  <div class="tree" style="top:15%;left:84%;"><div class="tree-canopy"></div><div class="tree-trunk"></div></div>
+  <div class="tree" style="top:68%;left:85%;"><div class="tree-canopy"></div><div class="tree-trunk"></div></div>
+
+  <!-- Player -->
+  <div id="player" style="top:47%;left:46%;">
+    <div id="walk-indicator">🦩 Active!</div>
+    <canvas id="player-canvas" width="32" height="32"></canvas>
+    <div id="player-name">You</div>
+  </div>
+
+  <div id="controls-hint">
+    <strong>Move:</strong> WASD or Arrow Keys<br>
+    <strong>Click building</strong> to open Hall of Silly Walks
+  </div>
+</div>
+
+<!-- ── Sidebar ───────────────────────────────────────────────────── -->
+<div id="sidebar">
+  <div id="sidebar-header">
+    <h1>🦩 Hall of Silly Walks</h1>
+    <p>Generate custom walking animations for your campus avatar</p>
+  </div>
+
+  <div id="dev-banner">
+    🛠 Dev Mode — <strong id="api-url-display">http://localhost:4000</strong>
+    &nbsp;<button onclick="openConfig()" style="background:none;border:none;color:#c8a040;cursor:pointer;font-size:11px;text-decoration:underline;">change</button>
+  </div>
+
+  <!-- Credits -->
+  <div id="credits-bar">
+    <div>
+      <div class="label">Silly Walk Credits</div>
+      <div id="credits-count">—</div>
+    </div>
+    <button id="grant-btn" onclick="grantCredits()">🎁 Grant 5 Dev Credits</button>
+  </div>
+
+  <!-- Generate -->
+  <div id="generate-section">
+    <label>Describe Your Silly Walk</label>
+    <div id="prompt-row">
+      <input id="prompt-input" type="text"
+        placeholder="e.g. moonwalk but backwards, flamingo disco strut…"
+        onkeydown="if(event.key==='Enter')generate()">
+      <button id="generate-btn" onclick="generate()">Generate 🎲</button>
+    </div>
+    <div id="generate-status"></div>
+  </div>
+
+  <!-- Sprites gallery -->
+  <div id="sprites-section">
+    <div id="sprites-header">
+      Your Walks <span id="sprites-count"></span>
+    </div>
+    <div id="sprites-list">
+      <div id="empty-state">
+        <span class="emoji">🦩</span>
+        No silly walks yet!<br>
+        Grant yourself some dev credits<br>then describe a walk to generate your first one.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Config modal -->
+<div id="config-modal">
+  <div id="config-box">
+    <h2>⚙️ API Configuration</h2>
+    <p>Point the demo at your local server, a staging URL, or enter a student ID to test with.</p>
+    <div class="cfg-row">
+      <label>API Base URL</label>
+      <input id="cfg-api-url" type="text" value="http://localhost:4000">
+    </div>
+    <div class="cfg-row">
+      <label>Student ID (to grant dev credits to)</label>
+      <input id="cfg-student-id" type="number" placeholder="e.g. 42">
+    </div>
+    <div class="cfg-row">
+      <label>Dev Secret (X-Dev-Secret header, default: <code>silly-walk-dev</code>)</label>
+      <input id="cfg-dev-secret" type="text" placeholder="silly-walk-dev">
+    </div>
+    <div class="cfg-row">
+      <label>Auth Token (for generate/sprites — from cookie or login)</label>
+      <input id="cfg-token" type="text" placeholder="paste your session token (optional)">
+    </div>
+    <div class="cfg-actions">
+      <button class="cfg-cancel" onclick="closeConfig()">Cancel</button>
+      <button class="cfg-save" onclick="saveConfig()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ─── Config ─────────────────────────────────────────────
+// Read URL params to pre-configure without opening the modal
+// Usage: http://localhost:8765/silly-walk-demo.html?studentId=90874&devSecret=silly-walk-dev
+const _params = new URLSearchParams(location.search)
+if (_params.get('studentId'))  localStorage.setItem('sw_student_id', _params.get('studentId')!)
+if (_params.get('devSecret')) localStorage.setItem('sw_dev_secret', _params.get('devSecret')!)
+if (_params.get('apiUrl'))    localStorage.setItem('sw_api_url', _params.get('apiUrl')!)
+
+let CFG = {
+  apiUrl: localStorage.getItem('sw_api_url') || 'http://localhost:4000',
+  studentId: parseInt(localStorage.getItem('sw_student_id') || '0') || null,
+  token: localStorage.getItem('sw_token') || '',
+  devSecret: localStorage.getItem('sw_dev_secret') || 'silly-walk-dev',
+}
+
+document.getElementById('api-url-display').textContent = CFG.apiUrl
+
+function openConfig() {
+  document.getElementById('cfg-api-url').value = CFG.apiUrl
+  document.getElementById('cfg-student-id').value = CFG.studentId || ''
+  document.getElementById('cfg-dev-secret').value = CFG.devSecret
+  document.getElementById('cfg-token').value = CFG.token
+  document.getElementById('config-modal').classList.add('open')
+}
+function closeConfig() { document.getElementById('config-modal').classList.remove('open') }
+function saveConfig() {
+  CFG.apiUrl = document.getElementById('cfg-api-url').value.replace(/\/$/, '')
+  CFG.studentId = parseInt(document.getElementById('cfg-student-id').value) || null
+  CFG.devSecret = document.getElementById('cfg-dev-secret').value.trim() || 'silly-walk-dev'
+  CFG.token = document.getElementById('cfg-token').value.trim()
+  localStorage.setItem('sw_api_url', CFG.apiUrl)
+  localStorage.setItem('sw_student_id', String(CFG.studentId || ''))
+  localStorage.setItem('sw_dev_secret', CFG.devSecret)
+  localStorage.setItem('sw_token', CFG.token)
+  document.getElementById('api-url-display').textContent = CFG.apiUrl
+  closeConfig()
+  loadData()
+}
+
+function authHeaders() {
+  const h = { 'Content-Type': 'application/json' }
+  if (CFG.token) h['Authorization'] = `Bearer ${CFG.token}`
+  return h
+}
+
+// ─── Toast ───────────────────────────────────────────────
+let toastTimer
+function toast(msg) {
+  const t = document.getElementById('toast')
+  t.textContent = msg
+  t.classList.add('show')
+  clearTimeout(toastTimer)
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000)
+}
+
+// ─── API helpers ─────────────────────────────────────────
+async function apiGet(path) {
+  const r = await fetch(CFG.apiUrl + path, { credentials: 'include', headers: authHeaders() })
+  return r.json()
+}
+
+async function apiPost(path, body) {
+  const r = await fetch(CFG.apiUrl + path, {
+    method: 'POST', credentials: 'include',
+    headers: authHeaders(), body: JSON.stringify(body),
+  })
+  return r.json()
+}
+
+// ─── State ───────────────────────────────────────────────
+let credits = 0
+let sprites = []
+let activeSpriteId = null
+let pollTimer = null
+
+// ─── Load data ───────────────────────────────────────────
+async function loadData() {
+  try {
+    const [creditsRes, spritesRes] = await Promise.all([
+      apiGet('/api/silly-walks/credits'),
+      apiGet('/api/silly-walks/sprites'),
+    ])
+    if (creditsRes.success) {
+      credits = creditsRes.data.credits.balance
+      document.getElementById('credits-count').textContent = credits
+    }
+    if (spritesRes.success) {
+      sprites = spritesRes.data.sprites
+      activeSpriteId = sprites.find(s => s.isActive)?.id || null
+      renderSprites()
+      updatePlayerSprite()
+    }
+  } catch (e) {
+    console.warn('API not reachable — open config to set URL', e)
+    document.getElementById('credits-count').textContent = '?'
+  }
+}
+
+// ─── Grant dev credits (no session needed — uses dev secret header) ───────────
+async function grantCredits() {
+  if (!CFG.studentId) {
+    toast('⚠️ Set your student ID in config first')
+    openConfig()
+    return
+  }
+  try {
+    const r = await fetch(`${CFG.apiUrl}/api/silly-walks/dev-grant`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Dev-Secret': CFG.devSecret,
+      },
+      body: JSON.stringify({ studentId: CFG.studentId, amount: 5 }),
+    })
+    const res = await r.json()
+    if (res.success) {
+      credits = res.data.credits.balance
+      document.getElementById('credits-count').textContent = credits
+      toast(`✅ Granted 5 credits! Balance: ${credits}`)
+    } else {
+      toast(`❌ ${res.error}`)
+    }
+  } catch (e) {
+    toast('❌ Could not reach API — check config')
+  }
+}
+
+// ─── Generate ────────────────────────────────────────────
+async function generate() {
+  const prompt = document.getElementById('prompt-input').value.trim()
+  if (!prompt) { toast('Type a prompt first!'); return }
+  if (credits < 1) { toast('❌ No credits left — grant some dev credits first'); return }
+
+  document.getElementById('generate-btn').disabled = true
+  document.getElementById('generate-status').textContent = '🎲 Requesting generation...'
+
+  try {
+    const res = await apiPost('/api/silly-walks/generate', { prompt })
+    if (res.success) {
+      credits = res.data.credits.balance
+      document.getElementById('credits-count').textContent = credits
+      document.getElementById('prompt-input').value = ''
+      sprites.unshift(res.data.sprite)
+      renderSprites()
+      toast('✅ Generation started! Polling for completion…')
+      startPolling()
+    } else {
+      toast(`❌ ${res.error}`)
+    }
+  } catch (e) {
+    toast('❌ API error — check config')
+  }
+
+  document.getElementById('generate-btn').disabled = false
+  document.getElementById('generate-status').textContent = ''
+}
+
+// Poll for pending sprites every 4 seconds
+function startPolling() {
+  if (pollTimer) return
+  pollTimer = setInterval(async () => {
+    const pending = sprites.filter(s => s.generationStatus === 'pending' || s.generationStatus === 'processing')
+    if (pending.length === 0) {
+      clearInterval(pollTimer); pollTimer = null; return
+    }
+    const res = await apiGet('/api/silly-walks/sprites')
+    if (res.success) {
+      sprites = res.data.sprites
+      activeSpriteId = sprites.find(s => s.isActive)?.id || null
+      renderSprites()
+      updatePlayerSprite()
+    }
+  }, 4000)
+}
+
+// ─── Activate ────────────────────────────────────────────
+async function activate(id) {
+  const res = await apiPost(`/api/silly-walks/sprites/${id}/activate`, {})
+  if (res.success) {
+    activeSpriteId = id
+    sprites.forEach(s => { s.isActive = s.id === id })
+    renderSprites()
+    updatePlayerSprite()
+    toast('🦩 Silly walk activated!')
+    showWalkIndicator()
+  } else {
+    toast(`❌ ${res.error}`)
+  }
+}
+
+// ─── Render sprite cards ──────────────────────────────────
+function renderSprites() {
+  const list = document.getElementById('sprites-list')
+  const count = document.getElementById('sprites-count')
+
+  if (sprites.length === 0) {
+    list.innerHTML = '<div id="empty-state"><span class="emoji">🦩</span>No silly walks yet!<br>Grant yourself some dev credits<br>then describe a walk to generate your first one.</div>'
+    count.textContent = ''
+    return
+  }
+
+  count.textContent = `(${sprites.length})`
+  list.innerHTML = ''
+
+  for (const sprite of sprites) {
+    const card = document.createElement('div')
+    card.className = 'sprite-card' + (sprite.isActive ? ' active' : '')
+
+    const statusClass = `status-${sprite.generationStatus}`
+    const statusLabel = { pending: '⏳ Pending', processing: '⚙️ Processing…', completed: '✅ Ready', failed: '❌ Failed' }[sprite.generationStatus] || sprite.generationStatus
+
+    const date = new Date(sprite.createdAt).toLocaleString()
+
+    const previewHtml = sprite.generationStatus === 'completed' && sprite.spriteSouth
+      ? `<div class="sprite-preview">
+          <canvas id="preview-${sprite.id}-south" width="32" height="32" title="South"></canvas>
+          <canvas id="preview-${sprite.id}-east" width="32" height="32" title="East"></canvas>
+          <canvas id="preview-${sprite.id}-north" width="32" height="32" title="North"></canvas>
+          <canvas id="preview-${sprite.id}-west" width="32" height="32" title="West"></canvas>
+        </div>`
+      : `<div class="sprite-preview-placeholder">${sprite.generationStatus === 'failed' ? '💔' : '⏳'}</div>`
+
+    const activateHtml = sprite.generationStatus === 'completed'
+      ? `<button class="btn-activate ${sprite.isActive ? 'is-active' : ''}"
+             onclick="${sprite.isActive ? '' : `activate('${sprite.id}')`}"
+             ${sprite.isActive ? 'disabled title="Currently active"' : ''}>
+           ${sprite.isActive ? '🦩 Active Walk' : '▶ Activate'}
+         </button>`
+      : ''
+
+    card.innerHTML = `
+      <div class="sprite-card-top">
+        ${previewHtml}
+        <div class="sprite-meta">
+          <div class="sprite-prompt">"${escapeHtml(sprite.prompt)}"</div>
+          <span class="sprite-status ${statusClass}">${statusLabel}</span>
+          ${sprite.generationError ? `<div style="font-size:9px;color:#e06060;margin-top:3px">${escapeHtml(sprite.generationError)}</div>` : ''}
+          <div class="sprite-actions">${activateHtml}</div>
+          <div class="sprite-date">#${sprite.generationNumber} · ${date}</div>
+        </div>
+      </div>`
+
+    list.appendChild(card)
+
+    // Draw sprites onto canvases
+    if (sprite.generationStatus === 'completed') {
+      requestAnimationFrame(() => {
+        drawSpriteOnCanvas(`preview-${sprite.id}-south`, sprite.spriteSouth)
+        drawSpriteOnCanvas(`preview-${sprite.id}-east`, sprite.spriteEast)
+        drawSpriteOnCanvas(`preview-${sprite.id}-north`, sprite.spriteNorth)
+        drawSpriteOnCanvas(`preview-${sprite.id}-west`, sprite.spriteWest)
+      })
+    }
+  }
+}
+
+function escapeHtml(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+}
+
+function drawSpriteOnCanvas(canvasId, base64) {
+  const canvas = document.getElementById(canvasId)
+  if (!canvas || !base64) return
+  const ctx = canvas.getContext('2d')
+  const img = new Image()
+  img.onload = () => ctx.drawImage(img, 0, 0, 32, 32)
+  img.src = `data:image/png;base64,${base64}`
+}
+
+// ─── Player rendering ─────────────────────────────────────
+let playerDir = 'south'
+
+function updatePlayerSprite() {
+  const canvas = document.getElementById('player-canvas')
+  const ctx = canvas.getContext('2d')
+  ctx.clearRect(0, 0, 32, 32)
+
+  const active = sprites.find(s => s.isActive)
+  if (active && active.generationStatus === 'completed') {
+    const spriteKey = 'sprite' + playerDir.charAt(0).toUpperCase() + playerDir.slice(1)
+    const base64 = active[spriteKey]
+    if (base64) {
+      const img = new Image()
+      img.onload = () => {
+        ctx.imageSmoothingEnabled = false
+        ctx.drawImage(img, 0, 0, 32, 32)
+      }
+      img.src = `data:image/png;base64,${base64}`
+      return
+    }
+  }
+
+  // Default pixelart fallback player
+  ctx.fillStyle = '#4a90d9'
+  ctx.fillRect(6, 14, 20, 18)    // body
+  ctx.fillStyle = '#f4c99a'
+  ctx.beginPath()
+  ctx.arc(16, 10, 8, 0, Math.PI * 2)
+  ctx.fill()                      // head
+}
+
+function showWalkIndicator() {
+  const el = document.getElementById('walk-indicator')
+  el.classList.add('visible')
+  setTimeout(() => el.classList.remove('visible'), 2500)
+}
+
+// ─── Campus player movement ───────────────────────────────
+const player = document.getElementById('player')
+let px = 0, py = 0
+const keys = {}
+
+window.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return
+  keys[e.key] = true
+})
+window.addEventListener('keyup', e => { keys[e.key] = false })
+
+function initPlayerPos() {
+  const area = document.getElementById('campus-area')
+  px = area.offsetWidth * 0.46
+  py = area.offsetHeight * 0.47
+}
+
+const SPEED = 2.5
+
+function movePlayer() {
+  const area = document.getElementById('campus-area')
+  const aW = area.offsetWidth, aH = area.offsetHeight
+
+  let moved = false
+  let newDir = playerDir
+
+  if (keys['ArrowUp'] || keys['w'] || keys['W'])    { py -= SPEED; newDir = 'north'; moved = true }
+  if (keys['ArrowDown'] || keys['s'] || keys['S'])  { py += SPEED; newDir = 'south'; moved = true }
+  if (keys['ArrowLeft'] || keys['a'] || keys['A'])  { px -= SPEED; newDir = 'west';  moved = true }
+  if (keys['ArrowRight'] || keys['d'] || keys['D']) { px += SPEED; newDir = 'east';  moved = true }
+
+  px = Math.max(0, Math.min(aW - 32, px))
+  py = Math.max(0, Math.min(aH - 40, py))
+
+  player.style.left = px + 'px'
+  player.style.top  = py + 'px'
+
+  if (moved && newDir !== playerDir) {
+    playerDir = newDir
+    updatePlayerSprite()
+  }
+
+  requestAnimationFrame(movePlayer)
+}
+
+function focusPanel() {
+  document.getElementById('prompt-input').focus()
+  toast('🦩 Welcome to the Hall of Silly Walks!')
+}
+
+// ─── Init ────────────────────────────────────────────────
+initPlayerPos()
+requestAnimationFrame(movePlayer)
+loadData()
+
+// Refresh data every 30s
+setInterval(loadData, 30000)
+</script>
+</body>
+</html>

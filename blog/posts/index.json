@@ -1,6 +1,16 @@
 {
   "posts": [
     {
+      "slug": "hall-of-silly-walks",
+      "title": "The Hall of Silly Walks",
+      "subtitle": "Monty Python, AI surveillance evasion, and the joy of prompting your avatar to move like a knight in chess.",
+      "date": "2026-06-26",
+      "tags": ["game-design", "AI", "pixel-lab", "monty-python", "joy"],
+      "project": "Multiverse Campus",
+      "readTime": "6 min",
+      "demo": "../demos/silly-walk-demo.html"
+    },
+    {
       "slug": "odd-items-philosophy",
       "title": "17 Odd Items and the Philosophy Behind Them",
       "subtitle": "Learning is hard. So I designed 17 items whose only purpose is to make people go: wait, what?",
