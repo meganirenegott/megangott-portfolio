@@ -1,6 +1,16 @@
 {
   "posts": [
     {
+      "slug": "phishing-aquarium",
+      "title": "The Phishing Training Tank — Where Scammers Become Fish",
+      "subtitle": "When someone phishes on our campus, we sanitize their tactics and turn them into a swimming, educational exhibit.",
+      "date": "2026-06-26",
+      "tags": ["security", "phishing", "game-design", "moderation"],
+      "project": "Multiverse Campus",
+      "readTime": "5 min",
+      "demo": "../demos/aquarium-demo.html"
+    },
+    {
       "slug": "hall-of-silly-walks",
       "title": "The Hall of Silly Walks",
       "subtitle": "Monty Python, AI surveillance evasion, and the joy of prompting your avatar to move like a knight in chess.",

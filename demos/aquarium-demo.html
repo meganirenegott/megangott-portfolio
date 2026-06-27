@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐠 Campus Aquarium — Swim & Aquatic Pets</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #030810;
+            color: #e0e0e0;
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        canvas {
+            display: block;
+            cursor: none;
+        }
+
+        #hud {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 340px;
+            pointer-events: none;
+        }
+
+        #hud>* {
+            pointer-events: auto;
+        }
+
+        .panel {
+            background: rgba(5, 10, 25, 0.92);
+            border: 1px solid rgba(0, 150, 220, 0.2);
+            border-radius: 14px;
+            padding: 12px 16px;
+            backdrop-filter: blur(14px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        }
+
+        .panel h2 {
+            font-size: 15px;
+            font-weight: 900;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg, #00b4d8, #48cae4);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .panel p {
+            font-size: 11px;
+            line-height: 1.5;
+            color: #5a7d9a;
+            margin-bottom: 4px;
+        }
+
+        .pet-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 8px 0;
+        }
+
+        .pet-option {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 5px 10px;
+            font-size: 11px;
+            color: #8babc4;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .pet-option:hover {
+            background: rgba(0, 180, 216, 0.1);
+            border-color: rgba(0, 180, 216, 0.3);
+        }
+
+        .pet-option.selected {
+            background: rgba(0, 180, 216, 0.2);
+            border-color: #00b4d8;
+            color: #48cae4;
+        }
+
+        .form-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin: 6px 0;
+        }
+
+        .form-option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 8px;
+            padding: 4px 9px;
+            font-size: 11px;
+            color: #7a98b0;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .form-option:hover {
+            background: rgba(106, 13, 173, 0.1);
+            border-color: rgba(148, 103, 189, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .form-option.selected {
+            background: linear-gradient(135deg, rgba(106, 13, 173, 0.2), rgba(0, 180, 216, 0.2));
+            border-color: #9467bd;
+            color: #c9a5e8;
+            box-shadow: 0 0 8px rgba(148, 103, 189, 0.2);
+        }
+
+        .form-option .emoji {
+            font-size: 15px;
+        }
+
+        .status-pill.transforming {
+            background: linear-gradient(135deg, rgba(148, 103, 189, 0.2), rgba(0, 180, 216, 0.2));
+            color: #c9a5e8;
+            border: 1px solid rgba(148, 103, 189, 0.3);
+            animation: pulse-glow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 4px rgba(148, 103, 189, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 0 12px rgba(148, 103, 189, 0.4);
+            }
+        }
+
+        .pet-option .emoji {
+            font-size: 14px;
+        }
+
+        .controls-hint {
+            font-size: 9px;
+            color: #3a5a70;
+            text-align: center;
+            margin-top: 4px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            padding: 4px 8px;
+        }
+
+        .controls-hint kbd {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            padding: 1px 4px;
+            font-family: 'Inter', monospace;
+            font-size: 9px;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+
+        .status-pill.swimming {
+            background: rgba(0, 180, 216, 0.15);
+            color: #48cae4;
+            border: 1px solid rgba(0, 180, 216, 0.3);
+        }
+
+        .status-pill.left {
+            background: rgba(255, 150, 50, 0.15);
+            color: #ffaa66;
+            border: 1px solid rgba(255, 150, 50, 0.3);
+        }
+
+        #pet-status {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        #pet-status .panel {
+            padding: 8px 16px;
+            text-align: center;
+            border-color: rgba(0, 180, 216, 0.15);
+        }
+
+        #zone-indicator {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 10;
+        }
+
+        #zone-indicator .panel {
+            padding: 8px 14px;
+        }
+
+        .zone-label {
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .zone-label.fw {
+            color: #5abd8e;
+        }
+
+        .zone-label.sw {
+            color: #48cae4;
+        }
+
+        .zone-label.walkway {
+            color: #6b8db0;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+
+    <div id="hud">
+        <div class="panel">
+            <h2>🐠 Campus Aquarium</h2>
+            <p>Swim through the aquarium! <b>Transform</b> into an aquatic creature when you enter the water. Your pet
+                follows you — and <b>stays behind when you leave</b>.</p>
+
+            <div style="font-size:10px; color:#9467bd; margin: 6px 0 2px;">✨ Your aquatic form:</div>
+            <div class="form-picker" id="formPicker"></div>
+
+            <div style="font-size:10px; color:#5a7d9a; margin: 6px 0 2px;">🐠 Your aquatic pet:</div>
+            <div class="pet-picker" id="petPicker"></div>
+
+            <div id="playerStatus"></div>
+
+            <div class="controls-hint">
+                <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> to
+                swim &nbsp;·&nbsp; <kbd>E</kbd> leave aquarium
+            </div>
+        </div>
+    </div>
+
+    <div id="pet-status">
+        <div class="panel">
+            <span id="petStatusText" style="font-size:11px; color:#6b8db0;">🐠 Choose a pet to begin</span>
+        </div>
+    </div>
+
+    <div id="zone-indicator">
+        <div class="panel">
+            <div class="zone-label" id="zoneLabel">🏛️ Entrance</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resize();
+        window.addEventListener('resize', resize);
+
+        // =====================================================================
+        // SPRITE LOADING
+        // =====================================================================
+        const SPRITE_BASE = 'public/aquarium/';
+        const sprites = {};
+        const spriteNames = [
+            'goldfish', 'koi', 'betta', 'axolotl', 'turtle-fw', 'clownfish', 'seahorse', 'pufferfish',
+            'jellyfish', 'octopus', 'sea-turtle',
+            'merperson', 'fish-form', 'dolphin', 'jellyfish-form', 'octopus-form', 'turtle-form', 'shark', 'whale', 'player-human',
+            'ambient-fish-1', 'ambient-fish-2', 'ambient-puffer',
+            'pineapple-house', 'tiki-head', 'patrick-rock',
+            'coral-1', 'coral-2', 'seaweed', 'treasure-chest',
+            'river-log', 'river-stones', 'lily-pad-root', 'cattails',
+            'stone-lantern', 'bamboo-shoot', 'amazon-sword', 'driftwood',
+            'old-boot', 'warning-sign',
+            'denise', 'scam-crab', 'scam-octopus', 'scam-puffer', 'scam-shark',
+            'safety-sealion', 'delete-me-ad'
+        ];
+        function loadSprites() {
+            for (const name of spriteNames) {
+                const img = new Image();
+                img.src = SPRITE_BASE + name + '.png';
+                sprites[name] = img;
+            }
+        }
+        loadSprites();
+
+        function drawSprite(name, x, y, w, h, flipX) {
+            const img = sprites[name];
+            if (!img || !img.complete || !img.naturalWidth) return false;
+            ctx.save();
+            ctx.translate(x, y);
+            if (flipX) ctx.scale(-1, 1);
+            ctx.drawImage(img, -w / 2, -h / 2, w, h);
+            ctx.restore();
+            return true;
+        }
+
+        // =====================================================================
+        // AQUARIUM LAYOUT (world coordinates)
+        // =====================================================================
+        const WORLD = { width: 5780, height: 3200 };
+        const TILE = 32;
+
+        // Water zones — where player and pets can swim
+        const WATER_ZONES = [
+            // Freshwater (x origin ~ 430)
+            { id: 'fw-river', x: 430, y: 80, w: 1140, h: 900, color: '#0f2b1a', accent: '#2d8a5e', label: '🏞️ River Tank', type: 'freshwater' },
+            { id: 'fw-lake', x: 1660, y: 80, w: 1050, h: 900, color: '#122a20', accent: '#3a9d6e', label: '🐢 Lake Habitat', type: 'freshwater' },
+            { id: 'fw-pond', x: 430, y: 1130, w: 1020, h: 780, color: '#152e24', accent: '#4aad7e', label: '🐸 Koi Pond', type: 'freshwater' },
+            { id: 'fw-tropical', x: 1540, y: 1130, w: 1170, h: 780, color: '#183228', accent: '#5abd8e', label: '🐟 Tropical FW', type: 'freshwater' },
+            // Saltwater (x origin ~ 2900)
+            { id: 'sw-reef', x: 3160, y: 80, w: 1140, h: 900, color: '#061830', accent: '#0077b6', label: '🪸 Coral Reef', type: 'saltwater' },
+            { id: 'sw-deep', x: 4390, y: 80, w: 1140, h: 900, color: '#030d1e', accent: '#023e7d', label: '🐙 Deep Sea', type: 'saltwater' },
+            { id: 'sw-bikini', x: 3160, y: 1130, w: 1140, h: 780, color: '#0a2040', accent: '#f4d03f', label: '🍍 Bikini Bottom', type: 'saltwater', theme: 'bikini-bottom' },
+            { id: 'sw-jelly', x: 4390, y: 1130, w: 1140, h: 780, color: '#150830', accent: '#6a0dad', label: '🪼 Jellyfish', type: 'saltwater' },
+            { id: 'fw-phishing', x: 430, y: 2030, w: 1020, h: 600, color: '#1a1005', accent: '#f59e0b', label: '🎣 Phishing Training', type: 'freshwater' },
+            { id: 'sw-safety', x: 3160, y: 2030, w: 1140, h: 600, color: '#092535', accent: '#38bdf8', label: '🦭 Safety Center', type: 'saltwater' },
+        ];
+
+        // Walkway (dry area connecting zones)
+        const WALKWAYS = [
+            { x: 0, y: 0, w: 380, h: WORLD.height }, // left side walkway
+            { x: 380, y: 1990, w: WORLD.width - 380, h: WORLD.height - 1990 }, // bottom walkway
+            { x: 2860, y: 0, w: 160, h: 1990 },          // center divider walkway
+            { x: 1600, y: 1950, w: WORLD.width - 1600, h: 1250 }, // rest of bottom walkway below phishing
+        ];
+
+        function isInWater(x, y) {
+            for (const z of WATER_ZONES) {
+                if (x >= z.x && x <= z.x + z.w && y >= z.y && y <= z.y + z.h) return z;
+            }
+            return null;
+        }
+
+        function isOnWalkway(x, y) {
+            for (const w of WALKWAYS) {
+                if (x >= w.x && x <= w.x + w.w && y >= w.y && y <= w.y + w.h) return true;
+            }
+            return false;
+        }
+
+        // =====================================================================
+        // AQUATIC PET SPECIES
+        // =====================================================================
+        const AQUATIC_PETS = [
+            { id: 'goldfish', sprite: 'goldfish', name: 'Goldfish', color: '#ffaa00', size: 20, speed: 1.2, type: 'freshwater' },
+            { id: 'koi', sprite: 'koi', name: 'Koi', color: '#ff6633', size: 26, speed: 0.9, type: 'freshwater' },
+            { id: 'betta', sprite: 'betta', name: 'Betta', color: '#8b00ff', size: 18, speed: 1.4, type: 'freshwater' },
+            { id: 'axolotl', sprite: 'axolotl', name: 'Axolotl', color: '#ffb6c1', size: 24, speed: 0.7, type: 'freshwater' },
+            { id: 'turtle-fw', sprite: 'turtle-fw', name: 'Turtle', color: '#556b2f', size: 28, speed: 0.5, type: 'freshwater' },
+            { id: 'clownfish', sprite: 'clownfish', name: 'Clownfish', color: '#ff6600', size: 16, speed: 1.3, type: 'saltwater' },
+            { id: 'seahorse', sprite: 'seahorse', name: 'Seahorse', color: '#daa520', size: 20, speed: 0.5, type: 'saltwater' },
+            { id: 'pufferfish', sprite: 'pufferfish', name: 'Pufferfish', color: '#ffd700', size: 24, speed: 0.8, type: 'saltwater' },
+            { id: 'jellyfish', sprite: 'jellyfish', name: 'Jellyfish', color: '#dda0dd', size: 22, speed: 0.4, type: 'saltwater' },
+            { id: 'octopus', sprite: 'octopus', name: 'Octopus', color: '#800080', size: 30, speed: 0.7, type: 'saltwater' },
+            { id: 'sea-turtle', sprite: 'sea-turtle', name: 'Sea Turtle', color: '#2e8b57', size: 32, speed: 0.4, type: 'saltwater' },
+        ];
+
+        // =====================================================================
+        // AMBIENT FISH (always swimming in tanks)
+        // =====================================================================
+        const ambientFish = [];
+        function spawnAmbient() {
+            const AMBIENT_SPECIES = [
+                { sprite: 'ambient-fish-1', size: 10, speed: 1.0 }, { sprite: 'ambient-fish-2', size: 12, speed: 0.8 },
+                { sprite: 'ambient-fish-1', size: 8, speed: 1.3 }, { sprite: 'ambient-puffer', size: 14, speed: 0.5 },
+            ];
+            for (const zone of WATER_ZONES) {
+                const count = Math.floor((zone.w * zone.h) / 12000) + 2;
+                for (let i = 0; i < count; i++) {
+                    const sp = AMBIENT_SPECIES[Math.floor(Math.random() * AMBIENT_SPECIES.length)];
+                    ambientFish.push({
+                        x: zone.x + 20 + Math.random() * (zone.w - 40),
+                        y: zone.y + 20 + Math.random() * (zone.h - 40),
+                        vx: (Math.random() - 0.5) * sp.speed * 2,
+                        vy: (Math.random() - 0.5) * sp.speed,
+                        zone, species: sp, facing: 1,
+                        phase: Math.random() * Math.PI * 2,
+                        turnTimer: 30 + Math.random() * 60,
+                    });
+                }
+            }
+        }
+
+        function updateAmbientFish(dt) {
+            for (const f of ambientFish) {
+                f.phase += 0.02 * dt;
+                f.turnTimer -= dt;
+                if (f.turnTimer <= 0) {
+                    f.vx += (Math.random() - 0.5) * f.species.speed;
+                    f.vy += (Math.random() - 0.5) * f.species.speed * 0.5;
+                    f.turnTimer = 40 + Math.random() * 80;
+                }
+                const spd = Math.sqrt(f.vx ** 2 + f.vy ** 2);
+                if (spd > f.species.speed * 1.5) { f.vx = (f.vx / spd) * f.species.speed * 1.5; f.vy = (f.vy / spd) * f.species.speed * 1.5; }
+                f.x += f.vx * dt; f.y += f.vy * dt;
+                const m = f.species.size;
+                if (f.x < f.zone.x + m) { f.x = f.zone.x + m; f.vx = Math.abs(f.vx); }
+                if (f.x > f.zone.x + f.zone.w - m) { f.x = f.zone.x + f.zone.w - m; f.vx = -Math.abs(f.vx); }
+                if (f.y < f.zone.y + m) { f.y = f.zone.y + m; f.vy = Math.abs(f.vy); }
+                if (f.y > f.zone.y + f.zone.h - m) { f.y = f.zone.y + f.zone.h - m; f.vy = -Math.abs(f.vy); }
+                f.vx *= 0.995; f.vy *= 0.995;
+                if (Math.abs(f.vx) > 0.1) f.facing = f.vx > 0 ? 1 : -1;
+            }
+
+            for (const npc of specialNPCs) {
+                npc.phase += 0.05 * dt;
+                npc.turnTimer -= dt;
+
+                if (npc.turnTimer <= 0) {
+                    npc.vx += (Math.random() - 0.5) * 0.8;
+                    npc.vy += (Math.random() - 0.5) * 0.4;
+                    npc.turnTimer = 40 + Math.random() * 80;
+                }
+                const spd = Math.sqrt(npc.vx ** 2 + npc.vy ** 2);
+                if (spd > 1.2) { npc.vx = (npc.vx / spd) * 1.2; npc.vy = (npc.vy / spd) * 1.2; }
+
+                npc.x += npc.vx * dt; npc.y += npc.vy * dt;
+                const m = 16;
+                const z = WATER_ZONES.find(z => z.id === npc.zoneId);
+                if (z) {
+                    if (npc.x < z.x + m) { npc.x = z.x + m; npc.vx = Math.abs(npc.vx); }
+                    if (npc.x > z.x + z.w - m) { npc.x = z.x + z.w - m; npc.vx = -Math.abs(npc.vx); }
+                    if (npc.y < z.y + m) { npc.y = z.y + m; npc.vy = Math.abs(npc.vy); }
+                    if (npc.y > z.y + z.h - m) { npc.y = z.y + z.h - m; npc.vy = -Math.abs(npc.vy); }
+                }
+                // scam crab stays near the bottom
+                if (npc.sprite === 'scam-crab' && z) {
+                    if (npc.y < z.y + z.h - 100) { npc.y = z.y + z.h - 100; npc.vy = Math.abs(npc.vy); }
+                }
+                npc.vx *= 0.995; npc.vy *= 0.995;
+                if (Math.abs(npc.vx) > 0.1) npc.facing = npc.vx > 0 ? 1 : -1;
+
+                // Add thought bubbles for training sometimes
+                if (npc.thoughts && npc.thoughts.length > 0) {
+                    npc.bubbleTimer -= dt;
+                    if (npc.bubbleTimer <= 0) {
+                        npc.bubbleTimer = 300 + Math.random() * 200;
+                        npc.lastThought = npc.thoughts[Math.floor(Math.random() * npc.thoughts.length)];
+                        npc.thoughtDisplayTime = 180;
+                    }
+                }
+                if (npc.thoughtDisplayTime > 0) npc.thoughtDisplayTime -= dt;
+            }
+        }
+
+        // =====================================================================
+        // SPECIAL NPCS
+        // =====================================================================
+        const specialNPCs = [
+            { sprite: 'denise', zoneId: 'fw-phishing', name: "Denise & Ducky", color: '#f59e0b', x: 740, y: 2300, vx: -0.5, vy: 0.1, phase: 0, turnTimer: 0, facing: 1, bubbleTimer: 50, lastThought: null, thoughtDisplayTime: 0, thoughts: ["Never click suspicious links! 🛡️", "Always check the sender! 🦆", "My ducky knows security! 💛", "Keep your password safe! 🔐"] },
+            { sprite: 'scam-crab', zoneId: 'fw-phishing', name: "Totally Legit Crab", color: '#ff4444', x: 800, y: 2500, vx: 0.5, vy: -0.1, phase: 0, turnTimer: 0, facing: 1, bubbleTimer: 150, lastThought: null, thoughtDisplayTime: 0, thoughts: ["Send me $50, get $500! 🦀", "Click here for a free iPhone! 💸", "Your account is locked, sign in here! 🔗", "I'm a prince from the Nigerian Reef! 👑", "Special limited time offer, tap now! 💳"] },
+            { sprite: 'scam-octopus', zoneId: 'fw-phishing', name: "Not Ur Bank", color: '#a855f7', x: 1100, y: 2200, vx: -0.4, vy: 0.2, phase: 0, turnTimer: 0, facing: 1, bubbleTimer: 200, lastThought: null, thoughtDisplayTime: 0, thoughts: ["Your bank account is locked! 🏦", "Update payment info immediately! ⚠️", "Netflix subscription expired! 📺", "You were tagged in a photo! 📸", "Unrecognized login, tap to freeze! 🛑"] },
+            { sprite: 'scam-puffer', zoneId: 'fw-phishing', name: "Friendly Delivery", color: '#14b8a6', x: 900, y: 2400, vx: 0.3, vy: -0.3, phase: 0, turnTimer: 0, facing: -1, bubbleTimer: 250, lastThought: null, thoughtDisplayTime: 0, thoughts: ["USPS: Package delivery failed. 📦", "Hello is this Megan? We met at the bar. 🍻", "Your Amazon order is delayed! 🚚", "FedEx: Click here to schedule redelivery 📬", "Wow look at these leaked pics! 😳"] },
+            { sprite: 'scam-shark', zoneId: 'fw-phishing', name: "The CEO", color: '#64748b', x: 1200, y: 2100, vx: -0.6, vy: -0.1, phase: 0, turnTimer: 0, facing: 1, bubbleTimer: 180, lastThought: null, thoughtDisplayTime: 0, thoughts: ["I need 5 Apple gift cards ASAP! 🍏", "Wire the vendor payment today! 💸", "Keep this confidential, okay? 🤫", "My phone broke, text me back! 📱", "Are you available for a quick task? 👨‍💼"] },
+            { sprite: 'safety-sealion', zoneId: 'sw-safety', name: "Sue the Safety Sealion", color: '#38bdf8', x: 3500, y: 2300, vx: -0.5, vy: 0.1, phase: 0, turnTimer: 0, facing: 1, bubbleTimer: 50, lastThought: null, thoughtDisplayTime: 0, thoughts: ["Change your passwords right away! 🔑", "Contact your IT department ASAP! 📞", "Don't panic! Disconnect from the internet. 🔌", "Run a malware scan just in case! 🛡️"] },
+            { sprite: 'delete-me-ad', zoneId: 'sw-safety', name: "Delete Me Ad", color: '#fbbf24', x: 3800, y: 2200, vx: 0.8, vy: 0.4, phase: 0, turnTimer: 0, facing: 1, bubbleTimer: 80, lastThought: null, thoughtDisplayTime: 0, thoughts: [] }
+        ];
+
+        // Ensure we handle incoming Socket events
+        if (typeof io !== 'undefined') {
+            window.aquariumSocket = io();
+            window.aquariumSocket.on('connect', () => console.log('✅ Aquarium Demo connected to socket events!'));
+            window.aquariumSocket.on('phishing:created', (data) => {
+                console.log('🐟 Incoming Phishing Event captured!', data);
+                // Create a dynamic new scammer based on the event payload
+                const targetTank = WATER_ZONES.find(z => z.id === 'fw-phishing');
+                if (!targetTank) return;
+
+                const scamSprites = [
+                    { sprite: 'scam-crab', name: "Totally Legit Crab", color: '#ff4444' },
+                    { sprite: 'scam-octopus', name: "Not Ur Bank", color: '#a855f7' },
+                    { sprite: 'scam-puffer', name: "Friendly Delivery", color: '#14b8a6' },
+                    { sprite: 'scam-shark', name: "The CEO", color: '#64748b' }
+                ];
+                const scammerType = scamSprites[Math.floor(Math.random() * scamSprites.length)];
+
+                // Add the new NPC directly into the tank
+                specialNPCs.push({
+                    sprite: scammerType.sprite,
+                    zoneId: 'fw-phishing',
+                    name: scammerType.name,
+                    color: scammerType.color,
+                    x: targetTank.x + 50 + Math.random() * (targetTank.w - 100),
+                    y: targetTank.y + 50 + Math.random() * (targetTank.h - 100),
+                    vx: (Math.random() - 0.5) * 1.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    phase: Math.random() * 10,
+                    turnTimer: 0,
+                    facing: 1,
+                    bubbleTimer: 5, // Show thought almost immediately
+                    lastThought: data.sanitizedText || "Check out this link! 🔗",
+                    thoughtDisplayTime: 300, // Show for a long time
+                    thoughts: [data.sanitizedText] // Only repeat their specific payload
+                });
+            });
+        }
+
+        // =====================================================================
+        // BUBBLES
+        // =====================================================================
+        const bubbles = [];
+        function updateBubbles(dt) {
+            for (let i = bubbles.length - 1; i >= 0; i--) {
+                const b = bubbles[i];
+                b.y -= b.speed * dt; b.x += Math.sin(b.wobble) * 0.12; b.wobble += 0.03 * dt;
+                b.alpha -= 0.002 * dt;
+                if (b.alpha <= 0) bubbles.splice(i, 1);
+            }
+            if (Math.random() < 0.04) {
+                const z = WATER_ZONES[Math.floor(Math.random() * WATER_ZONES.length)];
+                bubbles.push({ x: z.x + Math.random() * z.w, y: z.y + z.h - 5, size: 2 + Math.random() * 4, speed: 0.3 + Math.random() * 0.4, alpha: 0.2 + Math.random() * 0.2, wobble: Math.random() * Math.PI * 2 });
+            }
+        }
+
+        // =====================================================================
+        // AQUATIC FORMS — what the player transforms into in water
+        // =====================================================================
+        const AQUATIC_FORMS = [
+            { id: 'merperson', sprite: 'merperson', name: 'Merperson', color: '#9467bd', desc: 'Classic aquatic form' },
+            { id: 'fish', sprite: 'fish-form', name: 'Tropical Fish', color: '#48cae4', desc: 'Blend in with the school' },
+            { id: 'dolphin', sprite: 'dolphin', name: 'Dolphin', color: '#0096c7', desc: 'Swift & playful' },
+            { id: 'jellyfish-form', sprite: 'jellyfish-form', name: 'Jellyfish', color: '#dda0dd', desc: 'Drift gracefully' },
+            { id: 'octopus-form', sprite: 'octopus-form', name: 'Octopus', color: '#800080', desc: 'Eight arms of fun' },
+            { id: 'turtle-form', sprite: 'turtle-form', name: 'Sea Turtle', color: '#2e8b57', desc: 'Slow & steady' },
+            { id: 'shark', sprite: 'shark', name: 'Shark', color: '#4a6670', desc: 'Apex of the tank' },
+            { id: 'whale', sprite: 'whale', name: 'Whale', color: '#1e88e5', desc: 'Gentle giant' },
+        ];
+
+        // =====================================================================
+        // TRANSFORMATION PARTICLES
+        // =====================================================================
+        const transformParticles = [];
+        const splashParticles = [];
+
+        function spawnTransformBurst(x, y, color) {
+            for (let i = 0; i < 16; i++) {
+                const angle = (Math.PI * 2 / 16) * i + (Math.random() - 0.5) * 0.3;
+                const speed = 1.5 + Math.random() * 2;
+                transformParticles.push({
+                    x, y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    size: 3 + Math.random() * 4,
+                    alpha: 0.9,
+                    color: color,
+                    emoji: ['✨', '⭐', '💫', '🌟'][Math.floor(Math.random() * 4)],
+                    life: 1.0,
+                });
+            }
+        }
+
+        function spawnSplash(x, y) {
+            for (let i = 0; i < 10; i++) {
+                const angle = -Math.PI / 2 + (Math.random() - 0.5) * Math.PI * 0.8;
+                const speed = 1 + Math.random() * 2.5;
+                splashParticles.push({
+                    x: x + (Math.random() - 0.5) * 10,
+                    y,
+                    vx: Math.cos(angle) * speed * 0.5,
+                    vy: Math.sin(angle) * speed,
+                    size: 2 + Math.random() * 3,
+                    alpha: 0.6,
+                    gravity: 0.04,
+                    life: 1.0,
+                });
+            }
+        }
+
+        function updateParticles(dt) {
+            for (let i = transformParticles.length - 1; i >= 0; i--) {
+                const p = transformParticles[i];
+                p.x += p.vx * dt; p.y += p.vy * dt;
+                p.vx *= 0.96; p.vy *= 0.96;
+                p.life -= 0.015 * dt;
+                p.alpha = p.life * 0.9;
+                if (p.life <= 0) transformParticles.splice(i, 1);
+            }
+            for (let i = splashParticles.length - 1; i >= 0; i--) {
+                const p = splashParticles[i];
+                p.x += p.vx * dt; p.y += p.vy * dt;
+                p.vy += p.gravity * dt;
+                p.life -= 0.02 * dt;
+                p.alpha = p.life * 0.6;
+                if (p.life <= 0) splashParticles.splice(i, 1);
+            }
+        }
+
+        // =====================================================================
+        // PLAYER
+        // =====================================================================
+        const player = {
+            x: 2180, y: WORLD.height - 120, // Spawn comfortably in the center-left walkway
+            vx: 0, vy: 0,
+            facing: 1,
+            isSwimming: false,
+            wasSwimming: false,       // track transitions
+            hasLeft: false,
+            bobPhase: 0,
+            aquaticForm: AQUATIC_FORMS[0],  // default to merperson
+            transformProgress: 0,     // 0 = human, 1 = fully transformed
+            transforming: false,
+        };
+        const PLAYER_SPEED_WALK = 6.0; // scale speeds for the much larger 3x tanks
+        const PLAYER_SPEED_SWIM = 4.5;
+        const PLAYER_ACCEL = 0.4;
+        const PLAYER_FRICTION_WALK = 0.85;
+        const PLAYER_FRICTION_SWIM = 0.92;
+
+        const keys = {};
+        window.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; e.preventDefault(); });
+        window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
+
+        function updatePlayer(dt) {
+            if (player.hasLeft) return;
+
+            let ax = 0, ay = 0;
+            if (keys['w'] || keys['arrowup']) ay -= 1;
+            if (keys['s'] || keys['arrowdown']) ay += 1;
+            if (keys['a'] || keys['arrowleft']) ax -= 1;
+            if (keys['d'] || keys['arrowright']) ax += 1;
+
+            // Normalize diagonal
+            if (ax !== 0 && ay !== 0) { ax *= 0.707; ay *= 0.707; }
+
+            const inWater = isInWater(player.x, player.y);
+            player.wasSwimming = player.isSwimming;
+            player.isSwimming = !!inWater;
+
+            // TRANSFORMATION: entering water
+            if (player.isSwimming && !player.wasSwimming) {
+                // Just entered water — transform!
+                player.transforming = true;
+                spawnTransformBurst(player.x, player.y, player.aquaticForm.color);
+                spawnSplash(player.x, player.y);
+            }
+            // Leaving water
+            if (!player.isSwimming && player.wasSwimming) {
+                player.transforming = true;
+                spawnTransformBurst(player.x, player.y, '#ffffff');
+                spawnSplash(player.x, player.y);
+            }
+
+            // Animate transformation progress
+            const targetProgress = player.isSwimming ? 1.0 : 0.0;
+            player.transformProgress += (targetProgress - player.transformProgress) * 0.08 * dt;
+            if (Math.abs(player.transformProgress - targetProgress) < 0.01) {
+                player.transformProgress = targetProgress;
+                player.transforming = false;
+            }
+
+            const speed = player.isSwimming ? PLAYER_SPEED_SWIM : PLAYER_SPEED_WALK;
+            const friction = player.isSwimming ? PLAYER_FRICTION_SWIM : PLAYER_FRICTION_WALK;
+
+            player.vx += ax * PLAYER_ACCEL * dt;
+            player.vy += ay * PLAYER_ACCEL * dt;
+
+            const spd = Math.sqrt(player.vx ** 2 + player.vy ** 2);
+            if (spd > speed) { player.vx = (player.vx / spd) * speed; player.vy = (player.vy / spd) * speed; }
+
+            player.vx *= friction; player.vy *= friction;
+            player.x += player.vx * dt; player.y += player.vy * dt;
+
+            // World bounds
+            player.x = Math.max(16, Math.min(WORLD.width - 16, player.x));
+            player.y = Math.max(16, Math.min(WORLD.height - 16, player.y));
+
+            if (Math.abs(player.vx) > 0.2) player.facing = player.vx > 0 ? 1 : -1;
+            player.bobPhase += (player.isSwimming ? 0.06 : 0.03) * dt;
+
+            // Swimming bubbles (more when transformed)
+            if (player.isSwimming && Math.random() < 0.05) {
+                bubbles.push({ x: player.x + (Math.random() - 0.5) * 8, y: player.y - 10, size: 2 + Math.random() * 3, speed: 0.4 + Math.random() * 0.3, alpha: 0.3, wobble: Math.random() * Math.PI * 2 });
+            }
+
+            // Leave aquarium
+            if (keys['e']) {
+                player.hasLeft = true;
+                if (pet.active && pet.inWater) pet.stayBehind = true;
+            }
+        }
+
+        // =====================================================================
+        // AQUATIC PET
+        // =====================================================================
+        const pet = {
+            active: false,
+            species: null,
+            x: 0, y: 0,
+            vx: 0, vy: 0,
+            facing: 1,
+            bobPhase: 0,
+            inWater: false,
+            stayBehind: false,      // true when player has left
+            idleAngle: 0,           // for swimming around when left behind
+            idleCenter: { x: 0, y: 0 },
+            idleRadius: 50,
+            happiness: 0,           // increases when near player
+            lastZone: null,
+            interactTimer: 0,
+            interactEmoji: null,
+        };
+
+        const PET_FOLLOW_SPEED = 2.0;
+        const PET_FOLLOW_DISTANCE = 40;
+        const PET_IDLE_SPEED = 0.8;
+
+        function selectPet(speciesId) {
+            const species = AQUATIC_PETS.find(p => p.id === speciesId);
+            if (!species) return;
+            pet.active = true;
+            pet.species = species;
+            pet.x = player.x + 30;
+            pet.y = player.y;
+            pet.stayBehind = false;
+            pet.happiness = 50;
+            pet.interactTimer = 0;
+            player.hasLeft = false;
+
+            // Update picker UI
+            document.querySelectorAll('.pet-option').forEach(el => {
+                el.classList.toggle('selected', el.dataset.id === speciesId);
+            });
+        }
+
+        function updatePet(dt) {
+            if (!pet.active) return;
+            pet.bobPhase += 0.05 * dt;
+
+            const zone = isInWater(pet.x, pet.y);
+            pet.inWater = !!zone;
+            if (zone) pet.lastZone = zone;
+
+            if (pet.stayBehind) {
+                // PET STAYS BEHIND — free swimming in last known zone
+                const z = pet.lastZone;
+                if (!z) return;
+
+                pet.idleAngle += 0.005 * dt;
+                const targetX = pet.idleCenter.x + Math.cos(pet.idleAngle) * pet.idleRadius;
+                const targetY = pet.idleCenter.y + Math.sin(pet.idleAngle * 0.7) * pet.idleRadius * 0.6;
+
+                const dx = targetX - pet.x, dy = targetY - pet.y;
+                const d = Math.sqrt(dx * dx + dy * dy);
+                if (d > 3) {
+                    pet.vx += (dx / d) * 0.06 * dt;
+                    pet.vy += (dy / d) * 0.06 * dt;
+                }
+
+                // Random direction changes
+                if (Math.random() < 0.005) {
+                    pet.idleCenter = {
+                        x: z.x + 40 + Math.random() * (z.w - 80),
+                        y: z.y + 40 + Math.random() * (z.h - 80),
+                    };
+                    pet.idleRadius = 30 + Math.random() * 60;
+                }
+
+                // Speed limit
+                const spd = Math.sqrt(pet.vx ** 2 + pet.vy ** 2);
+                if (spd > PET_IDLE_SPEED) { pet.vx = (pet.vx / spd) * PET_IDLE_SPEED; pet.vy = (pet.vy / spd) * PET_IDLE_SPEED; }
+
+                // Tank bounds
+                const m = pet.species.size;
+                if (pet.x < z.x + m) { pet.x = z.x + m; pet.vx = Math.abs(pet.vx); }
+                if (pet.x > z.x + z.w - m) { pet.x = z.x + z.w - m; pet.vx = -Math.abs(pet.vx); }
+                if (pet.y < z.y + m) { pet.y = z.y + m; pet.vy = Math.abs(pet.vy); }
+                if (pet.y > z.y + z.h - m) { pet.y = z.y + z.h - m; pet.vy = -Math.abs(pet.vy); }
+
+                // Interact with ambient fish
+                pet.interactTimer -= dt;
+                if (pet.interactTimer <= 0) {
+                    for (const af of ambientFish) {
+                        if (Math.sqrt((af.x - pet.x) ** 2 + (af.y - pet.y) ** 2) < 30) {
+                            pet.interactEmoji = '💕';
+                            pet.interactTimer = 80;
+                            pet.happiness = Math.min(100, pet.happiness + 5);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                // FOLLOWING PLAYER
+                const playerInWater = isInWater(player.x, player.y);
+
+                if (playerInWater && pet.inWater) {
+                    // Both in water — follow closely
+                    const dx = player.x - pet.x, dy = player.y - pet.y;
+                    const d = Math.sqrt(dx * dx + dy * dy);
+
+                    if (d > PET_FOLLOW_DISTANCE) {
+                        const followStrength = Math.min(0.15, (d - PET_FOLLOW_DISTANCE) * 0.003);
+                        pet.vx += (dx / d) * followStrength * dt;
+                        pet.vy += (dy / d) * followStrength * dt;
+                    } else if (d < PET_FOLLOW_DISTANCE * 0.5) {
+                        // Too close — drift away slightly
+                        pet.vx -= (dx / (d || 1)) * 0.02 * dt;
+                        pet.vy -= (dy / (d || 1)) * 0.02 * dt;
+                    }
+
+                    pet.happiness = Math.min(100, pet.happiness + 0.02 * dt);
+                    pet.interactTimer -= dt;
+                    if (pet.interactTimer <= 0 && d < 50) {
+                        pet.interactEmoji = ['💖', '✨', '🫧', '💙'][Math.floor(Math.random() * 4)];
+                        pet.interactTimer = 120 + Math.random() * 100;
+                    }
+                } else if (playerInWater && !pet.inWater) {
+                    // Player entered water but pet is on walkway — leap in!
+                    const dx = player.x - pet.x, dy = player.y - pet.y;
+                    const d = Math.sqrt(dx * dx + dy * dy);
+                    pet.vx += (dx / (d || 1)) * 0.3 * dt;
+                    pet.vy += (dy / (d || 1)) * 0.3 * dt;
+                } else if (!playerInWater && pet.inWater) {
+                    // Player left water — pet stays at edge, waits
+                    pet.vx *= 0.9;
+                    pet.vy *= 0.9;
+                } else {
+                    // Both on walkway — hop along
+                    const dx = player.x - pet.x, dy = player.y - pet.y;
+                    const d = Math.sqrt(dx * dx + dy * dy);
+                    if (d > PET_FOLLOW_DISTANCE * 1.5) {
+                        pet.vx += (dx / (d || 1)) * 0.1 * dt;
+                        pet.vy += (dy / (d || 1)) * 0.1 * dt;
+                    }
+                }
+
+                // Speed limit
+                const maxSpd = pet.inWater ? PET_FOLLOW_SPEED : PET_FOLLOW_SPEED * 0.6;
+                const spd = Math.sqrt(pet.vx ** 2 + pet.vy ** 2);
+                if (spd > maxSpd) { pet.vx = (pet.vx / spd) * maxSpd; pet.vy = (pet.vy / spd) * maxSpd; }
+
+                // Update idle center for if player leaves
+                if (pet.inWater) {
+                    pet.idleCenter = { x: pet.x, y: pet.y };
+                }
+            }
+
+            // Apply velocity + friction
+            pet.x += pet.vx * dt; pet.y += pet.vy * dt;
+            pet.vx *= 0.96; pet.vy *= 0.96;
+
+            // Keep in world
+            pet.x = Math.max(10, Math.min(WORLD.width - 10, pet.x));
+            pet.y = Math.max(10, Math.min(WORLD.height - 10, pet.y));
+
+            if (Math.abs(pet.vx) > 0.15) pet.facing = pet.vx > 0 ? 1 : -1;
+
+            // Decay interact emoji
+            if (pet.interactEmoji && pet.interactTimer <= 0) pet.interactEmoji = null;
+
+            // Pet bubbles when in water
+            if (pet.inWater && Math.random() < 0.02) {
+                bubbles.push({ x: pet.x, y: pet.y - 8, size: 1.5 + Math.random() * 2, speed: 0.3 + Math.random() * 0.2, alpha: 0.25, wobble: Math.random() * Math.PI * 2 });
+            }
+        }
+
+        // =====================================================================
+        // CAMERA
+        // =====================================================================
+        const camera = { x: 0, y: 0 };
+        function updateCamera() {
+            const target = player.hasLeft && pet.active ? pet : player;
+            camera.x += (target.x - canvas.width / 2 - camera.x) * 0.08;
+            camera.y += (target.y - canvas.height / 2 - camera.y) * 0.08;
+            camera.x = Math.max(0, Math.min(WORLD.width - canvas.width, camera.x));
+            camera.y = Math.max(0, Math.min(WORLD.height - canvas.height, camera.y));
+        }
+
+        // =====================================================================
+        // RENDER
+        // =====================================================================
+        function draw() {
+            const now = performance.now();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.save();
+            ctx.translate(-camera.x, -camera.y);
+
+            // Background
+            ctx.fillStyle = '#070e1a';
+            ctx.fillRect(0, 0, WORLD.width, WORLD.height);
+
+            // Walkway floor
+            ctx.fillStyle = '#121824';
+            for (const w of WALKWAYS) ctx.fillRect(w.x, w.y, w.w, w.h);
+
+            // Walkway tile pattern
+            ctx.strokeStyle = '#1a2438';
+            ctx.lineWidth = 0.5;
+            for (const w of WALKWAYS) {
+                for (let tx = w.x; tx < w.x + w.w; tx += TILE) {
+                    ctx.beginPath(); ctx.moveTo(tx, w.y); ctx.lineTo(tx, w.y + w.h); ctx.stroke();
+                }
+                for (let ty = w.y; ty < w.y + w.h; ty += TILE) {
+                    ctx.beginPath(); ctx.moveTo(w.x, ty); ctx.lineTo(w.x + w.w, ty); ctx.stroke();
+                }
+            }
+
+            // Water zones
+            for (const z of WATER_ZONES) {
+                // Deep background
+                ctx.fillStyle = z.color;
+                ctx.fillRect(z.x, z.y, z.w, z.h);
+
+                // Water gradient
+                const wg = ctx.createLinearGradient(z.x, z.y, z.x, z.y + z.h);
+                wg.addColorStop(0, `${z.accent}18`);
+                wg.addColorStop(0.4, `${z.accent}08`);
+                wg.addColorStop(1, `${z.accent}22`);
+                ctx.fillStyle = wg;
+                ctx.fillRect(z.x, z.y, z.w, z.h);
+
+                // Caustic light
+                ctx.save();
+                ctx.globalAlpha = 0.025;
+                const t = now * 0.0008;
+                for (let i = 0; i < 3; i++) {
+                    const cx = z.x + z.w * (0.2 + 0.6 * Math.sin(t + i * 2));
+                    const cy = z.y + z.h * 0.25;
+                    const cr = 25 + Math.sin(t * 0.7 + i) * 12;
+                    const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, cr);
+                    cg.addColorStop(0, '#ffffff');
+                    cg.addColorStop(1, 'transparent');
+                    ctx.fillStyle = cg;
+                    ctx.beginPath(); ctx.arc(cx, cy, cr, 0, Math.PI * 2); ctx.fill();
+                }
+                ctx.restore();
+
+                // Border
+                ctx.strokeStyle = `${z.accent}35`;
+                ctx.lineWidth = 1.5;
+                ctx.strokeRect(z.x, z.y, z.w, z.h);
+
+                // Zone label
+                ctx.font = '700 12px Inter, sans-serif';
+                ctx.fillStyle = `${z.accent}90`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'alphabetic';
+                ctx.fillText(z.label, z.x + z.w / 2, z.y + 20);
+
+                // Tank environment decorations
+                const tankSeed = z.x * 7 + z.y * 3;
+                if (z.id === 'fw-river') {
+                    const logCount = Math.floor(z.w / 180) + 1;
+                    for (let ci = 0; ci < logCount; ci++) {
+                        const cx = z.x + 40 + ((tankSeed + ci * 97) % (z.w - 80));
+                        drawSprite('river-log', cx, z.y + z.h - 16, 48, 32);
+                    }
+                    const stoneCount = Math.floor(z.w / 100) + 1;
+                    for (let si = 0; si < stoneCount; si++) {
+                        const sx = z.x + 20 + ((tankSeed + si * 131) % (z.w - 40));
+                        drawSprite('river-stones', sx, z.y + z.h - 16, 32, 32);
+                    }
+                } else if (z.id === 'fw-lake') {
+                    const plantCount = Math.floor(z.w / 120) + 1;
+                    for (let ci = 0; ci < plantCount; ci++) {
+                        const cx = z.x + 30 + ((tankSeed + ci * 97) % (z.w - 60));
+                        const plantType = (ci % 2) === 0 ? 'lily-pad-root' : 'cattails';
+                        drawSprite(plantType, cx, z.y + z.h - 24, 32, 48);
+                    }
+                } else if (z.id === 'fw-pond') {
+                    drawSprite('stone-lantern', z.x + z.w / 2, z.y + z.h - 24, 32, 48);
+                    const bambooCount = Math.floor(z.w / 150) + 1;
+                    for (let ci = 0; ci < bambooCount; ci++) {
+                        const cx = z.x + 40 + ((tankSeed + ci * 97) % (z.w - 80));
+                        if (Math.abs(cx - (z.x + z.w / 2)) > 40) {
+                            drawSprite('bamboo-shoot', cx, z.y + z.h - 24, 32, 48);
+                        }
+                    }
+                } else if (z.id === 'fw-tropical') {
+                    const plantCount = Math.floor(z.w / 120) + 1;
+                    for (let ci = 0; ci < plantCount; ci++) {
+                        const cx = z.x + 30 + ((tankSeed + ci * 97) % (z.w - 60));
+                        drawSprite('amazon-sword', cx, z.y + z.h - 24, 32, 48);
+                    }
+                    drawSprite('driftwood', z.x + z.w * 0.7, z.y + z.h - 16, 48, 32);
+                } else if (z.id === 'fw-phishing') {
+                    drawSprite('warning-sign', z.x + 60, z.y + z.h - 24, 32, 48);
+                    drawSprite('old-boot', z.x + z.w - 60, z.y + z.h - 16, 32, 32);
+                } else {
+                    const coralCount = Math.floor(z.w / 120) + 1;
+                    for (let ci = 0; ci < coralCount; ci++) {
+                        const cx = z.x + 30 + ((tankSeed + ci * 97) % (z.w - 60));
+                        const coralType = (ci + Math.floor(tankSeed / 100)) % 2 === 0 ? 'coral-1' : 'coral-2';
+                        drawSprite(coralType, cx, z.y + z.h - 16, 28, 28);
+                    }
+                    const seaweedCount = Math.floor(z.w / 150) + 1;
+                    for (let si = 0; si < seaweedCount; si++) {
+                        const sx = z.x + 50 + ((tankSeed + si * 131 + 50) % (z.w - 100));
+                        drawSprite('seaweed', sx, z.y + z.h - 24, 24, 40);
+                    }
+                    // Treasure chest in some tanks
+                    if ((tankSeed % 3) === 0) {
+                        const tcx = z.x + z.w * 0.7;
+                        drawSprite('treasure-chest', tcx, z.y + z.h - 16, 28, 28);
+                    }
+                }
+
+                // BIKINI BOTTOM THEME — draw landmarks
+                if (z.theme === 'bikini-bottom') {
+                    const bx = z.x, by = z.y, bw = z.w, bh = z.h;
+
+                    // Sandy floor
+                    ctx.save();
+                    const sandGrad = ctx.createLinearGradient(bx, by + bh - 40, bx, by + bh);
+                    sandGrad.addColorStop(0, 'transparent');
+                    sandGrad.addColorStop(1, '#c2956630');
+                    ctx.fillStyle = sandGrad;
+                    ctx.fillRect(bx, by + bh - 40, bw, 40);
+                    ctx.restore();
+
+                    // Sand bumps
+                    ctx.save();
+                    ctx.globalAlpha = 0.12;
+                    ctx.fillStyle = '#c29566';
+                    for (let sx = bx + 10; sx < bx + bw; sx += 35) {
+                        const sh = 2 + Math.sin(sx * 0.15) * 2;
+                        ctx.beginPath();
+                        ctx.ellipse(sx, by + bh - 5, 12, sh, 0, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    ctx.restore();
+
+                    // 🍍 SpongeBob's Pineapple House
+                    const pineX = bx + bw * 0.25, pineY = by + bh - 55;
+                    drawSprite('pineapple-house', pineX, pineY, 48, 64);
+                    // Label
+                    ctx.font = '600 6px Inter, sans-serif';
+                    ctx.fillStyle = '#f4d03f80';
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+                    ctx.fillText('SpongeBob\'s', pineX, pineY + 36);
+
+                    // 🗿 Squidward's Tiki Head
+                    const squidX = bx + bw * 0.5, squidY = by + bh - 50;
+                    drawSprite('tiki-head', squidX, squidY, 48, 64);
+                    ctx.font = '600 6px Inter, sans-serif';
+                    ctx.fillStyle = '#8b8b8b80';
+                    ctx.textBaseline = 'top';
+                    ctx.fillText('Squidward\'s', squidX, squidY + 36);
+
+                    // 🪨 Patrick's Rock
+                    const patX = bx + bw * 0.75, patY = by + bh - 30;
+                    drawSprite('patrick-rock', patX, patY, 48, 32);
+                    ctx.font = '600 6px Inter, sans-serif';
+                    ctx.fillStyle = '#d4887780';
+                    ctx.textBaseline = 'top';
+                    ctx.fillText('Patrick\'s', patX, patY + 20);
+
+                    // 🦀 Krusty Krab sign
+                    const kkX = bx + bw * 0.15, kkY = by + 45;
+                    ctx.save();
+                    ctx.globalAlpha = 0.25;
+                    ctx.fillStyle = '#8b0000';
+                    const kkW = 60, kkH = 16;
+                    ctx.beginPath();
+                    ctx.roundRect(kkX - kkW / 2, kkY - kkH / 2, kkW, kkH, 3);
+                    ctx.fill();
+                    ctx.restore();
+                    ctx.font = '700 7px Inter, sans-serif';
+                    ctx.fillStyle = '#ff635280';
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText('🦀 KRUSTY KRAB', kkX, kkY);
+
+                    // 🪼 Jellyfish Fields marker
+                    const jfX = bx + bw * 0.82, jfY = by + 42;
+                    ctx.font = '700 6px Inter, sans-serif';
+                    ctx.fillStyle = '#dda0dd60';
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText('🪼 Jellyfish Fields', jfX, jfY);
+                    // Draw floating jellyfish sprites
+                    ctx.save();
+                    ctx.globalAlpha = 0.15;
+                    for (let j = 0; j < 3; j++) {
+                        const jx = jfX - 20 + j * 20;
+                        const jy = jfY + 15 + Math.sin(now * 0.001 + j * 2) * 8;
+                        drawSprite('jellyfish', jx, jy, 14, 14);
+                    }
+                    ctx.restore();
+
+                    // Seaweed patches
+                    ctx.save();
+                    ctx.globalAlpha = 0.2;
+                    const seaweedPositions = [0.1, 0.35, 0.6, 0.9];
+                    for (const sp of seaweedPositions) {
+                        const swX = bx + bw * sp;
+                        const swH = 15 + Math.sin(now * 0.002 + sp * 5) * 5;
+                        ctx.fillStyle = '#2e8b57';
+                        ctx.beginPath();
+                        ctx.moveTo(swX - 3, by + bh - 5);
+                        ctx.quadraticCurveTo(swX + Math.sin(now * 0.003 + sp * 3) * 6, by + bh - swH, swX + 1, by + bh - swH - 5);
+                        ctx.quadraticCurveTo(swX + Math.sin(now * 0.003 + sp * 3) * 4, by + bh - swH + 3, swX + 3, by + bh - 5);
+                        ctx.fill();
+                    }
+                    ctx.restore();
+
+                    // Bubbles columns from landmarks
+                    if (Math.random() < 0.02) {
+                        const src = [pineX, squidX, patX][Math.floor(Math.random() * 3)];
+                        bubbles.push({ x: src + (Math.random() - 0.5) * 6, y: by + bh - 60, size: 1.5 + Math.random() * 2, speed: 0.25 + Math.random() * 0.2, alpha: 0.2, wobble: Math.random() * Math.PI * 2 });
+                    }
+                }
+            }
+
+            // Zone divider line
+            ctx.save();
+            ctx.globalAlpha = 0.08;
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([6, 10]);
+            ctx.beginPath(); ctx.moveTo(2940, 0); ctx.lineTo(2940, 1990); ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.restore();
+
+            // Zone headers
+            ctx.font = '900 16px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#2d8a5e50';
+            ctx.fillText('🌿 FRESHWATER', 1600, WORLD.height - 140);
+            ctx.fillStyle = '#0077b650';
+            ctx.fillText('🌊 SALTWATER', 4000, WORLD.height - 140);
+
+            // Exit sign
+            ctx.font = '700 11px Inter, sans-serif';
+            ctx.fillStyle = '#ffaa5580';
+            ctx.textAlign = 'center';
+            ctx.fillText('🚪 EXIT (press E)', 2180, WORLD.height - 30);
+
+            // Bubbles
+            for (const b of bubbles) {
+                const bx = b.x, by = b.y;
+                ctx.save();
+                ctx.globalAlpha = b.alpha;
+                ctx.strokeStyle = '#88ccff';
+                ctx.lineWidth = 0.5;
+                ctx.beginPath(); ctx.arc(bx, by, b.size, 0, Math.PI * 2); ctx.stroke();
+                ctx.globalAlpha = b.alpha * 0.3;
+                ctx.fillStyle = '#aaddff';
+                ctx.beginPath(); ctx.arc(bx - b.size * 0.3, by - b.size * 0.3, b.size * 0.25, 0, Math.PI * 2); ctx.fill();
+                ctx.restore();
+            }
+
+            // Ambient fish
+            for (const f of ambientFish) {
+                const wobbleY = Math.sin(f.phase) * 1.5;
+                ctx.save();
+                ctx.globalAlpha = 0.08;
+                const fg = ctx.createRadialGradient(f.x, f.y + wobbleY, 1, f.x, f.y + wobbleY, f.species.size * 0.6);
+                fg.addColorStop(0, '#88ccff');
+                fg.addColorStop(1, 'transparent');
+                ctx.fillStyle = fg;
+                ctx.beginPath(); ctx.arc(f.x, f.y + wobbleY, f.species.size * 0.6, 0, Math.PI * 2); ctx.fill();
+                ctx.restore();
+                const flipFish = f.facing < 0;
+                drawSprite(f.species.sprite, f.x, f.y + wobbleY, f.species.size, f.species.size, flipFish);
+            }
+
+            // Draw Special NPCs
+            // Draw Special NPCs
+            for (const npc of specialNPCs) {
+                const wobbleY = Math.sin(npc.phase) * (npc.sprite === 'scam-crab' ? 0.5 : 1.5);
+                const flipSprite = npc.facing < 0;
+
+                // Glow
+                ctx.save();
+                ctx.globalAlpha = 0.15;
+                const npg = ctx.createRadialGradient(npc.x, npc.y + wobbleY, 5, npc.x, npc.y + wobbleY, 20);
+                npg.addColorStop(0, npc.color);
+                npg.addColorStop(1, 'transparent');
+                ctx.fillStyle = npg;
+                ctx.beginPath(); ctx.arc(npc.x, npc.y + wobbleY, 20, 0, Math.PI * 2); ctx.fill();
+                ctx.restore();
+
+                drawSprite(npc.sprite, npc.x, npc.y + wobbleY, 32, 32, flipSprite);
+
+                // Nametag
+                ctx.font = '700 9px Inter, sans-serif';
+                ctx.fillStyle = npc.color;
+                ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+                ctx.fillText(npc.name, npc.x, npc.y + wobbleY + 24);
+
+                // Speech bubble 
+                if (npc.thoughtDisplayTime > 0 && npc.lastThought) {
+                    ctx.font = '600 11px Inter, sans-serif';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText(npc.lastThought, npc.x, npc.y + wobbleY - 25);
+                }
+            }
+
+            // PET
+            if (pet.active) {
+                const px = pet.x, py = pet.y + Math.sin(pet.bobPhase) * (pet.inWater ? 3 : 1);
+
+                // Glow
+                ctx.save();
+                ctx.globalAlpha = pet.stayBehind ? 0.15 : 0.2;
+                const pg = ctx.createRadialGradient(px, py, 3, px, py, pet.species.size * 1.2);
+                pg.addColorStop(0, pet.species.color);
+                pg.addColorStop(1, 'transparent');
+                ctx.fillStyle = pg;
+                ctx.beginPath(); ctx.arc(px, py, pet.species.size * 1.2, 0, Math.PI * 2); ctx.fill();
+                ctx.restore();
+
+                // Pet sprite
+                const petSize = pet.species.size * 1.2;
+                const flipPet = pet.facing < 0;
+                drawSprite(pet.species.sprite, px, py, petSize, petSize, flipPet);
+
+                // Name + status
+                ctx.font = '700 8px Inter, sans-serif';
+                ctx.fillStyle = pet.stayBehind ? '#ffaa66' : '#48cae4';
+                ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+                ctx.fillText(pet.species.name, px, py + pet.species.size * 0.6 + 10);
+                if (pet.stayBehind) {
+                    ctx.font = '600 7px Inter, sans-serif';
+                    ctx.fillStyle = '#ffaa6680';
+                    ctx.fillText('swimming freely 🐠', px, py + pet.species.size * 0.6 + 20);
+                }
+
+                // Interact emoji
+                if (pet.interactEmoji) {
+                    ctx.font = '14px sans-serif';
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText(pet.interactEmoji, px + 12, py - 18);
+                }
+
+                // Happiness bar (small)
+                if (!pet.stayBehind) {
+                    const barW = 24, barH = 3;
+                    ctx.fillStyle = '#ffffff10';
+                    ctx.fillRect(px - barW / 2, py + pet.species.size * 0.6 + 22, barW, barH);
+                    ctx.fillStyle = pet.happiness > 60 ? '#5abd8e' : pet.happiness > 30 ? '#ffaa00' : '#ff4444';
+                    ctx.fillRect(px - barW / 2, py + pet.species.size * 0.6 + 22, barW * (pet.happiness / 100), barH);
+                }
+            }
+
+            // TRANSFORM PARTICLES
+            for (const p of transformParticles) {
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.font = `${p.size}px sans-serif`;
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText(p.emoji, p.x, p.y);
+                ctx.restore();
+            }
+
+            // SPLASH PARTICLES
+            for (const p of splashParticles) {
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = '#88ddff';
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+                // Highlight
+                ctx.globalAlpha = p.alpha * 0.4;
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath(); ctx.arc(p.x - p.size * 0.2, p.y - p.size * 0.2, p.size * 0.3, 0, Math.PI * 2); ctx.fill();
+                ctx.restore();
+            }
+
+            // PLAYER
+            if (!player.hasLeft) {
+                const bobAmp = player.isSwimming ? 4 + player.transformProgress * 2 : 1;
+                const ppx = player.x, ppy = player.y + Math.sin(player.bobPhase) * bobAmp;
+                const tp = player.transformProgress; // 0=human, 1=aquatic
+                const form = player.aquaticForm;
+
+                // Aquatic aura (grows as you transform)
+                if (tp > 0.1) {
+                    ctx.save();
+                    ctx.globalAlpha = 0.08 * tp;
+                    const auraR = 20 + tp * 12 + Math.sin(player.bobPhase * 0.4) * 4;
+                    const ag = ctx.createRadialGradient(ppx, ppy, 4, ppx, ppy, auraR);
+                    ag.addColorStop(0, form.color);
+                    ag.addColorStop(0.6, form.color + '40');
+                    ag.addColorStop(1, 'transparent');
+                    ctx.fillStyle = ag;
+                    ctx.beginPath(); ctx.arc(ppx, ppy, auraR, 0, Math.PI * 2); ctx.fill();
+                    ctx.restore();
+
+                    // Swimming ripple rings
+                    ctx.save();
+                    ctx.globalAlpha = 0.04 * tp;
+                    ctx.strokeStyle = form.color;
+                    ctx.lineWidth = 0.8;
+                    const ringR1 = 16 + Math.sin(player.bobPhase * 0.5) * 4;
+                    const ringR2 = 24 + Math.cos(player.bobPhase * 0.3) * 3;
+                    ctx.beginPath(); ctx.arc(ppx, ppy, ringR1, 0, Math.PI * 2); ctx.stroke();
+                    ctx.beginPath(); ctx.arc(ppx, ppy, ringR2, 0, Math.PI * 2); ctx.stroke();
+                    ctx.restore();
+                }
+
+                // Player glow (color transitions with form)
+                ctx.save();
+                const glowColor = tp > 0.5 ? form.color : '#ffffff';
+                ctx.globalAlpha = 0.12 + tp * 0.06;
+                const plg = ctx.createRadialGradient(ppx, ppy, 4, ppx, ppy, 22);
+                plg.addColorStop(0, glowColor);
+                plg.addColorStop(1, 'transparent');
+                ctx.fillStyle = plg;
+                ctx.beginPath(); ctx.arc(ppx, ppy, 22, 0, Math.PI * 2); ctx.fill();
+                ctx.restore();
+
+                // Player sprite — smooth transition between human and aquatic form
+                // During transformation, show both overlapping
+                if (tp > 0.05 && tp < 0.95) {
+                    // Human fading out
+                    ctx.save();
+                    ctx.globalAlpha = 1 - tp;
+                    const humanSize = 28 * (1 - tp * 0.3);
+                    drawSprite('player-human', ppx, ppy, humanSize, humanSize, player.facing < 0);
+                    ctx.restore();
+                    // Aquatic form fading in
+                    ctx.save();
+                    ctx.globalAlpha = tp;
+                    const formSize = 24 + tp * 10;
+                    drawSprite(form.sprite, ppx, ppy, formSize, formSize, player.facing < 0);
+                    ctx.restore();
+                } else {
+                    const isAquatic = tp >= 0.95;
+                    const displaySprite = isAquatic ? form.sprite : 'player-human';
+                    const displaySize = isAquatic ? 32 : 28;
+                    drawSprite(displaySprite, ppx, ppy, displaySize, displaySize, player.facing < 0);
+                }
+
+                // Player label
+                ctx.font = '700 9px Inter, sans-serif';
+                ctx.fillStyle = tp > 0.5 ? form.color : '#8babc4';
+                ctx.textBaseline = 'alphabetic';
+                ctx.textAlign = 'center';
+                const label = tp > 0.5 ? form.name : 'You';
+                ctx.fillText(label, ppx, ppy + 24);
+
+                // Tiny sparkles when fully transformed and moving
+                if (tp > 0.9 && Math.random() < 0.03 && (Math.abs(player.vx) > 0.3 || Math.abs(player.vy) > 0.3)) {
+                    transformParticles.push({
+                        x: ppx + (Math.random() - 0.5) * 16,
+                        y: ppy + (Math.random() - 0.5) * 16,
+                        vx: (Math.random() - 0.5) * 0.5,
+                        vy: (Math.random() - 0.5) * 0.5,
+                        size: 4 + Math.random() * 3,
+                        alpha: 0.5,
+                        color: form.color,
+                        emoji: '✨',
+                        life: 0.5,
+                    });
+                }
+            }
+
+            ctx.restore(); // end camera transform
+
+            // HUD updates
+            const zone = isInWater(player.x, player.y);
+            const zoneLabel = document.getElementById('zoneLabel');
+            if (player.hasLeft) {
+                zoneLabel.className = 'zone-label walkway';
+                zoneLabel.textContent = '🚪 Left Aquarium';
+            } else if (zone) {
+                zoneLabel.className = `zone-label ${zone.type === 'freshwater' ? 'fw' : 'sw'}`;
+                zoneLabel.textContent = zone.label;
+            } else {
+                zoneLabel.className = 'zone-label walkway';
+                zoneLabel.textContent = '🏛️ Walkway';
+            }
+
+            const statusEl = document.getElementById('playerStatus');
+            if (player.hasLeft && pet.active) {
+                statusEl.innerHTML = `<span class="status-pill left">🚪 You left — ${pet.species.name} is swimming freely!</span>`;
+            } else if (player.transforming) {
+                statusEl.innerHTML = `<span class="status-pill transforming">✨ Transforming into ${player.aquaticForm.name}...</span>`;
+            } else if (player.isSwimming) {
+                statusEl.innerHTML = `<span class="status-pill swimming"><img src="${SPRITE_BASE}${player.aquaticForm.sprite}.png" style="width:14px;height:14px;vertical-align:middle;image-rendering:pixelated;"> Swimming as ${player.aquaticForm.name}!</span>`;
+            } else {
+                statusEl.innerHTML = '';
+            }
+
+            const petText = document.getElementById('petStatusText');
+            if (!pet.active) {
+                petText.textContent = '🐠 Choose an aquatic pet above';
+            } else if (pet.stayBehind) {
+                petText.innerHTML = `<img src="${SPRITE_BASE}${pet.species.sprite}.png" style="width:14px;height:14px;vertical-align:middle;image-rendering:pixelated;"> <b>${pet.species.name}</b> is living happily in the ${pet.lastZone?.label || 'tank'} · ❤️ ${Math.round(pet.happiness)}%`;
+            } else if (pet.inWater) {
+                petText.innerHTML = `<img src="${SPRITE_BASE}${pet.species.sprite}.png" style="width:14px;height:14px;vertical-align:middle;image-rendering:pixelated;"> <b>${pet.species.name}</b> is swimming with you! · ❤️ ${Math.round(pet.happiness)}%`;
+            } else {
+                petText.innerHTML = `<img src="${SPRITE_BASE}${pet.species.sprite}.png" style="width:14px;height:14px;vertical-align:middle;image-rendering:pixelated;"> <b>${pet.species.name}</b> is following you · ❤️ ${Math.round(pet.happiness)}%`;
+            }
+        }
+
+        // =====================================================================
+        // FORM PICKER UI
+        // =====================================================================
+        const formPickerEl = document.getElementById('formPicker');
+        AQUATIC_FORMS.forEach((f, idx) => {
+            const btn = document.createElement('div');
+            btn.className = 'form-option' + (idx === 0 ? ' selected' : '');
+            btn.dataset.id = f.id;
+            btn.innerHTML = `<img src="${SPRITE_BASE}${f.sprite}.png" style="width:16px;height:16px;vertical-align:middle;image-rendering:pixelated;"> ${f.name}`;
+            btn.title = f.desc;
+            btn.onclick = () => {
+                player.aquaticForm = f;
+                document.querySelectorAll('.form-option').forEach(el => {
+                    el.classList.toggle('selected', el.dataset.id === f.id);
+                });
+                // Trigger re-transform if already in water
+                if (player.isSwimming) {
+                    player.transformProgress = 0.3;
+                    player.transforming = true;
+                    spawnTransformBurst(player.x, player.y, f.color);
+                }
+            };
+            formPickerEl.appendChild(btn);
+        });
+
+        // =====================================================================
+        // PET PICKER UI
+        // =====================================================================
+        const pickerEl = document.getElementById('petPicker');
+        for (const p of AQUATIC_PETS) {
+            const btn = document.createElement('div');
+            btn.className = 'pet-option';
+            btn.dataset.id = p.id;
+            btn.innerHTML = `<img src="${SPRITE_BASE}${p.sprite}.png" style="width:16px;height:16px;vertical-align:middle;image-rendering:pixelated;"> ${p.name}`;
+            btn.style.borderColor = p.type === 'freshwater' ? 'rgba(90,189,142,0.2)' : 'rgba(72,202,228,0.2)';
+            btn.onclick = () => selectPet(p.id);
+            pickerEl.appendChild(btn);
+        }
+
+        // =====================================================================
+        // GAME LOOP
+        // =====================================================================
+        spawnAmbient();
+        let lastTime = performance.now();
+
+        function loop() {
+            const now = performance.now();
+            const dt = Math.min((now - lastTime) / 16.67, 3);
+            lastTime = now;
+
+            updatePlayer(dt);
+            updatePet(dt);
+            updateParticles(dt);
+            updateAmbientFish(dt);
+            updateBubbles(dt);
+            updateCamera();
+            draw();
+            requestAnimationFrame(loop);
+        }
+        loop();
+    </script>
+</body>
+
+</html>
