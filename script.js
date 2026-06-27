@@ -265,15 +265,13 @@
 
   const demoModal = document.getElementById('demo-modal');
   const demoIframe = document.getElementById('demo-iframe');
-  const openBtn = document.getElementById('open-bio-demo');
+  const demoTitle = document.getElementById('demo-modal-title');
   const closeBtn = document.getElementById('close-demo');
 
-  function openDemo() {
+  function openDemo(demoUrl, title) {
     if (!demoModal || !demoIframe) return;
-    // Lazy-load the iframe — only set src on first open
-    if (!demoIframe.src || demoIframe.src === window.location.href) {
-      demoIframe.src = 'demos/bioluminescence-demo.html';
-    }
+    demoIframe.src = demoUrl;
+    if (demoTitle && title) demoTitle.childNodes[0].textContent = title + ' ';
     demoModal.classList.add('active');
     demoModal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -288,7 +286,13 @@
     demoIframe.src = '';
   }
 
-  if (openBtn) openBtn.addEventListener('click', openDemo);
+  // Attach click handler to all demo buttons
+  document.querySelectorAll('.btn-demo[data-demo]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      openDemo(btn.dataset.demo, btn.dataset.title || 'Demo');
+    });
+  });
+
   if (closeBtn) closeBtn.addEventListener('click', closeDemo);
 
   // Close on Escape key

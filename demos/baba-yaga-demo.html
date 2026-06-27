@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏚️ Baba Yaga's Hut — Pet Distribution</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Cinzel:wght@700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0d0a12;
+            color: #c4b5d0;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        /* HUD overlay */
+        .hud {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 10;
+            background: rgba(13, 10, 18, 0.92);
+            border: 1px solid rgba(106, 13, 173, 0.2);
+            border-radius: 14px;
+            padding: 14px 18px;
+            max-width: 360px;
+            backdrop-filter: blur(12px);
+        }
+
+        .hud h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            color: #d4a0ff;
+            margin-bottom: 4px;
+        }
+
+        .hud p {
+            font-size: 11px;
+            line-height: 1.5;
+            color: #9a85ad;
+            margin-bottom: 6px;
+        }
+
+        .hud p strong {
+            color: #d4a0ff;
+        }
+
+        /* Zone pill */
+        .zone-pill {
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            z-index: 10;
+            background: rgba(13, 10, 18, 0.88);
+            border: 1px solid rgba(106, 13, 173, 0.25);
+            border-radius: 20px;
+            padding: 6px 16px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #d4a0ff;
+        }
+
+        /* Dialogue box */
+        .dialogue-box {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            background: rgba(13, 10, 18, 0.95);
+            border: 1px solid rgba(106, 13, 173, 0.4);
+            border-radius: 16px;
+            padding: 18px 24px;
+            max-width: 600px;
+            min-width: 400px;
+            backdrop-filter: blur(16px);
+            display: none;
+        }
+
+        .dialogue-box.active {
+            display: block;
+            animation: fadeUp 0.3s ease;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .dialogue-speaker {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            color: #ff6b9d;
+            margin-bottom: 6px;
+        }
+
+        .dialogue-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #d4c5e0;
+            margin-bottom: 12px;
+            min-height: 40px;
+        }
+
+        .dialogue-choices {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .dialogue-choice {
+            background: rgba(106, 13, 173, 0.12);
+            border: 1px solid rgba(106, 13, 173, 0.25);
+            border-radius: 10px;
+            padding: 8px 14px;
+            font-size: 12px;
+            color: #c4b5d0;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .dialogue-choice:hover {
+            background: rgba(106, 13, 173, 0.3);
+            border-color: #d4a0ff;
+            color: #fff;
+        }
+
+        /* Upload area */
+        .upload-area {
+            border: 2px dashed rgba(106, 13, 173, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 8px 0;
+            display: none;
+        }
+
+        .upload-area.active {
+            display: block;
+        }
+
+        .upload-area:hover {
+            border-color: #d4a0ff;
+            background: rgba(106, 13, 173, 0.08);
+        }
+
+        .upload-area .icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .upload-area .label {
+            font-size: 11px;
+            color: #9a85ad;
+        }
+
+        .upload-area.has-file {
+            border-color: #2ecc71;
+            background: rgba(46, 204, 113, 0.08);
+        }
+
+        .upload-area.has-file .label {
+            color: #2ecc71;
+        }
+
+        /* Pet picker grid */
+        .pet-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin: 8px 0;
+            display: none;
+        }
+
+        .pet-grid.active {
+            display: grid;
+        }
+
+        .pet-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 10px 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .pet-card:hover {
+            background: rgba(106, 13, 173, 0.15);
+            border-color: rgba(106, 13, 173, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .pet-card.selected {
+            background: rgba(106, 13, 173, 0.25);
+            border-color: #d4a0ff;
+            box-shadow: 0 0 12px rgba(212, 160, 255, 0.15);
+        }
+
+        .pet-card .emoji {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .pet-card .emoji img {
+            width: 48px;
+            height: 48px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .tama-pet img.tama-sprite {
+            width: 32px;
+            height: 32px;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+
+        .pet-card .name {
+            font-size: 9px;
+            font-weight: 700;
+            color: #c4b5d0;
+        }
+
+        /* Tamagotchi panel */
+        .tama-panel {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+            background: rgba(13, 10, 18, 0.92);
+            border: 1px solid rgba(106, 13, 173, 0.2);
+            border-radius: 14px;
+            padding: 10px 20px;
+            display: none;
+            align-items: center;
+            gap: 16px;
+            backdrop-filter: blur(12px);
+        }
+
+        .tama-panel.active {
+            display: flex;
+        }
+
+        .tama-pet {
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tama-pet .pet-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #d4a0ff;
+        }
+
+        .tama-stats {
+            display: flex;
+            gap: 12px;
+        }
+
+        .tama-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            color: #9a85ad;
+        }
+
+        .tama-stat .bar {
+            width: 60px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .tama-stat .bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease, background 0.5s ease;
+        }
+
+        .tama-stat .bar-fill.hunger {
+            background: #e07a2f;
+        }
+
+        .tama-stat .bar-fill.happiness {
+            background: #f1c40f;
+        }
+
+        .tama-stat .bar-fill.health {
+            background: #2ecc71;
+        }
+
+        .tama-stat .bar-fill.low {
+            background: #e74c3c;
+        }
+
+        .tama-warning {
+            font-size: 10px;
+            color: #e74c3c;
+            font-weight: 700;
+            animation: pulse 1s infinite;
+            display: none;
+        }
+
+        .tama-warning.active {
+            display: block;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Status pill */
+        .status-pill {
+            position: fixed;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 14;
+            background: rgba(13, 10, 18, 0.88);
+            border: 1px solid rgba(106, 13, 173, 0.25);
+            border-radius: 20px;
+            padding: 8px 18px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #d4a0ff;
+            display: none;
+        }
+
+        .status-pill.active {
+            display: block;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 12px;
+            left: 12px;
+            z-index: 10;
+            font-size: 10px;
+            color: #4a3a5a;
+        }
+
+        .controls kbd {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            padding: 1px 5px;
+            font-family: inherit;
+            font-size: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+
+    <div class="hud" id="hud">
+        <h1>🏚️ Baba Yaga's Hut</h1>
+        <p>Enter the hut of the ancient witch. Bring a <strong>gift of knowledge</strong> and she may grant you a
+            <strong>magical pet companion</strong>.
+        </p>
+        <p style="font-size:10px; color:#6a4a7a;">Approach 🧙‍♀️ Baba Yaga and press <kbd>E</kbd> to speak.</p>
+    </div>
+
+    <div class="zone-pill" id="zonePill">🏚️ Hut Interior</div>
+
+    <div class="dialogue-box" id="dialogueBox">
+        <div class="dialogue-speaker" id="dialogueSpeaker">🧙‍♀️ Baba Yaga</div>
+        <div class="dialogue-text" id="dialogueText"></div>
+        <div class="upload-area" id="uploadArea">
+            <div class="icon">📜</div>
+            <div class="label">Click to upload a research paper, notes, or resource</div>
+            <input type="file" id="fileInput" style="display:none" accept=".pdf,.doc,.docx,.txt,.md,.png,.jpg,.jpeg">
+        </div>
+        <div class="pet-grid" id="petGrid"></div>
+        <div class="dialogue-choices" id="dialogueChoices"></div>
+    </div>
+
+    <div class="tama-panel" id="tamaPanel">
+        <div class="tama-pet">
+            <span id="tamaPetEmoji"></span>
+            <span class="pet-name" id="tamaPetName"></span>
+        </div>
+        <div class="tama-stats">
+            <div class="tama-stat">🍖<div class="bar">
+                    <div class="bar-fill hunger" id="hungerBar"></div>
+                </div><span id="hungerVal"></span></div>
+            <div class="tama-stat">💛<div class="bar">
+                    <div class="bar-fill happiness" id="happyBar"></div>
+                </div><span id="happyVal"></span></div>
+            <div class="tama-stat">💚<div class="bar">
+                    <div class="bar-fill health" id="healthBar"></div>
+                </div><span id="healthVal"></span></div>
+        </div>
+        <div class="tama-warning" id="tamaWarning">⚠️ Feed your pet!</div>
+    </div>
+
+    <div class="status-pill" id="statusPill"></div>
+    <div class="controls"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move · <kbd>E</kbd> interact · <kbd>ESC</kbd>
+        close</div>
+
+    <script>
+        // =====================================================================
+        // BABA YAGA PET DISTRIBUTION DEMO
+        // =====================================================================
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false; // crisp pixel art
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            ctx.imageSmoothingEnabled = false;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // =====================================================================
+        // SPRITE PRELOADER
+        // =====================================================================
+        const SPRITE_BASE = 'assets/baba-yaga/';
+        const SPRITE_NAMES = [
+            'baba-yaga', 'cauldron', 'crystal-ball', 'candle', 'potion-shelf',
+            'herb-rack', 'skull', 'door', 'bone-fence', 'chicken-leg', 'player',
+            'pet-fox', 'pet-black-cat', 'pet-owl', 'pet-toad',
+            'pet-bat', 'pet-wolf', 'pet-dragon', 'pet-hedgehog'
+        ];
+        const sprites = {};
+        let spritesLoaded = 0;
+        const totalSprites = SPRITE_NAMES.length;
+
+        function loadSprites() {
+            for (const name of SPRITE_NAMES) {
+                const img = new Image();
+                img.onload = () => { spritesLoaded++; };
+                img.onerror = () => { console.warn('Failed to load sprite:', name); spritesLoaded++; };
+                img.src = SPRITE_BASE + name + '.png';
+                sprites[name] = img;
+            }
+        }
+        loadSprites();
+
+        // Helper to draw a sprite centered at (x, y) with optional scale
+        function drawSprite(name, x, y, w, h, flipX) {
+            const img = sprites[name];
+            if (!img || !img.complete || !img.naturalWidth) return;
+            ctx.save();
+            ctx.translate(x, y);
+            if (flipX) ctx.scale(-1, 1);
+            ctx.drawImage(img, -w / 2, -h / 2, w, h);
+            ctx.restore();
+        }
+
+        // =====================================================================
+        // PET DEFINITIONS
+        // =====================================================================
+        const PETS = [
+            { id: 'fox', emoji: '🦊', sprite: 'pet-fox', name: 'Fox Spirit', personality: 'Cunning & loyal', color: '#e07a2f', size: 32 },
+            { id: 'black-cat', emoji: '🐈‍⬛', sprite: 'pet-black-cat', name: 'Black Cat', personality: 'Mysterious & wise', color: '#6a0dad', size: 32 },
+            { id: 'owl', emoji: '🦉', sprite: 'pet-owl', name: 'Owl', personality: 'Watchful & patient', color: '#c2956a', size: 32 },
+            { id: 'toad', emoji: '🐸', sprite: 'pet-toad', name: 'Forest Toad', personality: 'Jolly & magical', color: '#2ecc71', size: 32 },
+            { id: 'bat', emoji: '🦇', sprite: 'pet-bat', name: 'Bat', personality: 'Playful & nocturnal', color: '#5a3a7a', size: 32 },
+            { id: 'wolf', emoji: '🐺', sprite: 'pet-wolf', name: 'Wolf Pup', personality: 'Brave & protective', color: '#7f8c8d', size: 32 },
+            { id: 'dragon', emoji: '🐉', sprite: 'pet-dragon', name: 'Baby Dragon', personality: 'Fierce & cuddly', color: '#e74c3c', size: 36 },
+            { id: 'hedgehog', emoji: '🦔', sprite: 'pet-hedgehog', name: 'Hedgehog', personality: 'Shy & gentle', color: '#c29566', size: 28 },
+        ];
+
+        // =====================================================================
+        // WORLD LAYOUT
+        // =====================================================================
+        const WORLD = { width: 800, height: 600 };
+
+        // Hut interior zones
+        const ZONES = {
+            cauldron: { x: 300, y: 140, w: 200, h: 120, label: '🪣 Cauldron' },
+            potions: { x: 30, y: 30, w: 160, h: 80, label: '🧪 Potions' },
+            herbs: { x: 600, y: 30, w: 160, h: 80, label: '🌿 Herbs' },
+            crystal: { x: 250, y: 340, w: 100, h: 80, label: '🔮 Crystal Ball' },
+            throne: { x: 350, y: 50, w: 100, h: 80, label: '🧙‍♀️ Baba Yaga' },
+        };
+
+        // Baba Yaga NPC
+        const baba = {
+            x: 400, y: 100,
+            emoji: '🧙‍♀️',
+            size: 36,
+            bobPhase: 0,
+            interactRange: 80,
+        };
+
+        // Player
+        const player = {
+            x: 400, y: 480,
+            vx: 0, vy: 0,
+            speed: 2.5,
+            facing: 1,
+            bobPhase: 0,
+            hasPet: false,
+            pet: null,
+        };
+
+        // Pet companion (follows player)
+        const companion = {
+            active: false,
+            x: 0, y: 0,
+            species: null,
+            facing: 1,
+            bobPhase: Math.PI,
+            hunger: 100,
+            happiness: 100,
+            health: 100,
+            lastDecay: Date.now(),
+            name: '',
+        };
+
+        // Particles
+        const particles = [];
+        const fogParticles = [];
+        const candleFlickers = [];
+
+        // Candle positions
+        const CANDLES = [
+            { x: 80, y: 180 }, { x: 720, y: 180 }, { x: 200, y: 380 },
+            { x: 600, y: 380 }, { x: 400, y: 280 }, { x: 150, y: 80 },
+            { x: 650, y: 80 }, { x: 400, y: 500 },
+        ];
+
+        // Fog
+        for (let i = 0; i < 20; i++) {
+            fogParticles.push({
+                x: Math.random() * WORLD.width,
+                y: Math.random() * WORLD.height,
+                size: 30 + Math.random() * 50,
+                speed: 0.15 + Math.random() * 0.2,
+                alpha: 0.03 + Math.random() * 0.04,
+                offset: Math.random() * Math.PI * 2,
+            });
+        }
+
+        // Decoration items (kept as emoji fallback for particles)
+        const SHELF_ITEMS = ['🧪', '⚗️', '🫧', '🍄', '🕯️', '📜', '💀', '🪶'];
+        const HERB_ITEMS = ['🌿', '🍃', '🌱', '🪻', '🌸', '🍂'];
+
+        // =====================================================================
+        // DIALOGUE SYSTEM
+        // =====================================================================
+        let dialogueState = 'idle'; // idle, greeting, askGift, uploading, uploaded, petSelect, petCeremony, warning, hasPet, taskOffer, taskActive
+        let dialogueActive = false;
+        let uploadedFile = null;
+        let selectedPet = null;
+        let ceremonyPhase = 0;
+        let ceremonyTimer = 0;
+        let taskCooldown = 0;
+        let petReclaimed = false;
+
+        const DIALOGUE = {
+            greeting: {
+                speaker: '🧙‍♀️ Baba Yaga',
+                text: 'Hmm... Another little student wanders into my hut. Do you know where you are, child? This is the home of Baba Yaga! I am the keeper of magical creatures...',
+                choices: [
+                    { text: '🙏 I seek a pet companion, Baba Yaga.', next: 'askGift' },
+                    { text: '😰 Sorry, I wandered in by accident...', next: 'dismiss' },
+                ]
+            },
+            dismiss: {
+                speaker: '🧙‍♀️ Baba Yaga',
+                text: 'Ha! There are no accidents in my forest. Come back when you are ready to learn... and to give.',
+                choices: [{ text: '👋 Goodbye...', next: 'close' }]
+            },
+            askGift: {
+                speaker: '🧙‍♀️ Baba Yaga',
+                text: 'A companion, you say? I do not give gifts freely! I demand a gift of KNOWLEDGE in return. Bring me something you have learned — a paper, some notes, a resource. Show me you are worthy!',
+                choices: [{ text: '📜 I have something to share...', next: 'uploading' }]
+            },
+            uploading: {
+                speaker: '🧙‍♀️ Baba Yaga',
+                text: 'Place your offering below. I shall examine it...',
+                showUpload: true,
+                choices: []
+            },
+            uploaded: {
+                speaker: '🧙‍♀️ Baba Yaga',
+                text: '', // dynamically set
+                choices: [{ text: '🐾 Show me the creatures!', next: 'petSelect' }]
+            },
+            petSelect: {
+                speaker: '🧙‍♀️ Baba Yaga',
+                text: 'Choose wisely, child. Each creature has its own spirit. Once bonded, you must care for it — or I shall take it back!',
+                showPets: true,
+                choices: []
+            },
+            warning: {
+                speaker: '🧙‍♀️ Baba Yaga',
+                text: '', // dynamically set
+                choices: [{ text: '🤝 I promise to take good care!', next: 'close' }]
+            },
+            hasPet: {
+                speaker: '🧙‍♀️ Baba Yaga',
+                text: '', // dynamically set
+                choices: [
+                    { text: '🍖 I need food for my pet!', next: 'taskOffer' },
+                    { text: '👋 Just visiting, Baba Yaga.', next: 'close' },
+                ]
+            },
+            taskOffer: {
+                speaker: '🧙‍♀️ Baba Yaga',
+                text: 'Food is not free, child! Tell me... upload something new you have learned, and I shall give you premium pet food!',
+                showUpload: true,
+                choices: []
+            },
+            taskComplete: {
+                speaker: '🧙‍♀️ Baba Yaga',
+                text: 'Excellent! Here is food for your little one. Now go — and do not let it go hungry again!',
+                choices: [{ text: '🙏 Thank you, Baba Yaga!', next: 'close' }]
+            },
+            reclaim: {
+                speaker: '🧙‍♀️ Baba Yaga',
+                text: 'You have NEGLECTED your pet, child! I warned you! The creature returns to ME now. Perhaps next time you will listen...',
+                choices: [{ text: '😢 I understand...', next: 'close' }]
+            }
+        };
+
+        function showDialogue(stateKey) {
+            const d = DIALOGUE[stateKey];
+            if (!d) return;
+            dialogueState = stateKey;
+            dialogueActive = true;
+
+            document.getElementById('dialogueSpeaker').textContent = d.speaker;
+            document.getElementById('dialogueText').textContent = d.text;
+            document.getElementById('dialogueBox').classList.add('active');
+
+            // Upload area
+            const uploadEl = document.getElementById('uploadArea');
+            uploadEl.classList.toggle('active', !!d.showUpload);
+            uploadEl.classList.remove('has-file');
+            uploadEl.querySelector('.label').textContent = 'Click to upload a research paper, notes, or resource';
+
+            // Pet grid
+            const petGridEl = document.getElementById('petGrid');
+            if (d.showPets) {
+                petGridEl.classList.add('active');
+                petGridEl.innerHTML = PETS.map(p => `
+            <div class="pet-card" data-pet="${p.id}" onclick="selectPet('${p.id}')">
+                <span class="emoji"><img src="${SPRITE_BASE}${p.sprite}.png" alt="${p.name}"></span>
+                <span class="name">${p.name}</span>
+            </div>
+        `).join('');
+            } else {
+                petGridEl.classList.remove('active');
+            }
+
+            // Choices
+            const choicesEl = document.getElementById('dialogueChoices');
+            choicesEl.innerHTML = d.choices.map(c => `
+        <div class="dialogue-choice" onclick="handleChoice('${c.next}')">${c.text}</div>
+    `).join('');
+        }
+
+        function handleChoice(next) {
+            if (next === 'close') {
+                closeDialogue();
+                return;
+            }
+            if (next === 'taskOffer' && companion.active) {
+                showDialogue('taskOffer');
+                return;
+            }
+            showDialogue(next);
+        }
+
+        function closeDialogue() {
+            dialogueActive = false;
+            dialogueState = 'idle';
+            document.getElementById('dialogueBox').classList.remove('active');
+        }
+
+        // File upload handling
+        document.getElementById('uploadArea').addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
+
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            uploadedFile = { name: file.name, type: file.type, size: file.size };
+
+            const uploadEl = document.getElementById('uploadArea');
+            uploadEl.classList.add('has-file');
+            uploadEl.querySelector('.label').textContent = `✅ ${file.name}`;
+
+            // Spawn sparkles
+            spawnParticles(400, 300, 12, ['📜', '✨', '⭐', '💫']);
+
+            setTimeout(() => {
+                if (dialogueState === 'uploading') {
+                    // First time — gift of knowledge
+                    const d = DIALOGUE.uploaded;
+                    d.text = `Hmm... "${file.name}"... *peers at it through spectacles* ...Yes! This pleases Baba Yaga. Your knowledge is worthy. Now then — choose your companion!`;
+                    showDialogue('uploaded');
+                } else if (dialogueState === 'taskOffer') {
+                    // Food task — feed pet
+                    companion.hunger = Math.min(100, companion.hunger + 35);
+                    companion.happiness = Math.min(100, companion.happiness + 20);
+                    companion.health = Math.min(100, companion.health + 15);
+                    taskCooldown = Date.now() + 30000; // 30s cooldown in demo
+                    showDialogue('taskComplete');
+                    spawnParticles(companion.x, companion.y, 10, ['🍖', '✨', '❤️', '💛']);
+                }
+            }, 1000);
+        });
+
+        // Pet selection
+        function selectPet(petId) {
+            selectedPet = PETS.find(p => p.id === petId);
+            if (!selectedPet) return;
+
+            // Highlight
+            document.querySelectorAll('.pet-card').forEach(c => c.classList.remove('selected'));
+            document.querySelector(`[data-pet="${petId}"]`).classList.add('selected');
+
+            // Show confirm
+            const choicesEl = document.getElementById('dialogueChoices');
+            choicesEl.innerHTML = `
+        <div class="dialogue-choice" onclick="adoptPet()">✨ I choose ${selectedPet.emoji} ${selectedPet.name}!</div>
+        <div class="dialogue-choice" onclick="showDialogue('petSelect')">🔄 Let me look again...</div>
+    `;
+        }
+
+        function adoptPet() {
+            if (!selectedPet) return;
+
+            // Activate companion
+            companion.active = true;
+            companion.species = selectedPet;
+            companion.name = selectedPet.name;
+            companion.x = player.x + 30;
+            companion.y = player.y;
+            companion.hunger = 100;
+            companion.happiness = 100;
+            companion.health = 100;
+            companion.lastDecay = Date.now();
+            player.hasPet = true;
+
+            // Ceremony particles
+            spawnParticles(baba.x, baba.y, 20, ['✨', '⭐', '💫', '🌟', selectedPet.emoji]);
+            spawnParticles(400, 250, 16, ['🔮', '✨', '💜', '🪄']);
+
+            // Warning dialogue
+            const d = DIALOGUE.warning;
+            d.text = `The ${selectedPet.emoji} ${selectedPet.name} is now bonded to you. Take GOOD CARE of it, child! Feed it, keep it happy — or I WILL take it back. Baba Yaga always knows...`;
+            showDialogue('warning');
+
+            // Show tamagotchi panel
+            updateTamaPanel();
+            document.getElementById('tamaPanel').classList.add('active');
+        }
+
+        // =====================================================================
+        // TAMAGOTCHI SYSTEM
+        // =====================================================================
+        const DECAY_RATE = 2; // points per 5 seconds (demo speed)
+        const DECAY_INTERVAL = 5000; // 5 seconds
+
+        function updatePetStats() {
+            if (!companion.active) return;
+
+            const now = Date.now();
+            if (now - companion.lastDecay >= DECAY_INTERVAL) {
+                companion.hunger = Math.max(0, companion.hunger - DECAY_RATE);
+                companion.happiness = Math.max(0, companion.happiness - (DECAY_RATE * 0.7));
+                // Health decays only when very hungry
+                if (companion.hunger < 20) {
+                    companion.health = Math.max(0, companion.health - DECAY_RATE);
+                }
+                companion.lastDecay = now;
+
+                // Check critical
+                if (companion.hunger <= 0 && companion.health <= 0 && !petReclaimed) {
+                    reclaimPet();
+                }
+            }
+            updateTamaPanel();
+        }
+
+        function updateTamaPanel() {
+            if (!companion.active) return;
+
+            document.getElementById('tamaPetEmoji').innerHTML = `<img class="tama-sprite" src="${SPRITE_BASE}${companion.species.sprite}.png" alt="${companion.name}">`;
+            document.getElementById('tamaPetName').textContent = companion.name;
+
+            const setBar = (id, val, cls) => {
+                const bar = document.getElementById(id);
+                bar.style.width = val + '%';
+                bar.classList.toggle('low', val < 25);
+            };
+            setBar('hungerBar', companion.hunger, 'hunger');
+            setBar('happyBar', companion.happiness, 'happiness');
+            setBar('healthBar', companion.health, 'health');
+
+            document.getElementById('hungerVal').textContent = Math.round(companion.hunger) + '%';
+            document.getElementById('happyVal').textContent = Math.round(companion.happiness) + '%';
+            document.getElementById('healthVal').textContent = Math.round(companion.health) + '%';
+
+            const warning = document.getElementById('tamaWarning');
+            if (companion.hunger < 25 || companion.health < 25) {
+                warning.classList.add('active');
+                warning.textContent = companion.hunger < 15 ? '⚠️ PET IS STARVING!' : '⚠️ Feed your pet!';
+            } else {
+                warning.classList.remove('active');
+            }
+        }
+
+        function reclaimPet() {
+            petReclaimed = true;
+            spawnParticles(companion.x, companion.y, 20, ['💨', '😿', '💔', '🧙‍♀️']);
+
+            setTimeout(() => {
+                companion.active = false;
+                player.hasPet = false;
+                document.getElementById('tamaPanel').classList.remove('active');
+                showDialogue('reclaim');
+                petReclaimed = false;
+                selectedPet = null;
+                uploadedFile = null;
+            }, 1500);
+        }
+
+        // =====================================================================
+        // PARTICLES
+        // =====================================================================
+        function spawnParticles(cx, cy, count, emojis) {
+            for (let i = 0; i < count; i++) {
+                const angle = (Math.PI * 2 / count) * i + Math.random() * 0.5;
+                const speed = 1.5 + Math.random() * 2;
+                particles.push({
+                    x: cx, y: cy,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed - 1,
+                    emoji: emojis[Math.floor(Math.random() * emojis.length)],
+                    size: 10 + Math.random() * 10,
+                    alpha: 1,
+                    life: 60 + Math.random() * 30,
+                });
+            }
+        }
+
+        // =====================================================================
+        // INPUT
+        // =====================================================================
+        const keys = {};
+        window.addEventListener('keydown', e => {
+            keys[e.key.toLowerCase()] = true;
+            if (e.key.toLowerCase() === 'e' && !dialogueActive) {
+                tryInteract();
+            }
+            if (e.key === 'Escape' && dialogueActive) {
+                closeDialogue();
+            }
+        });
+        window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
+
+        function tryInteract() {
+            const dx = player.x - baba.x;
+            const dy = player.y - baba.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < baba.interactRange) {
+                if (player.hasPet) {
+                    const d = DIALOGUE.hasPet;
+                    const mood = companion.hunger > 60 ? 'looking well-fed' : companion.hunger > 30 ? 'looking a bit thin' : 'looking VERY hungry';
+                    d.text = `Ah, you return! And your ${companion.species.emoji} ${companion.name} is ${mood}. What do you need, child?`;
+                    showDialogue('hasPet');
+                } else {
+                    showDialogue('greeting');
+                }
+            }
+        }
+
+        // =====================================================================
+        // UPDATE LOOP
+        // =====================================================================
+        function update() {
+            if (!dialogueActive) {
+                // Player movement
+                let mx = 0, my = 0;
+                if (keys['w'] || keys['arrowup']) my -= 1;
+                if (keys['s'] || keys['arrowdown']) my += 1;
+                if (keys['a'] || keys['arrowleft']) mx -= 1;
+                if (keys['d'] || keys['arrowright']) mx += 1;
+
+                if (mx || my) {
+                    const len = Math.sqrt(mx * mx + my * my);
+                    player.vx = (mx / len) * player.speed;
+                    player.vy = (my / len) * player.speed;
+                    if (Math.abs(mx) > 0) player.facing = mx > 0 ? 1 : -1;
+                } else {
+                    player.vx *= 0.8;
+                    player.vy *= 0.8;
+                }
+
+                player.x = Math.max(20, Math.min(WORLD.width - 20, player.x + player.vx));
+                player.y = Math.max(20, Math.min(WORLD.height - 20, player.y + player.vy));
+            }
+
+            player.bobPhase += 0.08;
+            baba.bobPhase += 0.04;
+
+            // Companion follows player
+            if (companion.active) {
+                const targetX = player.x + 25 * player.facing;
+                const targetY = player.y + 10;
+                companion.x += (targetX - companion.x) * 0.06;
+                companion.y += (targetY - companion.y) * 0.06;
+                if (Math.abs(companion.x - player.x) > 5) {
+                    companion.facing = companion.x < player.x ? 1 : -1;
+                }
+                companion.bobPhase += 0.06;
+            }
+
+            // Particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.03;
+                p.vx *= 0.98;
+                p.alpha -= 1 / p.life;
+                if (p.alpha <= 0) particles.splice(i, 1);
+            }
+
+            // Fog
+            for (const f of fogParticles) {
+                f.x += Math.sin(Date.now() * 0.0003 + f.offset) * f.speed;
+                if (f.x > WORLD.width + 50) f.x = -50;
+                if (f.x < -50) f.x = WORLD.width + 50;
+            }
+
+            // Pet stats decay
+            updatePetStats();
+
+            // Interact hint near Baba
+            const dx = player.x - baba.x;
+            const dy = player.y - baba.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const pill = document.getElementById('statusPill');
+            if (dist < baba.interactRange && !dialogueActive) {
+                pill.textContent = '🧙‍♀️ Press E to speak with Baba Yaga';
+                pill.classList.add('active');
+            } else if (!dialogueActive) {
+                pill.classList.remove('active');
+            }
+        }
+
+        // =====================================================================
+        // RENDER
+        // =====================================================================
+        function render() {
+            const now = Date.now();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Camera
+            const camX = canvas.width / 2 - player.x;
+            const camY = canvas.height / 2 - player.y;
+            ctx.save();
+            ctx.translate(camX, camY);
+
+            // Floor
+            ctx.fillStyle = '#0d0a12';
+            ctx.fillRect(-200, -200, WORLD.width + 400, WORLD.height + 400);
+
+            // Wooden floor planks
+            ctx.save();
+            ctx.globalAlpha = 0.06;
+            ctx.strokeStyle = '#4a3a2a';
+            ctx.lineWidth = 1;
+            for (let y = 0; y < WORLD.height; y += 30) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(WORLD.width, y); ctx.stroke();
+            }
+            ctx.restore();
+
+            // Floor base gradient
+            const floorGrad = ctx.createRadialGradient(400, 300, 50, 400, 300, 450);
+            floorGrad.addColorStop(0, '#1a1520');
+            floorGrad.addColorStop(1, '#0d0a12');
+            ctx.fillStyle = floorGrad;
+            ctx.fillRect(0, 0, WORLD.width, WORLD.height);
+
+            // Walls
+            ctx.save();
+            ctx.globalAlpha = 0.15;
+            ctx.fillStyle = '#2d1f35';
+            ctx.fillRect(0, 0, WORLD.width, 25);
+            ctx.fillRect(0, 0, 25, WORLD.height);
+            ctx.fillRect(WORLD.width - 25, 0, 25, WORLD.height);
+            ctx.restore();
+
+            // Wall decorations — skulls (pixel art)
+            drawSprite('skull', 50, 12, 24, 24);
+            drawSprite('skull', 200, 12, 24, 24);
+            drawSprite('skull', 600, 12, 24, 24);
+            drawSprite('skull', 750, 12, 24, 24);
+
+            // Potion shelf
+            ctx.save();
+            ctx.globalAlpha = 0.12;
+            ctx.fillStyle = '#4a0e4e';
+            ctx.fillRect(ZONES.potions.x, ZONES.potions.y, ZONES.potions.w, ZONES.potions.h);
+            ctx.restore();
+            ctx.strokeStyle = '#4a0e4e30';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(ZONES.potions.x, ZONES.potions.y, ZONES.potions.w, ZONES.potions.h);
+            // Potion shelf sprite
+            drawSprite('potion-shelf', ZONES.potions.x + ZONES.potions.w / 2, ZONES.potions.y + ZONES.potions.h / 2, 128, 64);
+            ctx.font = '600 8px Inter, sans-serif';
+            ctx.fillStyle = '#6a4a8a60';
+            ctx.textAlign = 'center';
+            ctx.fillText('Potions & Tonics', ZONES.potions.x + ZONES.potions.w / 2, ZONES.potions.y + ZONES.potions.h + 12);
+
+            // Herb rack
+            ctx.save();
+            ctx.globalAlpha = 0.1;
+            ctx.fillStyle = '#2d5a27';
+            ctx.fillRect(ZONES.herbs.x, ZONES.herbs.y, ZONES.herbs.w, ZONES.herbs.h);
+            ctx.restore();
+            ctx.strokeStyle = '#2d5a2730';
+            ctx.strokeRect(ZONES.herbs.x, ZONES.herbs.y, ZONES.herbs.w, ZONES.herbs.h);
+            // Herb rack sprite
+            drawSprite('herb-rack', ZONES.herbs.x + ZONES.herbs.w / 2, ZONES.herbs.y + ZONES.herbs.h / 2, 128, 64);
+            ctx.font = '600 8px Inter, sans-serif';
+            ctx.fillStyle = '#4a8a4a60';
+            ctx.textAlign = 'center';
+            ctx.fillText('Dried Herbs', ZONES.herbs.x + ZONES.herbs.w / 2, ZONES.herbs.y + ZONES.herbs.h + 12);
+
+            // Cauldron
+            const cauldronGlow = ctx.createRadialGradient(
+                ZONES.cauldron.x + ZONES.cauldron.w / 2, ZONES.cauldron.y + ZONES.cauldron.h / 2, 10,
+                ZONES.cauldron.x + ZONES.cauldron.w / 2, ZONES.cauldron.y + ZONES.cauldron.h / 2, 100
+            );
+            cauldronGlow.addColorStop(0, 'rgba(106, 13, 173, 0.15)');
+            cauldronGlow.addColorStop(1, 'transparent');
+            ctx.fillStyle = cauldronGlow;
+            ctx.beginPath();
+            ctx.arc(ZONES.cauldron.x + ZONES.cauldron.w / 2, ZONES.cauldron.y + ZONES.cauldron.h / 2, 100, 0, Math.PI * 2);
+            ctx.fill();
+            // Cauldron sprite
+            drawSprite('cauldron', ZONES.cauldron.x + ZONES.cauldron.w / 2, ZONES.cauldron.y + ZONES.cauldron.h / 2, 96, 96);
+            // Bubbles from cauldron
+            ctx.save();
+            ctx.globalAlpha = 0.3;
+            for (let i = 0; i < 4; i++) {
+                const bx = ZONES.cauldron.x + ZONES.cauldron.w / 2 + Math.sin(now * 0.002 + i * 1.8) * 25;
+                const by = ZONES.cauldron.y + 20 - Math.abs(Math.sin(now * 0.001 + i)) * 30;
+                ctx.font = '8px sans-serif';
+                ctx.fillText('🫧', bx, by);
+            }
+            ctx.restore();
+
+            // Crystal ball sprite
+            drawSprite('crystal-ball', ZONES.crystal.x + ZONES.crystal.w / 2, ZONES.crystal.y + ZONES.crystal.h / 2, 48, 48);
+            // Crystal glow
+            ctx.save();
+            ctx.globalAlpha = 0.08 + Math.sin(now * 0.003) * 0.04;
+            const crystalGlow = ctx.createRadialGradient(
+                ZONES.crystal.x + ZONES.crystal.w / 2, ZONES.crystal.y + ZONES.crystal.h / 2, 5,
+                ZONES.crystal.x + ZONES.crystal.w / 2, ZONES.crystal.y + ZONES.crystal.h / 2, 40
+            );
+            crystalGlow.addColorStop(0, '#7b2d8e');
+            crystalGlow.addColorStop(1, 'transparent');
+            ctx.fillStyle = crystalGlow;
+            ctx.beginPath();
+            ctx.arc(ZONES.crystal.x + ZONES.crystal.w / 2, ZONES.crystal.y + ZONES.crystal.h / 2, 40, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+
+            // Candles (pixel art)
+            for (const c of CANDLES) {
+                drawSprite('candle', c.x, c.y, 24, 24);
+                // Candle glow
+                ctx.save();
+                ctx.globalAlpha = 0.06 + Math.sin(now * 0.005 + c.x * 0.01) * 0.03;
+                const cg = ctx.createRadialGradient(c.x, c.y - 5, 2, c.x, c.y - 5, 30);
+                cg.addColorStop(0, '#ff9900');
+                cg.addColorStop(1, 'transparent');
+                ctx.fillStyle = cg;
+                ctx.beginPath(); ctx.arc(c.x, c.y - 5, 30, 0, Math.PI * 2); ctx.fill();
+                ctx.restore();
+            }
+
+            // Fog
+            for (const f of fogParticles) {
+                ctx.save();
+                ctx.globalAlpha = f.alpha;
+                const fg = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.size);
+                fg.addColorStop(0, '#2d1f3540');
+                fg.addColorStop(1, 'transparent');
+                ctx.fillStyle = fg;
+                ctx.beginPath(); ctx.arc(f.x, f.y, f.size, 0, Math.PI * 2); ctx.fill();
+                ctx.restore();
+            }
+
+            // Bone fence at bottom (pixel art)
+            ctx.save();
+            ctx.globalAlpha = 0.15;
+            ctx.fillStyle = '#d4c5a9';
+            ctx.fillRect(0, WORLD.height - 50, WORLD.width, 4);
+            ctx.restore();
+            for (let x = 30; x < WORLD.width; x += 50) {
+                drawSprite('bone-fence', x, WORLD.height - 38, 32, 32);
+            }
+
+            // Chicken legs (pixel art)
+            drawSprite('chicken-leg', 350, WORLD.height - 15, 48, 64);
+            drawSprite('chicken-leg', 450, WORLD.height - 15, 48, 64, true);
+
+            // Exit door (pixel art)
+            drawSprite('door', 400, WORLD.height - 25, 48, 64);
+            ctx.font = '600 7px Inter, sans-serif';
+            ctx.fillStyle = '#ffaa5560';
+            ctx.textAlign = 'center';
+            ctx.fillText('EXIT', 400, WORLD.height - 4);
+
+            // ===== BABA YAGA =====
+            const babaY = baba.y + Math.sin(baba.bobPhase) * 3;
+            // Aura
+            ctx.save();
+            ctx.globalAlpha = 0.08 + Math.sin(now * 0.002) * 0.03;
+            const babaGlow = ctx.createRadialGradient(baba.x, babaY, 10, baba.x, babaY, 50);
+            babaGlow.addColorStop(0, '#6a0dad');
+            babaGlow.addColorStop(1, 'transparent');
+            ctx.fillStyle = babaGlow;
+            ctx.beginPath(); ctx.arc(baba.x, babaY, 50, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
+            // Baba Yaga sprite
+            drawSprite('baba-yaga', baba.x, babaY, 72, 72);
+            // Name
+            ctx.font = '700 9px Inter, sans-serif';
+            ctx.fillStyle = '#ff6b9d';
+            ctx.textAlign = 'center';
+            ctx.fillText('Baba Yaga', baba.x, babaY + 42);
+
+            // Interact indicator
+            const playerDist = Math.sqrt((player.x - baba.x) ** 2 + (player.y - baba.y) ** 2);
+            if (playerDist < baba.interactRange && !dialogueActive) {
+                ctx.save();
+                ctx.globalAlpha = 0.5 + Math.sin(now * 0.005) * 0.3;
+                ctx.font = '10px sans-serif';
+                ctx.fillText('💬', baba.x + 25, babaY - 15);
+                ctx.restore();
+            }
+
+            // ===== COMPANION =====
+            if (companion.active) {
+                const cy = companion.y + Math.sin(companion.bobPhase) * 2;
+                // Glow
+                ctx.save();
+                ctx.globalAlpha = 0.15;
+                const cg = ctx.createRadialGradient(companion.x, cy, 3, companion.x, cy, companion.species.size);
+                cg.addColorStop(0, companion.species.color);
+                cg.addColorStop(1, 'transparent');
+                ctx.fillStyle = cg;
+                ctx.beginPath(); ctx.arc(companion.x, cy, companion.species.size, 0, Math.PI * 2); ctx.fill();
+                ctx.restore();
+                // Pet sprite
+                drawSprite(companion.species.sprite, companion.x, cy, companion.species.size, companion.species.size, companion.facing < 0);
+                // Name
+                ctx.font = '700 7px Inter, sans-serif';
+                ctx.fillStyle = '#d4a0ff';
+                ctx.textAlign = 'center';
+                ctx.fillText(companion.name, companion.x, cy + companion.species.size * 0.6 + 8);
+                // Mood face
+                const mood = companion.hunger > 60 ? '😊' : companion.hunger > 30 ? '😐' : companion.hunger > 10 ? '😟' : '😢';
+                ctx.font = '10px sans-serif';
+                ctx.fillText(mood, companion.x + companion.species.size * 0.5 + 8, cy - 8);
+            }
+
+            // ===== PLAYER =====
+            const ppx = player.x;
+            const ppy = player.y + Math.sin(player.bobPhase) * 1.5;
+            // Glow
+            ctx.save();
+            ctx.globalAlpha = 0.1;
+            const pg = ctx.createRadialGradient(ppx, ppy, 4, ppx, ppy, 20);
+            pg.addColorStop(0, '#ffffff');
+            pg.addColorStop(1, 'transparent');
+            ctx.fillStyle = pg;
+            ctx.beginPath(); ctx.arc(ppx, ppy, 20, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
+            // Player sprite
+            drawSprite('player', ppx, ppy, 48, 48, player.facing < 0);
+            // Label
+            ctx.font = '700 8px Inter, sans-serif';
+            ctx.fillStyle = '#c4b5d0';
+            ctx.textAlign = 'center';
+            ctx.fillText('You', ppx, ppy + 18);
+
+            // ===== PARTICLES =====
+            for (const p of particles) {
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.font = `${p.size}px sans-serif`;
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText(p.emoji, p.x, p.y);
+                ctx.restore();
+            }
+
+            ctx.restore(); // camera
+        }
+
+        // =====================================================================
+        // MAIN LOOP
+        // =====================================================================
+        function gameLoop() {
+            update();
+            render();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+
+</html>

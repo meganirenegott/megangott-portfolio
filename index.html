@@ -234,11 +234,54 @@
               <span class="card-tag">Animation</span>
             </div>
             <div class="card-actions">
-              <button class="btn-demo" id="open-bio-demo" type="button">
+              <button class="btn-demo" data-demo="demos/bioluminescence-demo.html" data-title="🪼 Bioluminescent Tide Demo" type="button">
                 <span class="play-icon" aria-hidden="true">▶</span>
                 Try the Demo
               </button>
               <a href="https://github.com/lizTheDeveloper/multiversecampus/commit/8a182ad0" target="_blank" rel="noopener noreferrer" class="card-link">
+                View commit <span class="arrow-icon" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 5: Baba Yaga's Hut -->
+        <article class="project-card reveal reveal-delay-1" id="project-baba-yaga">
+          <div class="card-accent card-accent--purple"></div>
+          <div class="card-visual card-visual--baba">
+            <span class="card-icon" aria-hidden="true">🏚️</span>
+          </div>
+          <div class="card-body">
+            <p class="card-repo">multiversecampus</p>
+            <h3 class="card-title">Baba Yaga's Hut</h3>
+            <p class="card-oneliner">A narrative NPC encounter with dialogue trees, research challenges, and pet companions.</p>
+            <p class="card-description">
+              Built a 1,200+ line interactive experience: a canvas-rendered witch's hut with 
+              custom pixel art, branching dialogue with challenge/response evaluation, pet 
+              selection with Tamagotchi-style companionship, punishment mechanics for failed 
+              challenges, and full sprite rendering with 19 custom assets.
+            </p>
+            <div class="card-decision">
+              <p class="card-decision-label">Key Decision</p>
+              <p>
+                Separated game logic from rendering through a zone-based spatial system — 
+                each interactive zone (cauldron, potion shelf, crystal ball) handles its own 
+                hover/click events while sharing the same canvas, preventing spaghetti event handlers.
+              </p>
+            </div>
+            <div class="card-tags">
+              <span class="card-tag">Canvas API</span>
+              <span class="card-tag">Sprite Rendering</span>
+              <span class="card-tag">Dialogue Trees</span>
+              <span class="card-tag">Game Design</span>
+              <span class="card-tag">State Machine</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-demo" data-demo="demos/baba-yaga-demo.html" data-title="🏚️ Baba Yaga's Hut" type="button">
+                <span class="play-icon" aria-hidden="true">▶</span>
+                Try the Demo
+              </button>
+              <a href="https://github.com/lizTheDeveloper/multiversecampus/commit/267050ef" target="_blank" rel="noopener noreferrer" class="card-link">
                 View commit <span class="arrow-icon" aria-hidden="true">→</span>
               </a>
             </div>
@@ -369,8 +412,8 @@
   <!-- Demo Modal -->
   <div class="demo-modal-overlay" id="demo-modal" aria-hidden="true">
     <div class="demo-modal-header">
-      <div class="demo-modal-title">
-        🪼 Bioluminescent Tide Demo
+      <div class="demo-modal-title" id="demo-modal-title">
+        Demo
         <span class="badge">Interactive</span>
       </div>
       <button class="demo-modal-close" id="close-demo" type="button">
@@ -378,10 +421,10 @@
       </button>
     </div>
     <div class="demo-modal-frame">
-      <iframe id="demo-iframe" title="Bioluminescent Tide Demo"></iframe>
+      <iframe id="demo-iframe" title="Interactive Demo"></iframe>
     </div>
     <p class="demo-modal-hint">
-      <kbd>WASD</kbd> or <kbd>↑↓←→</kbd> to move · <kbd>T</kbd> toggle tide · <kbd>N</kbd> toggle night · Walk toward the shoreline to light up the water
+      Use your keyboard and mouse to interact with the demo
     </p>
   </div>
 

@@ -466,6 +466,18 @@ section {
     var(--bg-surface);
 }
 
+.card-accent--purple {
+  background: linear-gradient(90deg, #9b59b6, #d4a0ff);
+}
+
+.card-visual--baba {
+  background:
+    radial-gradient(ellipse at 40% 50%, rgba(106, 13, 173, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 30%, rgba(212, 160, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(255, 107, 157, 0.06) 0%, transparent 40%),
+    var(--bg-surface);
+}
+
 /* Animated grid pattern in card visuals */
 .card-visual::before {
   content: '';
