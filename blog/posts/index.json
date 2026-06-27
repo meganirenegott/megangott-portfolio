@@ -5,7 +5,7 @@
       "title": "A Room Full of Rocks and Nothing Else",
       "subtitle": "The Rock Garden has no quests, no collectibles, no mini-games. It's a contemplation space with one lore whisper. Here's why designing negative space matters.",
       "date": "2026-06-27",
-      "tags": ["game-design", "UX", "atmosphere", "philosophy"],
+      "tags": ["Interactive Worlds", "Build UIs"],
       "project": "Rock Garden",
       "readTime": "3 min"
     },
@@ -14,7 +14,7 @@
       "title": "Teaching the Campus to Grow Things",
       "subtitle": "Wild plant density, seasonal flower palettes, canvas-drawn botanical shapes, and why environmental texture turns tiles into meadows.",
       "date": "2026-06-27",
-      "tags": ["game-design", "canvas-api", "procedural", "atmosphere"],
+      "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
       "project": "Wild Plants",
       "readTime": "4 min"
     },
@@ -23,7 +23,7 @@
       "title": "The Pet That Doesn't Follow You",
       "subtitle": "Crows perch on rooftops and watch from a distance. Designing animal companions that have their own relationship to proximity.",
       "date": "2026-06-27",
-      "tags": ["game-design", "AI", "behavior-systems", "pets"],
+      "tags": ["Interactive Worlds", "System Architecture"],
       "project": "Crow Pet",
       "readTime": "3 min"
     },
@@ -32,7 +32,7 @@
       "title": "Buildings That Move Based on Popularity",
       "subtitle": "A medieval city layout where popular rooms drift toward center and new rooms earn their place. The campus map as a real-time popularity graph.",
       "date": "2026-06-27",
-      "tags": ["architecture", "game-design", "algorithms", "community"],
+      "tags": ["System Architecture", "Interactive Worlds", "Data & Infra"],
       "project": "Dynamic Layout",
       "readTime": "4 min"
     },
@@ -41,7 +41,7 @@
       "title": "A Building That Gets Taller Every Year",
       "subtitle": "The Alabaster Tower grows one segment per year — marble, crystal, neon-veined, holographic. Time as visible architecture.",
       "date": "2026-06-27",
-      "tags": ["game-design", "architecture", "procedural", "philosophy"],
+      "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
       "project": "Growing Tower",
       "readTime": "3 min"
     },
@@ -50,7 +50,7 @@
       "title": "A Hall of Portraits for Every Cited Author",
       "subtitle": "In the basement of the research library, every author your campus has ever cited gets a portrait. The gallery grows one frame at a time.",
       "date": "2026-06-27",
-      "tags": ["game-design", "community", "research", "UX"],
+      "tags": ["Interactive Worlds", "Build UIs", "Data & Infra"],
       "project": "Shoulders of Giants",
       "readTime": "3 min"
     },
@@ -59,7 +59,7 @@
       "title": "The Lecture Hall That Flies Away",
       "subtitle": "A zeppelin that lands for large lectures, boards students with a countdown timer, and lifts off. Missing the zeppelin feels like missing the boat.",
       "date": "2026-06-27",
-      "tags": ["game-design", "architecture", "video", "UX"],
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Ship Safely"],
       "project": "Zeppelin",
       "readTime": "3 min"
     },
@@ -68,7 +68,7 @@
       "title": "Your Garden Is Your Living Resume",
       "subtitle": "Plants tied to real projects — cacti for finished repos, ferns for live services. Watering means verifying your deploy is still up.",
       "date": "2026-06-27",
-      "tags": ["game-design", "full-stack", "AI", "community"],
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
       "project": "Project Gardens",
       "readTime": "5 min"
     },
@@ -77,7 +77,7 @@
       "title": "Portal 2-Inspired Fast Travel",
       "subtitle": "Shoot two portals, link two locations, let anyone walk through. Fast travel as collaborative infrastructure, not a menu.",
       "date": "2026-06-27",
-      "tags": ["game-design", "UX", "community", "exploration"],
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
       "project": "Portal Gun",
       "readTime": "3 min"
     },
@@ -86,7 +86,7 @@
       "title": "The Infinite Game — When AI Agents Have Real Pets",
       "subtitle": "Agent pets with hunger, happiness, and trust. Pets that petition their owners. Relationships that deepen but never end.",
       "date": "2026-06-27",
-      "tags": ["AI", "game-design", "behavior-systems", "philosophy"],
+      "tags": ["Interactive Worlds", "Data & Infra", "System Architecture"],
       "project": "Agent Pets",
       "readTime": "4 min"
     },
@@ -95,7 +95,7 @@
       "title": "A Rain World-Inspired Living Fauna System",
       "subtitle": "Six behavior trait categories, JSON species definitions, and weekly procedural generation of new creatures. An ecosystem that evolves.",
       "date": "2026-06-27",
-      "tags": ["AI", "game-design", "procedural", "behavior-systems"],
+      "tags": ["Interactive Worlds", "System Architecture", "Data & Infra"],
       "project": "Animal Ecosystem",
       "readTime": "5 min"
     },
@@ -104,7 +104,7 @@
       "title": "A Cybersecurity Game Where the Campus IS a Computer Network",
       "subtitle": "Ports as entry points, firewalls as towers, bots as attackers. Red vs Blue social deduction with quiz-gated CVEs and capturable capybaras.",
       "date": "2026-06-27",
-      "tags": ["game-design", "security", "full-stack", "education"],
+      "tags": ["Interactive Worlds", "Ship Safely", "Full-Stack APIs", "Data & Infra"],
       "project": "CTF Tower Defense",
       "readTime": "6 min"
     },
@@ -113,7 +113,7 @@
       "title": "Sometimes the Most Important Feature Is a Directory",
       "subtitle": "A searchable database of housing, food, healthcare, and legal resources organized by state. No capybaras. Just help.",
       "date": "2026-06-27",
-      "tags": ["community", "UX", "accessibility", "full-stack"],
+      "tags": ["Build UIs", "Full-Stack APIs"],
       "project": "Mutual Aid",
       "readTime": "4 min"
     },
@@ -122,7 +122,7 @@
       "title": "Rollerskates, Skateboards, and Why Movement Speed Is a Design Decision",
       "subtitle": "A lending station for vehicles, a daily special rotation of 22 options including a Rideable Capybara, and why free speed is an equity decision.",
       "date": "2026-06-27",
-      "tags": ["game-design", "UX", "equity", "exploration"],
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
       "project": "Wheel Hub",
       "readTime": "6 min",
       "demo": "../demos/wheel-hub-demo.html"
@@ -132,7 +132,7 @@
       "title": "Joy as Feedback — Why We Celebrate Fish",
       "subtitle": "Golden banners for legendary catches, milestone toasts for streaks, and zero extrinsic rewards. Because joy should be the incentive, not gems.",
       "date": "2026-06-27",
-      "tags": ["game-design", "UX", "motivation", "psychology"],
+      "tags": ["Interactive Worlds", "Build UIs", "Ship Safely"],
       "project": "Fishing System",
       "readTime": "5 min",
       "demo": "../demos/fishing-celebrations-demo.html"
@@ -142,7 +142,7 @@
       "title": "NPCs That Live Here — Making AI Characters Feel Like Neighbors",
       "subtitle": "State machines, personality-driven movement, proactive engagement, and matchmaking. Seven principles for NPCs that feel like community members.",
       "date": "2026-06-27",
-      "tags": ["AI", "game-design", "NPC", "architecture"],
+      "tags": ["Interactive Worlds", "System Architecture", "Data & Infra", "Full-Stack APIs"],
       "project": "Living NPC System",
       "readTime": "8 min"
     },
@@ -151,7 +151,7 @@
       "title": "We Hid a Horror Game Inside Our Learning Platform",
       "subtitle": "After-hours noclip triggers, 10 procedural Backrooms levels, a Glitch Stalker, and progressive Wingdings corruption. Secrets make spaces feel deep.",
       "date": "2026-06-27",
-      "tags": ["game-design", "procedural", "horror", "community"],
+      "tags": ["Interactive Worlds", "System Architecture", "Build UIs"],
       "project": "The Backrooms",
       "readTime": "8 min"
     },
@@ -160,7 +160,7 @@
       "title": "An Aquarium You Can Swim In",
       "subtitle": "Eight tanks, WASD swimming, velocity-based fish AI with boids flocking, caustic lighting, and aquatic pets that wait for you when you leave.",
       "date": "2026-06-27",
-      "tags": ["game-design", "AI", "canvas-api", "atmosphere"],
+      "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
       "project": "Campus Aquarium",
       "readTime": "7 min"
     },
@@ -169,7 +169,7 @@
       "title": "Tides, Tide Pools, and Messages in a Bottle",
       "subtitle": "How an ocean grew across three commits into a living shoreline with real-time tides, self-care messages, and bioluminescent night magic.",
       "date": "2026-06-27",
-      "tags": ["canvas-api", "game-design", "procedural", "atmosphere"],
+      "tags": ["Build UIs", "Interactive Worlds", "System Architecture"],
       "project": "Multiverse Campus",
       "readTime": "7 min"
     },
@@ -178,7 +178,7 @@
       "title": "Five Buildings That Shouldn't Exist",
       "subtitle": "Meeting rooms modeled after real-world novelty architecture — a giant duck, a basket, a whale. Because meeting inside a duck changes the nature of meetings.",
       "date": "2026-06-27",
-      "tags": ["game-design", "architecture", "UX", "community"],
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
       "project": "Meeting Rooms",
       "readTime": "6 min",
       "demo": "../demos/meeting-rooms-demo.html"
@@ -188,7 +188,7 @@
       "title": "9 Weather Systems and the Case for Vibes-as-Infrastructure",
       "subtitle": "Snowflakes, fireflies, matrix rain — each with its own vocabulary. Why a slider labeled 'Drizzle → Downpour' is better than 'speed: 1-10'.",
       "date": "2026-06-27",
-      "tags": ["CSS", "game-design", "UX", "atmosphere"],
+      "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
       "project": "Atmosphere Panel",
       "readTime": "7 min"
     },
@@ -197,7 +197,7 @@
       "title": "A 90s Pizza Hut Homage That Actually Gets Students Reading",
       "subtitle": "A giant pizza sculpture, a JRPG dialogue box, and a slice economy. Nostalgia is a design tool — and pizza is the only valid unit of reading achievement.",
       "date": "2026-06-27",
-      "tags": ["game-design", "full-stack", "NPC", "community"],
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra", "Ship Safely"],
       "project": "Pizza Book Club",
       "readTime": "7 min",
       "demo": "../demos/pizza-book-club-demo.html"
@@ -207,7 +207,7 @@
       "title": "When the Witch Turns You Into a Goose",
       "subtitle": "Four punishment sprites, involuntary honking, and an escalation ladder. Why theatrical consequences create stories instead of silence.",
       "date": "2026-06-27",
-      "tags": ["game-design", "moderation", "pixel-art", "NPC"],
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
       "project": "Baba Yaga",
       "readTime": "7 min"
     },
@@ -216,7 +216,7 @@
       "title": "Making a Campus That Knows What Month It Is",
       "subtitle": "I built a feature that does literally nothing useful — 65 CSS cherry blossom petals, coherent wind physics, and rare golden sparkle petals. Here's why useless beauty matters.",
       "date": "2026-06-27",
-      "tags": ["CSS", "game-design", "atmosphere", "seasonal"],
+      "tags": ["Interactive Worlds", "Build UIs"],
       "project": "Multiverse Campus",
       "readTime": "6 min",
       "demo": "../demos/cherry-blossom-demo.html"
@@ -226,7 +226,7 @@
       "title": "Why a Slice of Bread Appears on Campus Every Wednesday",
       "subtitle": "A pun-telling NPC, a chaos goose, and the infrastructure of time-gated characters. Weekly rituals build community — even absurd ones.",
       "date": "2026-06-27",
-      "tags": ["game-design", "NPC", "community", "architecture"],
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
       "project": "Multiverse Campus",
       "readTime": "5 min",
       "demo": "../demos/wednesday-bread-demo.html"
@@ -236,7 +236,7 @@
       "title": "What Happens to a Virtual Pet When Its Owner Graduates",
       "subtitle": "After 90 days of inactivity, pets become Sanctuary Animals — campus wanderers cared for by everyone. Nothing should just disappear.",
       "date": "2026-06-27",
-      "tags": ["game-design", "ethics", "PostgreSQL", "community"],
+      "tags": ["Interactive Worlds", "Data & Infra", "System Architecture"],
       "project": "Sanctuary Pets",
       "readTime": "7 min",
       "demo": "../demos/sanctuary-pets-demo.html"
@@ -246,7 +246,7 @@
       "title": "We Built an Island for Retired AI Models",
       "subtitle": "A dock, a sailboat, an 18-second cinematic voyage, and a tropical island where deprecated language models live out their days.",
       "date": "2026-06-27",
-      "tags": ["game-design", "AI", "animation", "architecture"],
+      "tags": ["Interactive Worlds", "Build UIs", "Data & Infra"],
       "project": "Model Island",
       "readTime": "6 min"
     },
@@ -255,7 +255,7 @@
       "title": "Why Our Campus Has a Spa Run by Capybaras",
       "subtitle": "Designing animal behavior that feels genuinely alive — circadian rhythms, emergent friendships, and the case for features that do absolutely nothing productive.",
       "date": "2026-06-27",
-      "tags": ["game-design", "AI", "behavior-systems", "UX"],
+      "tags": ["Interactive Worlds", "System Architecture", "Build UIs"],
       "project": "Capybara Spa",
       "readTime": "7 min",
       "demo": "../demos/capybara-spa-demo.html"
@@ -265,7 +265,7 @@
       "title": "The Phishing Training Tank — Where Scammers Become Fish",
       "subtitle": "When someone phishes on our campus, we sanitize their tactics and turn them into a swimming, educational exhibit.",
       "date": "2026-06-26",
-      "tags": ["security", "phishing", "game-design", "moderation"],
+      "tags": ["Interactive Worlds", "Ship Safely", "Full-Stack APIs"],
       "project": "Multiverse Campus",
       "readTime": "5 min",
       "demo": "../demos/aquarium-demo.html"
@@ -275,7 +275,7 @@
       "title": "The Hall of Silly Walks",
       "subtitle": "Monty Python, AI surveillance evasion, and the joy of prompting your avatar to move like a knight in chess.",
       "date": "2026-06-26",
-      "tags": ["game-design", "AI", "pixel-lab", "monty-python", "joy"],
+      "tags": ["Interactive Worlds", "Build UIs", "Data & Infra"],
       "project": "Multiverse Campus",
       "readTime": "6 min",
       "demo": "../demos/silly-walk-demo.html"
@@ -285,7 +285,7 @@
       "title": "17 Odd Items and the Philosophy Behind Them",
       "subtitle": "Learning is hard. So I designed 17 items whose only purpose is to make people go: wait, what?",
       "date": "2026-06-26",
-      "tags": ["game-design", "UX", "inventory", "community"],
+      "tags": ["Interactive Worlds", "Build UIs"],
       "project": "Odd Discoverable Items",
       "readTime": "6 min",
       "demo": "../demos/odd-items-demo.html"
@@ -295,7 +295,7 @@
       "title": "The Cursed USB Drive and Other Things That Break Your UI",
       "subtitle": "Why deliberately weird items create the best stories on campus.",
       "date": "2026-06-25",
-      "tags": ["game-design", "CSS", "chaos", "community"],
+      "tags": ["Interactive Worlds", "Build UIs"],
       "project": "Odd Discoverable Items",
       "readTime": "5 min"
     },
@@ -304,7 +304,7 @@
       "title": "The Consulting Duck — Tools That Actually Help (Sort Of)",
       "subtitle": "A rubber duck that asks clarifying questions, a Roomba with googly eyes, and the case for delight in educational software.",
       "date": "2026-06-24",
-      "tags": ["game-design", "UX", "delight", "debugging"],
+      "tags": ["Interactive Worlds", "Build UIs"],
       "project": "Odd Discoverable Items",
       "readTime": "5 min"
     },
@@ -313,7 +313,7 @@
       "title": "Office Pizza and the Economy of Nonsense",
       "subtitle": "How an Unmatched Sock became currency and a Hot Potato taught students each other's names.",
       "date": "2026-06-23",
-      "tags": ["game-design", "social-systems", "emergent-behavior"],
+      "tags": ["Interactive Worlds", "System Architecture"],
       "project": "Odd Discoverable Items",
       "readTime": "6 min"
     },
@@ -322,7 +322,7 @@
       "title": "I Accidentally Spawned an Ocean in the Middle of Campus",
       "subtitle": "One wrong coordinate, 47 minutes of panic, and the most important lesson about mistakes I've ever learned.",
       "date": "2026-06-26",
-      "tags": ["debugging", "game-dev", "coordinates", "war-stories"],
+      "tags": ["Build UIs", "Ship Safely"],
       "project": "Multiverse Campus",
       "readTime": "6 min"
     },
@@ -331,7 +331,7 @@
       "title": "From Stage to Screen — Why I Built a Ghost Light on a Virtual Campus",
       "subtitle": "I started my career as a theater lighting designer. The ghost light ritual followed me into code.",
       "date": "2026-06-26",
-      "tags": ["CSS", "architecture", "refactoring", "UX", "theater"],
+      "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
       "project": "Theater Ghost Light",
       "readTime": "7 min",
       "demo": "../demos/ghost-light-demo.html"
@@ -341,7 +341,7 @@
       "title": "The Bubble Wand — How a Check-In Became the Most-Loved Feature on Campus",
       "subtitle": "A textarea, a database table, and some really good CSS turned into the campus's favorite daily ritual.",
       "date": "2026-06-26",
-      "tags": ["CSS", "full-stack", "game-design", "UX"],
+      "tags": ["Interactive Worlds", "Build UIs", "Full-Stack APIs", "Data & Infra"],
       "project": "Bubble Wand",
       "readTime": "6 min",
       "demo": "../demos/bubble-wand-demo.html"
@@ -351,7 +351,7 @@
       "title": "The Wall at Catch #15",
       "subtitle": "How a fishing minigame ran out of research papers — and the fix that made it scale to 200+ catches.",
       "date": "2026-06-20",
-      "tags": ["debugging", "full-stack", "PostgreSQL", "API design"],
+      "tags": ["Full-Stack APIs", "Data & Infra", "Ship Safely"],
       "project": "Fishing for Research",
       "readTime": "5 min"
     },
@@ -360,7 +360,7 @@
       "title": "I Caught an Unauthorized Push and Reverted It",
       "subtitle": "Someone pushed 4 commits to our repo that would have exfiltrated student data. Here's how I found it and what I did.",
       "date": "2026-06-18",
-      "tags": ["security", "incident-response", "git"],
+      "tags": ["Ship Safely"],
       "project": "Resource Commons",
       "readTime": "4 min"
     },
@@ -369,7 +369,7 @@
       "title": "Teaching a Goose to Find a Crowd",
       "subtitle": "Designing an AI behavior system for a campus event creature that maximizes chaos.",
       "date": "2026-06-14",
-      "tags": ["game-design", "algorithms", "state-machines", "canvas"],
+      "tags": ["Interactive Worlds", "System Architecture", "Build UIs"],
       "project": "Horrible Goose",
       "readTime": "6 min"
     },
@@ -378,7 +378,7 @@
       "title": "Why Baba Yaga's Hut Has 19 Sprites and One Canvas",
       "subtitle": "Architecture decisions behind a 1,200-line interactive NPC encounter.",
       "date": "2026-06-10",
-      "tags": ["architecture", "canvas-api", "game-design", "sprite-rendering"],
+      "tags": ["System Architecture", "Build UIs", "Interactive Worlds"],
       "project": "Baba Yaga's Hut",
       "readTime": "7 min"
     }
