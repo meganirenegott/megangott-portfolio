@@ -1,6 +1,43 @@
 {
   "posts": [
     {
+      "slug": "odd-items-philosophy",
+      "title": "17 Odd Items and the Philosophy Behind Them",
+      "subtitle": "Learning is hard. So I designed 17 items whose only purpose is to make people go: wait, what?",
+      "date": "2026-06-26",
+      "tags": ["game-design", "UX", "inventory", "community"],
+      "project": "Odd Discoverable Items",
+      "readTime": "6 min",
+      "demo": "../demos/odd-items-demo.html"
+    },
+    {
+      "slug": "cursed-usb-and-chaos",
+      "title": "The Cursed USB Drive and Other Things That Break Your UI",
+      "subtitle": "Why deliberately weird items create the best stories on campus.",
+      "date": "2026-06-25",
+      "tags": ["game-design", "CSS", "chaos", "community"],
+      "project": "Odd Discoverable Items",
+      "readTime": "5 min"
+    },
+    {
+      "slug": "consulting-duck-and-delight",
+      "title": "The Consulting Duck — Tools That Actually Help (Sort Of)",
+      "subtitle": "A rubber duck that asks clarifying questions, a Roomba with googly eyes, and the case for delight in educational software.",
+      "date": "2026-06-24",
+      "tags": ["game-design", "UX", "delight", "debugging"],
+      "project": "Odd Discoverable Items",
+      "readTime": "5 min"
+    },
+    {
+      "slug": "office-pizza-economy",
+      "title": "Office Pizza and the Economy of Nonsense",
+      "subtitle": "How an Unmatched Sock became currency and a Hot Potato taught students each other's names.",
+      "date": "2026-06-23",
+      "tags": ["game-design", "social-systems", "emergent-behavior"],
+      "project": "Odd Discoverable Items",
+      "readTime": "6 min"
+    },
+    {
       "slug": "the-ocean-incident",
       "title": "I Accidentally Spawned an Ocean in the Middle of Campus",
       "subtitle": "One wrong coordinate, 47 minutes of panic, and the most important lesson about mistakes I've ever learned.",
