@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎭 Theater Ghost Light — Multiverse Campus</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #07090f; color: #e0e0e0; font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; overflow: hidden; }
+    canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; }
+
+    #app { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 1; }
+
+    .ghost-light-scene {
+      display: flex; gap: 40px; align-items: flex-start; max-width: 1100px; width: 100%;
+    }
+
+    /* Left: Stage with ghost light */
+    .stage-area {
+      flex: 0 0 380px; display: flex; flex-direction: column; align-items: center; gap: 16px;
+    }
+
+    .stage {
+      width: 380px; height: 320px; position: relative;
+      background: linear-gradient(180deg, #0c0e16 0%, #141825 60%, #1a1d2e 100%);
+      border: 1px solid rgba(255,255,255,0.06); border-radius: 16px;
+      overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+    }
+
+    .stage-floor {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+      background: linear-gradient(180deg, #1e2236, #232842);
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .ghost-light-fixture {
+      position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    .light-bulb {
+      width: 28px; height: 40px; border-radius: 50% 50% 30% 30%;
+      background: radial-gradient(ellipse at center, #fff8dc 0%, #f5c542 40%, #e6a020 100%);
+      box-shadow: 0 0 30px rgba(245,197,66,0.6), 0 0 80px rgba(245,197,66,0.3), 0 0 120px rgba(245,197,66,0.15);
+      animation: bulb-glow 3s ease-in-out infinite;
+    }
+    @keyframes bulb-glow {
+      0%, 100% { box-shadow: 0 0 30px rgba(245,197,66,0.6), 0 0 80px rgba(245,197,66,0.3); }
+      50% { box-shadow: 0 0 40px rgba(245,197,66,0.8), 0 0 100px rgba(245,197,66,0.4), 0 0 160px rgba(245,197,66,0.2); }
+    }
+
+    .light-cage {
+      width: 36px; height: 48px; position: relative; margin-top: -6px;
+    }
+    .cage-wire { position: absolute; width: 2px; background: rgba(180,180,180,0.35); border-radius: 1px; }
+    .cage-wire:nth-child(1) { left: 4px; top: 0; height: 100%; transform: rotate(6deg); }
+    .cage-wire:nth-child(2) { left: 17px; top: 0; height: 100%; }
+    .cage-wire:nth-child(3) { right: 4px; top: 0; height: 100%; transform: rotate(-6deg); }
+    .cage-ring { position: absolute; left: 0; right: 0; height: 2px; background: rgba(180,180,180,0.3); border-radius: 1px; }
+    .cage-ring:nth-child(4) { top: 12px; }
+    .cage-ring:nth-child(5) { top: 30px; }
+
+    .light-stand { width: 6px; height: 120px; background: linear-gradient(180deg, #555, #333); border-radius: 3px; }
+    .light-base { width: 50px; height: 10px; background: #333; border-radius: 3px; }
+
+    .light-cone {
+      position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%);
+      width: 200px; height: 200px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(245,197,66,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .stage-label {
+      font-family: 'Playfair Display', serif; font-size: 13px; color: #64748b;
+      letter-spacing: 2px; text-transform: uppercase; text-align: center;
+    }
+
+    .interact-hint {
+      font-size: 11px; color: #f5c542; opacity: 0.7;
+      animation: hint-pulse 2s ease-in-out infinite;
+    }
+    @keyframes hint-pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+    /* Right: Prompt panel */
+    .prompt-panel {
+      flex: 1; background: rgba(10, 13, 26, 0.96);
+      border: 1px solid rgba(148,163,184,0.12); border-radius: 16px;
+      backdrop-filter: blur(24px); box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      padding: 28px; display: flex; flex-direction: column; gap: 16px;
+      max-height: 480px;
+    }
+
+    .prompt-title {
+      font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700;
+      background: linear-gradient(135deg, #f5c542, #e6a020);
+      background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .prompt-desc { font-size: 13px; color: #64748b; line-height: 1.7; }
+
+    .prompt-textarea {
+      width: 100%; min-height: 90px; padding: 14px; border-radius: 10px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+      color: #e0e0e0; font-family: 'Inter', sans-serif; font-size: 14px; resize: none;
+      transition: border-color 0.2s;
+    }
+    .prompt-textarea:focus { outline: none; border-color: rgba(245,197,66,0.4); }
+    .prompt-textarea::placeholder { color: #334155; }
+
+    .char-count { font-size: 10px; color: #475569; text-align: right; }
+
+    .submit-btn {
+      padding: 12px 24px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, rgba(245,197,66,0.15), rgba(230,160,32,0.1));
+      color: #f5c542; font-size: 14px; font-weight: 700; cursor: pointer;
+      font-family: 'Inter', sans-serif; letter-spacing: 0.3px;
+      border: 1px solid rgba(245,197,66,0.2); transition: all 0.2s;
+    }
+    .submit-btn:hover { background: linear-gradient(135deg, rgba(245,197,66,0.25), rgba(230,160,32,0.15)); border-color: rgba(245,197,66,0.4); }
+    .submit-btn:disabled { opacity: 0.4; cursor: default; }
+
+    .history-section { margin-top: 4px; }
+    .history-title { font-size: 11px; color: #475569; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 8px; text-transform: uppercase; }
+
+    .history-list { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; max-height: 140px; }
+    .history-list::-webkit-scrollbar { width: 3px; }
+    .history-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+    .history-item {
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 8px; padding: 10px 12px;
+    }
+    .history-body { font-size: 12px; color: #94a3b8; line-height: 1.6; font-style: italic; }
+    .history-date { font-size: 9px; color: #334155; margin-top: 4px; }
+
+    /* Sparkle overlay */
+    .sparkle-overlay {
+      position: fixed; inset: 0; pointer-events: none; z-index: 10;
+    }
+    .sparkle {
+      position: absolute; width: 6px; height: 6px; border-radius: 50%;
+      background: #f5c542; opacity: 0;
+      animation: sparkle-rise 1.5s ease-out forwards;
+    }
+    @keyframes sparkle-rise {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-200px) scale(0.3); }
+    }
+
+    .success-msg {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif; font-size: 28px; color: #f5c542;
+      opacity: 0; pointer-events: none; z-index: 20;
+      text-shadow: 0 0 30px rgba(245,197,66,0.5);
+    }
+    .success-msg.show {
+      animation: success-appear 2.5s ease-out forwards;
+    }
+    @keyframes success-appear {
+      0% { opacity: 0; transform: translate(-50%, -40%) scale(0.8); }
+      20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      80% { opacity: 1; }
+      100% { opacity: 0; transform: translate(-50%, -60%) scale(1.05); }
+    }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="app">
+  <div class="ghost-light-scene">
+    <div class="stage-area">
+      <div class="stage">
+        <div class="light-cone"></div>
+        <div class="ghost-light-fixture">
+          <div class="light-bulb"></div>
+          <div class="light-cage">
+            <div class="cage-wire"></div>
+            <div class="cage-wire"></div>
+            <div class="cage-wire"></div>
+            <div class="cage-ring"></div>
+            <div class="cage-ring"></div>
+          </div>
+          <div class="light-stand"></div>
+          <div class="light-base"></div>
+        </div>
+        <div class="stage-floor"></div>
+      </div>
+      <div class="stage-label">🎭 Theater Ghost Light</div>
+      <div class="interact-hint">The light that stays on when the theater is empty</div>
+    </div>
+
+    <div class="prompt-panel">
+      <div class="prompt-title">✨ What gives you hope?</div>
+      <div class="prompt-desc">
+        In theater tradition, a ghost light is left burning on an empty stage —
+        a quiet promise that the show will go on. Take a moment to reflect on
+        what keeps your own light burning.
+      </div>
+
+      <textarea class="prompt-textarea" id="reflection"
+        placeholder="Write your reflection here..."
+        maxlength="500"></textarea>
+      <div class="char-count"><span id="charCount">0</span> / 500</div>
+
+      <button class="submit-btn" id="submitBtn" disabled>
+        🕯️ Leave your light
+      </button>
+
+      <div class="history-section">
+        <div class="history-title">📜 Past Reflections</div>
+        <div class="history-list" id="historyList">
+          <div class="history-item">
+            <div class="history-body">"The way my classmates help each other debug at 2am. Nobody has to, but everybody does."</div>
+            <div class="history-date">June 25, 2026 · 11:42 PM</div>
+          </div>
+          <div class="history-item">
+            <div class="history-body">"Learning something new every day, even when it's hard. Especially when it's hard."</div>
+            <div class="history-date">June 24, 2026 · 3:15 PM</div>
+          </div>
+          <div class="history-item">
+            <div class="history-body">"My dog waiting for me when I get home from campus."</div>
+            <div class="history-date">June 23, 2026 · 9:30 PM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sparkle-overlay" id="sparkles"></div>
+<div class="success-msg" id="successMsg">✨ Your light has been left on the stage ✨</div>
+
+<script>
+// Character counter + submit enable
+const textarea = document.getElementById('reflection');
+const charCount = document.getElementById('charCount');
+const submitBtn = document.getElementById('submitBtn');
+
+textarea.addEventListener('input', () => {
+  charCount.textContent = textarea.value.length;
+  submitBtn.disabled = textarea.value.trim().length === 0;
+});
+
+// Submit handler with sparkle animation
+submitBtn.addEventListener('click', () => {
+  if (textarea.value.trim().length === 0) return;
+
+  // Create sparkles
+  const sparkles = document.getElementById('sparkles');
+  for (let i = 0; i < 40; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    s.style.left = (30 + Math.random() * 40) + '%';
+    s.style.top = (40 + Math.random() * 30) + '%';
+    s.style.animationDelay = (Math.random() * 0.8) + 's';
+    s.style.width = s.style.height = (3 + Math.random() * 6) + 'px';
+    s.style.background = ['#f5c542', '#fde68a', '#fff8dc', '#e6a020'][Math.floor(Math.random() * 4)];
+    sparkles.appendChild(s);
+  }
+
+  // Show success
+  const msg = document.getElementById('successMsg');
+  msg.classList.add('show');
+
+  // Add to history
+  const historyList = document.getElementById('historyList');
+  const item = document.createElement('div');
+  item.className = 'history-item';
+  item.innerHTML = `
+    <div class="history-body">"${textarea.value.trim()}"</div>
+    <div class="history-date">${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · ${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</div>
+  `;
+  historyList.insertBefore(item, historyList.firstChild);
+
+  // Reset
+  textarea.value = '';
+  charCount.textContent = '0';
+  submitBtn.disabled = true;
+
+  // Cleanup sparkles after animation
+  setTimeout(() => {
+    sparkles.innerHTML = '';
+    msg.classList.remove('show');
+  }, 3000);
+});
+
+// Canvas: subtle floating motes
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const dpr = window.devicePixelRatio || 1;
+function resize() {
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener('resize', resize); resize();
+
+const MOTES = Array.from({length: 25}, () => ({
+  x: Math.random() * window.innerWidth,
+  y: Math.random() * window.innerHeight,
+  vy: -0.1 - Math.random() * 0.15,
+  vx: (Math.random() - 0.5) * 0.2,
+  size: 1.5 + Math.random() * 2,
+  alpha: 0.04 + Math.random() * 0.06,
+}));
+
+function render() {
+  const w = window.innerWidth, h = window.innerHeight;
+  ctx.fillStyle = '#07090f';
+  ctx.fillRect(0, 0, w, h);
+
+  for (const m of MOTES) {
+    m.y += m.vy;
+    m.x += m.vx;
+    if (m.y < -10) { m.y = h + 10; m.x = Math.random() * w; }
+    ctx.globalAlpha = m.alpha;
+    ctx.fillStyle = '#f5c542';
+    ctx.beginPath();
+    ctx.arc(m.x, m.y, m.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(render);
+}
+render();
+</script>
+</body>
+</html>

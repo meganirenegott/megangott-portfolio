@@ -1,6 +1,16 @@
 {
   "posts": [
     {
+      "slug": "ghost-light-ritual",
+      "title": "From Stage to Screen — Why I Built a Ghost Light on a Virtual Campus",
+      "subtitle": "I started my career as a theater lighting designer. The ghost light ritual followed me into code.",
+      "date": "2026-06-26",
+      "tags": ["CSS", "architecture", "refactoring", "UX", "theater"],
+      "project": "Theater Ghost Light",
+      "readTime": "7 min",
+      "demo": "../demos/ghost-light-demo.html"
+    },
+    {
       "slug": "bubble-wand-checkin",
       "title": "The Bubble Wand — How a Check-In Became the Most-Loved Feature on Campus",
       "subtitle": "A textarea, a database table, and some really good CSS turned into the campus's favorite daily ritual.",
