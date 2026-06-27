@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🍕 Pizza Book Club Demo — Multiverse Campus</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0d0a14; color: #e0e0e0; font-family: 'Inter', system-ui, sans-serif;
+      min-height: 100vh; overflow: hidden; }
+    canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; }
+
+    #app {
+      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      padding: 20px; gap: 16px;
+    }
+
+    .panel {
+      background: rgba(13, 10, 20, 0.94); border-radius: 20px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+    }
+
+    /* Left: Book info */
+    #bookPanel {
+      width: 300px; padding: 22px;
+      border: 1px solid rgba(251,146,60,0.22);
+    }
+    .month-badge {
+      font-size: 10px; font-weight: 700; color: #fb923c;
+      background: rgba(251,146,60,0.12); border: 1px solid rgba(251,146,60,0.25);
+      border-radius: 20px; padding: 3px 10px; display: inline-block; margin-bottom: 14px;
+      letter-spacing: 0.5px;
+    }
+    .book-cover {
+      width: 100%; height: 160px; border-radius: 12px;
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 64px; margin-bottom: 14px; position: relative; overflow: hidden;
+    }
+    .book-cover::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
+    }
+    .book-title { font-size: 16px; font-weight: 900; color: #f1f5f9; letter-spacing: -0.3px; }
+    .book-author { font-size: 12px; color: #64748b; margin: 4px 0 14px; }
+
+    .pizza-meter {
+      background: rgba(255,255,255,0.04); border-radius: 10px;
+      padding: 10px 12px; border: 1px solid rgba(255,255,255,0.07);
+    }
+    .pizza-label { font-size: 10px; color: #64748b; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.3px; }
+    .pizza-bar { height: 8px; background: rgba(255,255,255,0.07); border-radius: 4px; overflow: hidden; }
+    .pizza-fill { height: 100%; border-radius: 4px;
+      background: linear-gradient(90deg, #f97316, #fbbf24);
+      transition: width 0.8s ease; }
+    .pizza-count { font-size: 22px; font-weight: 900; color: #fb923c; margin-top: 6px; }
+    .pizza-sub { font-size: 10px; color: #475569; }
+
+    /* Right: Reports */
+    #reportsPanel {
+      width: 340px; padding: 20px;
+      border: 1px solid rgba(139,92,246,0.22);
+      max-height: 520px; display: flex; flex-direction: column;
+    }
+    .panel-title {
+      font-size: 14px; font-weight: 900; margin-bottom: 14px;
+      background: linear-gradient(135deg, #a78bfa, #f472b6);
+      background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .reports-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .reports-list::-webkit-scrollbar { width: 4px; }
+    .reports-list::-webkit-scrollbar-track { background: transparent; }
+    .reports-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+    .report-card {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 12px; cursor: pointer; transition: all 0.2s;
+    }
+    .report-card:hover { border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.05); }
+    .report-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .report-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center;
+      justify-content: center; font-size: 14px; flex-shrink: 0; }
+    .report-name { font-size: 12px; font-weight: 700; color: #cbd5e1; }
+    .report-time { font-size: 10px; color: #475569; margin-left: auto; }
+    .report-excerpt { font-size: 11px; color: #64748b; line-height: 1.5; }
+    .report-slices { font-size: 10px; color: #fbbf24; margin-top: 6px; font-weight: 600; }
+
+    .submit-btn {
+      margin-top: 12px; width: 100%; padding: 11px; border-radius: 10px; border: none;
+      background: linear-gradient(135deg, #7c3aed, #ec4899);
+      color: white; font-size: 13px; font-weight: 700; cursor: pointer;
+      font-family: 'Inter', sans-serif; transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(124,58,237,0.3);
+    }
+    .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,58,237,0.45); }
+
+    /* Trophy panel */
+    #trophyPanel {
+      width: 180px; padding: 18px; text-align: center;
+      border: 1px solid rgba(251,191,36,0.22);
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .trophy-title { font-size: 11px; font-weight: 700; color: #fbbf24; letter-spacing: 0.3px; }
+    .trophy-img { font-size: 52px; filter: drop-shadow(0 0 16px rgba(251,191,36,0.5)); }
+    .trophy-name { font-size: 12px; font-weight: 700; color: #f1f5f9; }
+    .trophy-sub { font-size: 10px; color: #475569; line-height: 1.5; }
+    .leaderboard { width: 100%; margin-top: 4px; }
+    .lb-row { display: flex; align-items: center; gap: 6px; padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 10px; }
+    .lb-rank { color: #475569; width: 16px; }
+    .lb-name { color: #94a3b8; flex: 1; }
+    .lb-slices { color: #fbbf24; font-weight: 700; }
+    .lb-row:first-child .lb-rank { color: #fbbf24; }
+    .lb-row:first-child .lb-name { color: #f1f5f9; font-weight: 600; }
+  </style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="app">
+  <div class="panel" id="bookPanel">
+    <span class="month-badge">📅 JUNE 2026</span>
+    <div class="book-cover">📗</div>
+    <div class="book-title">A Psalm for the Wild-Built</div>
+    <div class="book-author">Becky Chambers · 2021</div>
+    <div class="pizza-meter">
+      <div class="pizza-label">🍕 SLICES THIS MONTH</div>
+      <div class="pizza-bar"><div class="pizza-fill" id="pFill" style="width:72%"></div></div>
+      <div class="pizza-count">36 <span style="font-size:13px;font-weight:400;color:#64748b">/ 50 slices</span></div>
+      <div class="pizza-sub">14 more to unlock this month's pizza party 🎉</div>
+    </div>
+  </div>
+
+  <div class="panel" id="reportsPanel">
+    <div class="panel-title">📖 Member Reports</div>
+    <div class="reports-list">
+      <div class="report-card">
+        <div class="report-header">
+          <div class="report-avatar" style="background:rgba(251,146,60,0.2)">🧑‍💻</div>
+          <span class="report-name">megan_g</span>
+          <span class="report-time">2h ago</span>
+        </div>
+        <div class="report-excerpt">"The conversations between Dex and Mosscap feel so genuine. Mosscap's curiosity about human needs is wonderful..."</div>
+        <div class="report-slices">🍕🍕🍕 +3 slices earned</div>
+      </div>
+      <div class="report-card">
+        <div class="report-header">
+          <div class="report-avatar" style="background:rgba(139,92,246,0.2)">🦊</div>
+          <span class="report-name">liz_dev</span>
+          <span class="report-time">5h ago</span>
+        </div>
+        <div class="report-excerpt">"The philosophy of 'enough' runs through every page. Can't believe I hadn't read this yet. Chambers is a genius."</div>
+        <div class="report-slices">🍕🍕🍕🍕 +4 slices earned</div>
+      </div>
+      <div class="report-card">
+        <div class="report-header">
+          <div class="report-avatar" style="background:rgba(20,184,166,0.2)">🌱</div>
+          <span class="report-name">byte_the_dog</span>
+          <span class="report-time">1d ago</span>
+        </div>
+        <div class="report-excerpt">"Short, but every word earns its place. I read it in one sitting and immediately wanted to start over."</div>
+        <div class="report-slices">🍕🍕🍕 +3 slices earned</div>
+      </div>
+      <div class="report-card">
+        <div class="report-header">
+          <div class="report-avatar" style="background:rgba(244,63,94,0.2)">🐾</div>
+          <span class="report-name">night_owl</span>
+          <span class="report-time">1d ago</span>
+        </div>
+        <div class="report-excerpt">"'Does the work matter?' hits different when you're a developer. This book is therapy."</div>
+        <div class="report-slices">🍕🍕🍕🍕🍕 +5 slices earned</div>
+      </div>
+    </div>
+    <button class="submit-btn" onclick="alert('Submit report form opens here!')">✍️ Submit My Report</button>
+  </div>
+
+  <div class="panel" id="trophyPanel">
+    <div class="trophy-title">🏆 MONTHLY CHAMPION</div>
+    <div class="trophy-img">🏆</div>
+    <div class="trophy-name">May Champion</div>
+    <div class="trophy-sub">night_owl<br>18 slices · "Piranesi"</div>
+    <div class="leaderboard" style="margin-top:12px">
+      <div style="font-size:9px;color:#475569;font-weight:700;letter-spacing:0.5px;margin-bottom:6px">JUNE LEADERBOARD</div>
+      <div class="lb-row"><span class="lb-rank">🥇</span><span class="lb-name">night_owl</span><span class="lb-slices">8 🍕</span></div>
+      <div class="lb-row"><span class="lb-rank">2</span><span class="lb-name">liz_dev</span><span class="lb-slices">4 🍕</span></div>
+      <div class="lb-row"><span class="lb-rank">3</span><span class="lb-name">megan_g</span><span class="lb-slices">3 🍕</span></div>
+      <div class="lb-row"><span class="lb-rank">4</span><span class="lb-name">byte_the_dog</span><span class="lb-slices">3 🍕</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const dpr = window.devicePixelRatio || 1;
+function resize() {
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener('resize', resize); resize();
+
+// Animated pizza floating background
+const PIZZAS = Array.from({length: 20}, () => ({
+  x: Math.random() * 1400, y: Math.random() * 900,
+  vx: (Math.random() - 0.5) * 0.3, vy: -0.2 - Math.random() * 0.2,
+  size: 12 + Math.random() * 16, alpha: 0.04 + Math.random() * 0.08,
+  emoji: ['🍕','📚','✨','🍕','📖'][Math.floor(Math.random() * 5)],
+}));
+
+function render() {
+  const w = window.innerWidth, h = window.innerHeight;
+  const t = performance.now();
+
+  // Dark purple gradient background
+  const bg = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, Math.max(w,h) * 0.8);
+  bg.addColorStop(0, '#12091f');
+  bg.addColorStop(1, '#060410');
+  ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+
+  // Floating emojis
+  ctx.save();
+  for (const p of PIZZAS) {
+    p.x += p.vx; p.y += p.vy;
+    if (p.y < -30) { p.y = h + 30; p.x = Math.random() * w; }
+    ctx.globalAlpha = p.alpha;
+    ctx.font = `${p.size}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText(p.emoji, p.x, p.y);
+  }
+  ctx.restore();
+
+  requestAnimationFrame(render);
+}
+render();
+</script>
+</body>
+</html>

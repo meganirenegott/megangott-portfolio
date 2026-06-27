@@ -1,6 +1,53 @@
 {
   "posts": [
     {
+      "slug": "building-the-ocean",
+      "title": "Tides, Tide Pools, and Messages in a Bottle",
+      "subtitle": "How an ocean grew across three commits into a living shoreline with real-time tides, self-care messages, and bioluminescent night magic.",
+      "date": "2026-06-27",
+      "tags": ["canvas-api", "game-design", "procedural", "atmosphere"],
+      "project": "Multiverse Campus",
+      "readTime": "7 min"
+    },
+    {
+      "slug": "novelty-meeting-rooms",
+      "title": "Five Buildings That Shouldn't Exist",
+      "subtitle": "Meeting rooms modeled after real-world novelty architecture — a giant duck, a basket, a whale. Because meeting inside a duck changes the nature of meetings.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "architecture", "UX", "community"],
+      "project": "Meeting Rooms",
+      "readTime": "6 min",
+      "demo": "../demos/meeting-rooms-demo.html"
+    },
+    {
+      "slug": "atmosphere-vibes",
+      "title": "9 Weather Systems and the Case for Vibes-as-Infrastructure",
+      "subtitle": "Snowflakes, fireflies, matrix rain — each with its own vocabulary. Why a slider labeled 'Drizzle → Downpour' is better than 'speed: 1-10'.",
+      "date": "2026-06-27",
+      "tags": ["CSS", "game-design", "UX", "atmosphere"],
+      "project": "Atmosphere Panel",
+      "readTime": "7 min"
+    },
+    {
+      "slug": "pizza-book-club",
+      "title": "A 90s Pizza Hut Homage That Actually Gets Students Reading",
+      "subtitle": "A giant pizza sculpture, a JRPG dialogue box, and a slice economy. Nostalgia is a design tool — and pizza is the only valid unit of reading achievement.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "full-stack", "NPC", "community"],
+      "project": "Pizza Book Club",
+      "readTime": "7 min",
+      "demo": "../demos/pizza-book-club-demo.html"
+    },
+    {
+      "slug": "baba-yaga-punishments",
+      "title": "When the Witch Turns You Into a Goose",
+      "subtitle": "Four punishment sprites, involuntary honking, and an escalation ladder. Why theatrical consequences create stories instead of silence.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "moderation", "pixel-art", "NPC"],
+      "project": "Baba Yaga",
+      "readTime": "7 min"
+    },
+    {
       "slug": "cherry-blossom-seasons",
       "title": "Making a Campus That Knows What Month It Is",
       "subtitle": "I built a feature that does literally nothing useful — 65 CSS cherry blossom petals, coherent wind physics, and rare golden sparkle petals. Here's why useless beauty matters.",

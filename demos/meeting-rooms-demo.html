@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🏛️ Novelty Meeting Rooms Demo</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Header ── */
+    .demo-header {
+      text-align: center;
+      padding: 32px 20px 16px;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .demo-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #f59e0b, #ec4899, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .demo-header p {
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    /* ── Campus view ── */
+    .campus {
+      position: relative;
+      width: 100%;
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 20px;
+    }
+
+    .campus-label {
+      text-align: center;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    /* ── Novelty Row — the building strip ── */
+    .novelty-row {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
+    }
+
+    /* ── Building exterior cards ── */
+    .building-card {
+      position: relative;
+      width: 160px;
+      height: 200px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+
+    .building-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .building-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .building-card:hover::before {
+      opacity: 1;
+    }
+
+    .building-card.available {
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.15);
+    }
+
+    .building-card.occupied {
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.15);
+    }
+
+    /* ── Building shape silhouette ── */
+    .building-shape {
+      font-size: 4rem;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.4));
+      transition: transform 0.3s;
+    }
+
+    .building-card:hover .building-shape {
+      transform: scale(1.1) rotate(-3deg);
+    }
+
+    .building-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-align: center;
+      padding: 0 8px;
+    }
+
+    .building-capacity {
+      font-size: 0.7rem;
+      color: #94a3b8;
+    }
+
+    /* Availability dot */
+    .availability-dot {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+
+    .availability-dot.available { background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+    .availability-dot.occupied { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+    .availability-dot.walk-in { background: #22d3ee; box-shadow: 0 0 8px #22d3ee; }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.4); }
+    }
+
+    /* ── Panel overlay ── */
+    .panel-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .panel-overlay.open {
+      display: flex;
+    }
+
+    /* ── Meeting Panel ── */
+    .meeting-panel {
+      position: relative;
+      border-radius: 20px;
+      padding: 28px;
+      color: #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 64px rgba(0, 0, 0, 0.6);
+      width: 100%;
+      max-width: 440px;
+      animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .panel-emoji { font-size: 3rem; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4)); }
+
+    .panel-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .panel-capacity {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    .panel-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #94a3b8;
+      font-size: 1.5rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .panel-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .panel-desc {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    /* Status badge */
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .status-badge.available { background: rgba(34, 197, 94, 0.12); color: #4ade80; }
+    .status-badge.occupied { background: rgba(239, 68, 68, 0.12); color: #f87171; }
+    .status-badge.locked { background: rgba(239, 68, 68, 0.2); color: #fca5a5; }
+    .status-badge.walk-in { background: rgba(34, 211, 238, 0.12); color: #67e8f9; }
+
+    .walkin-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      color: #0f172a;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      letter-spacing: 0.02em;
+      margin-bottom: 10px;
+    }
+
+    .walkin-btn:hover {
+      filter: brightness(1.15);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .schedule-btn {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid;
+      border-radius: 12px;
+      background: transparent;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .schedule-btn:hover { filter: brightness(1.3); }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .status-badge.available .status-dot { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
+    .status-badge.occupied .status-dot { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+
+    /* Interior preview */
+    .interior-preview {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .interior-preview h4 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      margin-bottom: 10px;
+    }
+
+    .interior-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 6px;
+    }
+
+    .interior-feature {
+      padding: 6px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 0.75rem;
+      text-align: center;
+      color: #94a3b8;
+    }
+
+    /* Reserve button */
+    .reserve-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      color: #0f172a;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      letter-spacing: 0.02em;
+    }
+
+    .reserve-btn:hover {
+      filter: brightness(1.15);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Reservation form */
+    .reserve-form {
+      display: none;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 12px;
+      animation: slideUp 0.25s ease;
+    }
+
+    .reserve-form.open { display: block; }
+
+    .reserve-form h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+
+    .form-select {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      color: #e2e8f0;
+      outline: none;
+    }
+
+    .form-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      color: #0f172a;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .submit-btn:hover { filter: brightness(1.15); }
+
+    .cancel-btn {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      background: transparent;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .cancel-btn:hover { border-color: rgba(255, 255, 255, 0.3); color: #e2e8f0; }
+
+    /* Participant list */
+    .participant-section { margin-top: 14px; }
+
+    .participant-section h4 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .participant-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .participant-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      font-size: 0.85rem;
+    }
+
+    .participant-item.arrived { background: rgba(34, 197, 94, 0.1); }
+    .participant-status { font-size: 0.75rem; color: #64748b; margin-left: auto; }
+
+    .arrive-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: all 0.2s;
+    }
+
+    .arrive-btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+
+    /* Locked effect */
+    .locked-notice {
+      text-align: center;
+      padding: 16px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+
+    .locked-notice .lock-icon { font-size: 2rem; margin-bottom: 8px; }
+    .locked-notice p { font-size: 0.85rem; color: #fca5a5; }
+
+    /* ── Responsive ── */
+    @media (max-width: 720px) {
+      .novelty-row { gap: 12px; }
+      .building-card { width: 140px; height: 170px; }
+      .building-shape { font-size: 3rem; }
+    }
+
+    /* ── Suggestion Board ── */
+    .suggestion-board {
+      max-width: 700px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+
+    .board-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .board-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .board-subtitle {
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+
+    .toggle-form-btn {
+      padding: 8px 16px;
+      border: 2px solid rgba(168, 85, 247, 0.4);
+      border-radius: 10px;
+      background: transparent;
+      color: #a855f7;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .toggle-form-btn:hover {
+      background: rgba(168, 85, 247, 0.1);
+      border-color: #a855f7;
+    }
+
+    .suggestion-form {
+      display: none;
+      background: rgba(168, 85, 247, 0.06);
+      border: 1px solid rgba(168, 85, 247, 0.15);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+      animation: slideUp 0.25s ease;
+    }
+
+    .suggestion-form.open { display: block; }
+
+    .suggestion-form h3 {
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      color: #c4b5fd;
+    }
+
+    .sug-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    .sug-input:focus { border-color: rgba(168, 85, 247, 0.4); }
+
+    .sug-submit {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #a855f7;
+      color: #0f172a;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .sug-submit:hover { filter: brightness(1.15); }
+    .sug-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .suggestion-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .suggestion-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      transition: all 0.2s;
+    }
+
+    .suggestion-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .vote-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      background: transparent;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 48px;
+    }
+
+    .vote-btn:hover {
+      border-color: #a855f7;
+      color: #a855f7;
+    }
+
+    .vote-btn.voted {
+      border-color: #a855f7;
+      background: rgba(168, 85, 247, 0.15);
+      color: #c4b5fd;
+    }
+
+    .vote-arrow { font-size: 1.1rem; line-height: 1; }
+
+    .suggestion-content { flex: 1; }
+
+    .suggestion-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .suggestion-desc {
+      font-size: 0.8rem;
+      color: #94a3b8;
+      line-height: 1.4;
+    }
+
+    .suggestion-meta {
+      font-size: 0.7rem;
+      color: #475569;
+      margin-top: 6px;
+    }
+
+    .empty-board {
+      text-align: center;
+      padding: 24px;
+      color: #475569;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-header">
+    <h1>🏛️ Novelty Meeting Rooms</h1>
+    <p>Click a building to see its interior and reserve a meeting space</p>
+  </div>
+
+  <div class="campus">
+    <div class="campus-label">— Novelty Row —</div>
+    <div class="novelty-row" id="novelty-row"></div>
+  </div>
+
+  <!-- Suggestion Board -->
+  <div class="suggestion-board">
+    <div class="board-header">
+      <div>
+        <div class="board-title">📌 Suggest the Next Room</div>
+        <div class="board-subtitle">What novelty building should we add? Vote for your favorites!</div>
+      </div>
+      <button class="toggle-form-btn" onclick="toggleSuggestionForm()">➕ Suggest</button>
+    </div>
+
+    <div class="suggestion-form" id="suggestion-form">
+      <h3>🏗️ Suggest a Novelty Building</h3>
+      <input class="sug-input" id="sug-name" placeholder="Building name (e.g. Giant Shoe House)" maxlength="200" />
+      <input class="sug-input" id="sug-desc" placeholder="Description — what is it and where is it?" maxlength="500" />
+      <input class="sug-input" id="sug-url" placeholder="Reference URL (optional)" />
+      <button class="sug-submit" id="sug-submit-btn" onclick="submitSuggestion()">Submit Suggestion</button>
+    </div>
+
+    <div class="suggestion-list" id="suggestion-list"></div>
+  </div>
+
+  <!-- Panel overlay -->
+  <div class="panel-overlay" id="panel-overlay">
+    <div class="meeting-panel" id="meeting-panel"></div>
+  </div>
+
+  <script>
+    // ── Room data ──
+    const ROOMS = [
+      {
+        id: 1, name: 'The Giant Duck', theme: 'duck', emoji: '🦆',
+        accent: '#f59e0b', capacity: 4,
+        bg: 'linear-gradient(135deg, #451a03 0%, #78350f 100%)',
+        cardBg: 'linear-gradient(160deg, #451a03, #78350f)',
+        desc: 'A giant duck-shaped meeting room inspired by the Big Duck of Long Island (1931). Warm amber interior with golden egg decorations.',
+        features: ['Meeting Table', 'Whiteboard', 'Duck Statue', 'Golden Egg', 'Cozy Lamps'],
+        status: 'available'
+      },
+      {
+        id: 2, name: 'The Basket', theme: 'basket', emoji: '🧺',
+        accent: '#d97706', capacity: 6,
+        bg: 'linear-gradient(135deg, #1c1208 0%, #451a03 100%)',
+        cardBg: 'linear-gradient(160deg, #1c1208, #451a03)',
+        desc: 'Woven-wood conference space inspired by the Longaberger Basket HQ in Ohio. Seats 6 around a long table.',
+        features: ['Conference Table', 'Planning Board', 'Woven Art', 'Handle Display', 'Resource Shelf'],
+        status: 'available'
+      },
+      {
+        id: 3, name: 'The Teapot', theme: 'teapot', emoji: '🫖',
+        accent: '#a78bfa', capacity: 4,
+        bg: 'linear-gradient(135deg, #1e1035 0%, #3b1f6e 100%)',
+        cardBg: 'linear-gradient(160deg, #1e1035, #3b1f6e)',
+        desc: 'Steampunk tea room inspired by the Teapot Dome Station in Washington (1922). Brass pipes, tea collections, and a cozy nook.',
+        features: ['Tea Table', 'Brass Kettle', 'Steam Pipes', 'Tea Collection', 'Cozy Nook'],
+        status: 'available'
+      },
+      {
+        id: 4, name: 'The Whale Belly', theme: 'whale', emoji: '🐋',
+        accent: '#38bdf8', capacity: 8,
+        bg: 'linear-gradient(135deg, #0a1628 0%, #0c4a6e 100%)',
+        cardBg: 'linear-gradient(160deg, #0a1628, #0c4a6e)',
+        desc: 'Meet inside a whale! Inspired by the famous taxidermy whale museum exhibit. Bioluminescent lighting, whale rib arches, and a porthole view.',
+        features: ['Whale Bone Table', 'Whale Ribs', 'Bioluminescent Lamps', 'Marine Library', 'Porthole View', 'Coral Display'],
+        status: 'available'
+      },
+      {
+        id: 5, name: 'The Donut', theme: 'donut', emoji: '🍩',
+        accent: '#f472b6', capacity: 4,
+        bg: 'linear-gradient(135deg, #1a0a14 0%, #831843 100%)',
+        cardBg: 'linear-gradient(160deg, #1a0a14, #831843)',
+        desc: 'A giant donut-shaped room inspired by The Donut Hole in California. Sprinkle art walls, a snack bar, and sweet pink lighting.',
+        features: ['Sprinkle Table', 'Idea Board', 'Sprinkle Art', 'Glaze Pattern', 'Snack Bar', 'Sugar Seat'],
+        status: 'available'
+      }
+    ]
+
+    // ── State ──
+    let reservations = {} // roomId -> { title, participants: [{name, arrived}], locked }
+
+    // ── Render buildings ──
+    function renderBuildings() {
+      const row = document.getElementById('novelty-row')
+      row.innerHTML = ROOMS.map(r => {
+        const res = reservations[r.id]
+        const status = res ? (res.locked ? 'locked' : (res.walkIn ? 'walk-in' : 'occupied')) : 'available'
+        const dotStatus = status === 'walk-in' ? 'walk-in' : (status === 'available' ? 'available' : 'occupied')
+        return `
+          <div class="building-card ${status}" 
+               style="background: ${r.cardBg}"
+               onclick="openPanel(${r.id})" role="button" tabindex="0"
+               aria-label="Open ${r.name}">
+            <div class="availability-dot ${dotStatus}"></div>
+            <div class="building-shape">${r.emoji}</div>
+            <div class="building-name" style="color: ${r.accent}">${r.name}</div>
+            <div class="building-capacity">👥 ${r.capacity}</div>
+          </div>
+        `
+      }).join('')
+    }
+
+    // ── Open panel ──
+    function openPanel(roomId) {
+      const r = ROOMS.find(r => r.id === roomId)
+      if (!r) return
+
+      const overlay = document.getElementById('panel-overlay')
+      const panel = document.getElementById('meeting-panel')
+      const res = reservations[roomId]
+
+      let statusHTML, contentHTML
+
+      if (res && res.locked) {
+        statusHTML = `<div class="status-badge locked"><span class="status-dot"></span>🔒 Locked — Meeting in Progress</div>`
+        contentHTML = `
+          <div class="locked-notice">
+            <div class="lock-icon">🔐</div>
+            <h3 style="margin-bottom:8px">${res.title}</h3>
+            <p>All participants have arrived. The room is locked for privacy.</p>
+          </div>
+        `
+      } else if (res && res.walkIn) {
+        // Walk-in open session — anyone can join
+        statusHTML = `<div class="status-badge walk-in"><span class="status-dot"></span>🚪 Open Session — Walk In!</div>`
+        contentHTML = `
+          <div class="participant-section">
+            <h4>People Here</h4>
+            <ul class="participant-list">
+              ${res.participants.map(p => `
+                <li class="participant-item arrived">
+                  ✅ ${p.name}
+                  <span class="participant-status">here</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+          <button class="walkin-btn" style="background:${r.accent}" 
+                  onclick="joinWalkIn(${roomId})">🚪 Join Open Session (${res.participants.length}/${r.capacity})</button>
+        `
+      } else if (res) {
+        statusHTML = `<div class="status-badge occupied"><span class="status-dot"></span>🟡 Meeting: ${res.title}</div>`
+        contentHTML = `
+          <div class="participant-section">
+            <h4>Participants</h4>
+            <ul class="participant-list">
+              ${res.participants.map(p => `
+                <li class="participant-item ${p.arrived ? 'arrived' : ''}">
+                  ${p.arrived ? '✅' : '⏳'} ${p.name}
+                  <span class="participant-status">${p.arrived ? 'arrived' : 'waiting'}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+          <button class="arrive-btn" style="background:${r.accent}" 
+                  onclick="arriveAtRoom(${roomId})">📍 I'm Here!</button>
+        `
+      } else {
+        statusHTML = `<div class="status-badge available"><span class="status-dot"></span>✅ Available — First Come First Served</div>`
+        contentHTML = `
+          <div class="interior-preview">
+            <h4>Interior Features</h4>
+            <div class="interior-grid">
+              ${r.features.map(f => `<div class="interior-feature">${f}</div>`).join('')}
+            </div>
+          </div>
+          <button class="walkin-btn" style="background:${r.accent}" 
+                  onclick="walkInToRoom(${roomId})">🚪 Walk In Now</button>
+          <button class="schedule-btn" style="border-color:${r.accent}; color:${r.accent}" 
+                  onclick="showReserveForm(${roomId})">📝 Schedule a Reservation Instead</button>
+          <div class="reserve-form" id="reserve-form-${roomId}">
+            <h3>Book Meeting</h3>
+            <input class="form-input" id="title-${roomId}" placeholder="Meeting title..." maxlength="200" />
+            <div class="form-row">
+              <label>Duration:</label>
+              <select class="form-select" id="duration-${roomId}">
+                <option value="15">15 min</option>
+                <option value="30" selected>30 min</option>
+                <option value="45">45 min</option>
+                <option value="60">1 hour</option>
+                <option value="120">2 hours</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button class="submit-btn" style="background:${r.accent}" 
+                      onclick="submitReservation(${roomId})">Confirm Reservation</button>
+              <button class="cancel-btn" onclick="hideReserveForm(${roomId})">Cancel</button>
+            </div>
+          </div>
+        `
+      }
+
+      panel.style.background = r.bg
+      panel.innerHTML = `
+        <div class="panel-header">
+          <span class="panel-emoji">${r.emoji}</span>
+          <div>
+            <h2 class="panel-title" style="color:${r.accent}">${r.name}</h2>
+            <div class="panel-capacity">Capacity: ${r.capacity} people</div>
+          </div>
+        </div>
+        <button class="panel-close" onclick="closePanel()">×</button>
+        <p class="panel-desc">${r.desc}</p>
+        ${statusHTML}
+        ${contentHTML}
+      `
+
+      overlay.classList.add('open')
+    }
+
+    function closePanel() {
+      document.getElementById('panel-overlay').classList.remove('open')
+    }
+
+    // Close on backdrop click
+    document.getElementById('panel-overlay').addEventListener('click', (e) => {
+      if (e.target.id === 'panel-overlay') closePanel()
+    })
+
+    function showReserveForm(roomId) {
+      const form = document.getElementById(`reserve-form-${roomId}`)
+      if (form) {
+        form.classList.add('open')
+        form.querySelector('.form-input').focus()
+      }
+    }
+
+    function hideReserveForm(roomId) {
+      const form = document.getElementById(`reserve-form-${roomId}`)
+      if (form) form.classList.remove('open')
+    }
+
+    function submitReservation(roomId) {
+      const title = document.getElementById(`title-${roomId}`).value.trim()
+      if (!title) return
+
+      // Simulate a reservation with demo participants
+      const demoNames = ['Alice', 'Bob', 'Charlie', 'Diana', 'Eve', 'Frank', 'Grace', 'Hank']
+      const room = ROOMS.find(r => r.id === roomId)
+      const participantCount = Math.min(room.capacity, 3) // demo: 3 participants
+      const participants = demoNames.slice(0, participantCount).map(name => ({ name, arrived: false }))
+
+      reservations[roomId] = { title, participants, locked: false }
+
+      closePanel()
+      renderBuildings()
+
+      // Re-open with updated state
+      setTimeout(() => openPanel(roomId), 300)
+    }
+
+    function arriveAtRoom(roomId) {
+      const res = reservations[roomId]
+      if (!res) return
+
+      // Mark next un-arrived participant
+      const next = res.participants.find(p => !p.arrived)
+      if (next) {
+        next.arrived = true
+      }
+
+      // Check if all arrived — auto-lock
+      const allArrived = res.participants.every(p => p.arrived)
+      if (allArrived) {
+        res.locked = true
+      }
+
+      renderBuildings()
+      openPanel(roomId)
+    }
+
+    // ── Walk-in: first come first served ──
+    function walkInToRoom(roomId) {
+      const room = ROOMS.find(r => r.id === roomId)
+      reservations[roomId] = {
+        title: `Walk-in @ ${room.name}`,
+        participants: [{ name: 'You', arrived: true }],
+        locked: false,
+        walkIn: true
+      }
+      closePanel()
+      renderBuildings()
+      setTimeout(() => openPanel(roomId), 300)
+    }
+
+    function joinWalkIn(roomId) {
+      const res = reservations[roomId]
+      const room = ROOMS.find(r => r.id === roomId)
+      if (!res || !res.walkIn) return
+
+      if (res.participants.length >= room.capacity) {
+        alert(`Room is full! (${room.capacity} people max)`)
+        return
+      }
+
+      const guestNames = ['Alex', 'Jordan', 'Sam', 'Casey', 'Riley', 'Morgan', 'Taylor']
+      const nextName = guestNames[res.participants.length - 1] || `Guest ${res.participants.length}`
+      res.participants.push({ name: nextName, arrived: true })
+
+      renderBuildings()
+      openPanel(roomId)
+    }
+
+    // ── Suggestion board ──
+    let suggestions = [
+      { id: 1, name: 'The Giant Shoe', desc: 'Haines Shoe House in Pennsylvania — a 5-story shoe-shaped house built in 1948.', votes: 12, voted: false, author: 'Maya', time: '2h ago' },
+      { id: 2, name: 'The Pineapple', desc: 'The Big Pineapple in Queensland, Australia — a 16-meter tall pineapple structure.', votes: 8, voted: true, author: 'Jordan', time: '5h ago' },
+      { id: 3, name: 'The Dog Bark Inn', desc: 'A B&B shaped like a 30-foot beagle in Cottonwood, Idaho.', votes: 7, voted: false, author: 'Alex', time: '1d ago' },
+      { id: 4, name: 'The Mushroom House', desc: 'Thrée-Mushroom in Cincinnati — organic pod architecture that looks like forest fungi.', votes: 5, voted: false, author: 'Charlie', time: '1d ago' },
+      { id: 5, name: 'Lucy the Elephant', desc: 'A 65-foot tall elephant building in Margate, NJ, built in 1881.', votes: 3, voted: false, author: 'Sam', time: '3d ago' },
+    ]
+    let nextSugId = 6
+
+    // Escape HTML entities to prevent XSS in innerHTML rendering
+    function escapeHtml(str) {
+      const div = document.createElement('div')
+      div.textContent = str
+      return div.innerHTML
+    }
+
+    function renderSuggestions() {
+      const list = document.getElementById('suggestion-list')
+      if (suggestions.length === 0) {
+        list.innerHTML = '<div class="empty-board">💭 No suggestions yet — be the first!</div>'
+        return
+      }
+      // Sort by votes
+      suggestions.sort((a, b) => b.votes - a.votes)
+      list.innerHTML = suggestions.map(s => `
+        <div class="suggestion-card">
+          <button class="vote-btn ${s.voted ? 'voted' : ''}" onclick="toggleVote(${s.id})">
+            <span class="vote-arrow">▲</span>
+            ${s.votes}
+          </button>
+          <div class="suggestion-content">
+            <div class="suggestion-name">${escapeHtml(s.name)}</div>
+            <div class="suggestion-desc">${escapeHtml(s.desc)}</div>
+            <div class="suggestion-meta">by ${escapeHtml(s.author)} · ${escapeHtml(s.time)}</div>
+          </div>
+        </div>
+      `).join('')
+    }
+
+    function toggleSuggestionForm() {
+      document.getElementById('suggestion-form').classList.toggle('open')
+    }
+
+    function submitSuggestion() {
+      const name = document.getElementById('sug-name').value.trim()
+      const desc = document.getElementById('sug-desc').value.trim()
+      if (!name) return
+
+      suggestions.push({
+        id: nextSugId++,
+        name, desc: desc || 'A novelty building suggestion!',
+        votes: 1, voted: true,
+        author: 'You', time: 'just now'
+      })
+
+      document.getElementById('sug-name').value = ''
+      document.getElementById('sug-desc').value = ''
+      document.getElementById('sug-url').value = ''
+      document.getElementById('suggestion-form').classList.remove('open')
+      renderSuggestions()
+    }
+
+    function toggleVote(id) {
+      const s = suggestions.find(s => s.id === id)
+      if (!s) return
+      if (s.voted) {
+        s.votes = Math.max(0, s.votes - 1)
+        s.voted = false
+      } else {
+        s.votes++
+        s.voted = true
+      }
+      renderSuggestions()
+    }
+
+    // Initial render
+    renderBuildings()
+    renderSuggestions()
+  </script>
+</body>
+</html>
