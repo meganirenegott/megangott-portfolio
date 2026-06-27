@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wednesday Bread — NPC Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0d0f1a;
+  color: #e8e0d4;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 48px;
+}
+
+h1 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.85rem;
+  color: #ffe066;
+  text-shadow: 0 0 16px #ffaa0088;
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+.subtitle {
+  font-size: 0.78rem;
+  color: #8888aa;
+  margin-bottom: 32px;
+}
+
+/* ── World canvas area ── */
+.world {
+  width: 560px;
+  height: 280px;
+  background: linear-gradient(160deg, #1a2a1a 0%, #151f2a 100%);
+  border: 2px solid #2a3040;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 40px #00000088;
+}
+
+/* grass tiles */
+.world::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(90deg, #1e2d1e 0px, #1e2d1e 32px, #1a291a 32px, #1a291a 64px),
+    repeating-linear-gradient(0deg,  #00000018 0px, #00000018 32px, transparent 32px, transparent 64px);
+  opacity: 0.6;
+}
+
+.day-badge {
+  position: absolute;
+  top: 10px; right: 12px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.5rem;
+  background: #1a3320;
+  border: 1px solid #3a7a3a;
+  color: #66cc66;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* NPC sprites on canvas */
+.npc {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: filter 0.15s;
+  user-select: none;
+}
+.npc:hover { filter: brightness(1.3); }
+
+.npc-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.38rem;
+  background: #000a;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  color: #ffe;
+}
+
+.npc-canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Bread sprite animation */
+#bread-sprite {
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  position: relative;
+}
+#bread-sprite img {
+  position: absolute;
+  image-rendering: pixelated;
+  width: 480px; /* 3 cols × 160px */
+  height: 240px;/* 2 rows × 120px */
+  top: 0; left: 0;
+  animation: bread-anim 1.5s steps(1) infinite;
+}
+@keyframes bread-anim {
+  0%   { transform: translate(0,    0);    }
+  16%  { transform: translate(-160px, 0);  }
+  33%  { transform: translate(-320px, 0);  }
+  50%  { transform: translate(0,    -120px);}
+  66%  { transform: translate(-160px,-120px);}
+  83%  { transform: translate(-320px,-120px);}
+}
+
+.npc-goose img {
+  width: 48px;
+  image-rendering: pixelated;
+}
+
+/* Interact hint */
+.hint {
+  position: absolute;
+  bottom: -18px;
+  font-size: 0.55rem;
+  color: #ffe066;
+  font-family: 'Press Start 2P', monospace;
+  white-space: nowrap;
+  animation: hint-bob 1s ease-in-out infinite alternate;
+}
+@keyframes hint-bob { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+
+/* ── JRPG Dialogue Box ── */
+.dialogue-wrap {
+  width: 560px;
+  display: none;
+  margin-bottom: 16px;
+}
+.dialogue-wrap.open { display: block; }
+
+.jrpg-box {
+  background: #0d0f1a;
+  border: 2px solid #3a3a5a;
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px #5555aa44, 0 8px 32px #00000099;
+  display: flex;
+  gap: 0;
+  overflow: hidden;
+  min-height: 160px;
+}
+
+/* Portrait column */
+.portrait-col {
+  width: 120px;
+  min-width: 120px;
+  background: #12141e;
+  border-right: 2px solid #2a2a44;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 8px 12px;
+  gap: 8px;
+}
+.portrait-frame {
+  width: 80px; height: 80px;
+  border: 2px solid #4a4a7a;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0d1020;
+  display: flex; align-items: center; justify-content: center;
+}
+.portrait-frame img { width: 100%; image-rendering: pixelated; }
+.portrait-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.42rem;
+  color: #ffe066;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* Dialogue content */
+.dialogue-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px 12px;
+  gap: 8px;
+  position: relative;
+}
+
+.dialogue-text {
+  flex: 1;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: #e8e0d4;
+  min-height: 56px;
+}
+.dialogue-text .speaker {
+  color: #ffe066;
+  font-weight: 700;
+}
+
+/* Feed goose button */
+.feed-btn-wrap { display: none; }
+.feed-btn-wrap.visible { display: block; }
+.feed-btn {
+  background: linear-gradient(135deg, #7a5500, #c47d00);
+  border: 2px solid #ffe066;
+  color: #fff8e0;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.52rem;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  box-shadow: 0 0 12px #ffaa0055;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.feed-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 20px #ffaa0099;
+}
+.feed-btn:active { transform: scale(0.97); }
+
+/* Nav buttons at the bottom */
+.dialogue-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.nav-btn {
+  background: #1e2040;
+  border: 1px solid #4a4a7a;
+  color: #aaa8cc;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.42rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.nav-btn:hover { background: #2a2a55; color: #e8e0d4; }
+.nav-btn.close-btn { color: #ff8888; }
+.nav-btn.close-btn:hover { background: #3a1515; color: #ffaaaa; }
+
+/* ── Inventory strip ── */
+.inventory {
+  width: 560px;
+  background: #12141e;
+  border: 2px solid #2a2a44;
+  border-radius: 10px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.inv-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.42rem;
+  color: #8888aa;
+  white-space: nowrap;
+}
+.inv-slots { display: flex; gap: 8px; flex: 1; }
+.inv-slot {
+  width: 48px; height: 48px;
+  background: #0d0f1a;
+  border: 2px solid #2a2a44;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  position: relative;
+  transition: border-color 0.2s;
+}
+.inv-slot.has-item { border-color: #5555aa; }
+.inv-slot .item-count {
+  position: absolute;
+  bottom: 2px; right: 4px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: #ffe066;
+}
+.inv-slot .item-tooltip {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1c2c;
+  border: 1px solid #4a4a7a;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.62rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.inv-slot:hover .item-tooltip { opacity: 1; }
+
+/* ── Sparkle overlay ── */
+.sparkle-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+}
+.sparkle-overlay.firing {
+  animation: goose-fade 3s ease-out forwards;
+}
+@keyframes goose-fade {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.sparkle-burst { position: relative; width: 200px; height: 200px; }
+.sparkle-star {
+  position: absolute; top: 50%; left: 50%;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: radial-gradient(circle, #ffe066 0%, #ffaa00 60%, transparent 100%);
+  box-shadow: 0 0 8px 4px #ffdd0088;
+  transform-origin: center;
+  animation: star-fly 1.2s ease-out forwards;
+  animation-delay: calc(var(--i) * 0.06s);
+}
+@keyframes star-fly {
+  0%   { transform: translate(-50%,-50%) rotate(calc(var(--i)*30deg)) translateY(0) scale(0.2); opacity:1; }
+  60%  { opacity:1; }
+  100% { transform: translate(-50%,-50%) rotate(calc(var(--i)*30deg)) translateY(-90px) scale(1.4); opacity:0; }
+}
+.sparkle-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 2rem; color: #ffe066;
+  text-shadow: 0 0 20px #ffaa00, 0 0 40px #ff880044;
+  margin-top: -24px;
+  animation: text-pop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.sparkle-sub {
+  font-size: 0.9rem; color: #fff9e6;
+  margin-top: 8px; font-style: italic;
+  text-shadow: 0 1px 4px #0006;
+}
+@keyframes text-pop {
+  0%   { transform: scale(0.3); opacity:0; }
+  100% { transform: scale(1);   opacity:1; }
+}
+
+/* ── Badge earned toast ── */
+.badge-toast {
+  position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(80px);
+  background: #1a1c2c; border: 2px solid #ffe066;
+  border-radius: 10px; padding: 12px 20px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: 0 4px 24px #ffaa0044;
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+  opacity: 0; pointer-events: none; z-index: 9998;
+}
+.badge-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.badge-icon { font-size: 2rem; }
+.badge-info { font-size: 0.75rem; }
+.badge-info strong { color: #ffe066; display: block; margin-bottom: 2px; }
+.badge-info span { color: #aaa8cc; font-size: 0.68rem; }
+
+/* ── Instructions ── */
+.instructions {
+  width: 560px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 4px;
+}
+.chip {
+  background: #1a1c2c;
+  border: 1px solid #2a2a44;
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.7rem;
+  color: #8888aa;
+}
+.chip span { color: #ffe066; }
+</style>
+</head>
+<body>
+
+<h1>🍞 Wednesday Bread NPC</h1>
+<p class="subtitle">Interactive demo — click an NPC to start a dialogue</p>
+
+<!-- World canvas -->
+<div class="world" id="world">
+  <div class="day-badge">⚡ WEDNESDAY</div>
+
+  <!-- Wednesday Bread NPC -->
+  <div class="npc" id="npc-bread" style="left:200px;top:80px;" onclick="openDialogue('bread')">
+    <div class="npc-label">Wednesday Bread</div>
+    <div id="bread-sprite">
+      <img src="../client/public/sprites/npcs/wednesday-bread/sheet.png" alt="Wednesday Bread">
+    </div>
+    <div class="hint">▲ Talk</div>
+  </div>
+
+  <!-- Goose 1 -->
+  <div class="npc npc-goose" id="npc-goose1" style="left:340px;top:100px;" onclick="openDialogue('goose1')">
+    <div class="npc-label">Gluten</div>
+    <img src="../client/public/sprites/npcs/wednesday-goose/south.png" width="48" alt="Goose">
+    <div class="hint">▲ Talk</div>
+  </div>
+
+  <!-- Goose 2 -->
+  <div class="npc npc-goose" id="npc-goose2" style="left:420px;top:130px;" onclick="openDialogue('goose2')">
+    <div class="npc-label">Yeast</div>
+    <img src="../client/public/sprites/npcs/wednesday-goose/south.png" width="48" alt="Goose">
+    <div class="hint">▲ Talk</div>
+  </div>
+
+  <!-- Goose 3 -->
+  <div class="npc npc-goose" id="npc-goose3" style="left:110px;top:120px;" onclick="openDialogue('goose3')">
+    <div class="npc-label">Maillard</div>
+    <img src="../client/public/sprites/npcs/wednesday-goose/south.png" width="48" alt="Goose">
+    <div class="hint">▲ Talk</div>
+  </div>
+</div>
+
+<!-- Inventory -->
+<div class="inventory">
+  <div class="inv-label">INVENTORY</div>
+  <div class="inv-slots">
+    <div class="inv-slot" id="slot-bread">
+      <div class="item-tooltip">Slice of Wednesday Bread</div>
+    </div>
+    <div class="inv-slot" id="slot-badge">
+      <div class="item-tooltip">Breadwinner Badge — yours to keep forever</div>
+    </div>
+    <div class="inv-slot"></div>
+    <div class="inv-slot"></div>
+    <div class="inv-slot"></div>
+  </div>
+</div>
+
+<!-- Dialogue box -->
+<div class="dialogue-wrap" id="dialogue">
+  <div class="jrpg-box">
+    <div class="portrait-col">
+      <div class="portrait-frame">
+        <img id="portrait-img" src="" alt="">
+      </div>
+      <div class="portrait-name" id="portrait-name"></div>
+    </div>
+    <div class="dialogue-content">
+      <div class="dialogue-text">
+        <span class="speaker" id="dlg-speaker"></span>
+        <span id="dlg-text"></span>
+      </div>
+      <div class="feed-btn-wrap" id="feed-wrap">
+        <button class="feed-btn" onclick="feedGoose()">🍞 Give it the bread</button>
+      </div>
+      <div class="dialogue-nav">
+        <button class="nav-btn" onclick="nextLine()">▶ Next</button>
+        <button class="nav-btn close-btn" onclick="closeDialogue()">✕ Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="instructions">
+  <div class="chip"><span>1.</span> Click the 🍞 Bread NPC to get bread</div>
+  <div class="chip"><span>2.</span> Click a 🪿 Goose NPC to feed it</div>
+  <div class="chip"><span>3.</span> Watch the sparkle overlay fire</div>
+</div>
+
+<!-- Sparkle overlay -->
+<div class="sparkle-overlay" id="sparkle">
+  <div class="sparkle-burst" id="sparkle-burst"></div>
+  <div class="sparkle-text">🪿 HONK ♥</div>
+  <div class="sparkle-sub">The goose is extremely happy</div>
+</div>
+
+<!-- Badge toast -->
+<div class="badge-toast" id="badge-toast">
+  <div class="badge-icon">🍞</div>
+  <div class="badge-info">
+    <strong>Breadwinner Badge earned!</strong>
+    <span>Auto-equipped • Yours to keep forever</span>
+  </div>
+</div>
+
+<script>
+const BREAD_LINES = [
+  "Rise and shine! Get it? Because I'm bread.",
+  "I knead you to have a great Wednesday.",
+  "Life is what you bake of it.",
+  "I'm on a roll today — or, well, I'm a slice, but you get it.",
+  "Grain things take time. Trust the process.",
+  "You're the yeast I could do — show up and be present.",
+  "Don't loaf around! It's Wednesday, half the week done!",
+  "Gluten tag! That's German for good day. I'm very cultured.",
+  "The crust of the matter is: you're doing amazing.",
+  "Wheat's up? I've been here since dawn, just being crusty.",
+  "Butter late than never — glad you stopped by.",
+]
+const BREAD_FINAL = "I am the Wednesday Bread. Come back next week."
+
+const GOOSE_LINES = [
+  "HONK.",
+  "HONK HONK.",
+  "*stares at you*",
+  "*looks at your pockets meaningfully*",
+  "H O N K.",
+  "*waddles closer*",
+  "*aggressive eye contact*",
+  "honk... (softly, for once)",
+]
+const GOOSE_FINAL = "HONK."
+
+// State
+let currentNpc = null
+let lineIndex = 0
+let shuffledLines = []
+let hasBread = false
+let hasBadge = false
+let isFinished = false
+
+// Shuffle helper
+function shuffle(arr) {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
+function isGoose(npc) { return npc && npc.startsWith('goose') }
+
+function openDialogue(npc) {
+  currentNpc = npc
+  lineIndex = 0
+  isFinished = false
+
+  if (isGoose(npc)) {
+    shuffledLines = shuffle(GOOSE_LINES)
+  } else {
+    shuffledLines = shuffle(BREAD_LINES)
+  }
+
+  // portrait + name
+  const gooseNames = { goose1: 'Gluten', goose2: 'Yeast', goose3: 'Maillard' }
+  const gooseName = gooseNames[npc] || 'Goose'
+  if (isGoose(npc)) {
+    document.getElementById('portrait-img').src = '../client/public/sprites/npcs/wednesday-goose/portraits/neutral.png'
+    document.getElementById('portrait-name').textContent = gooseName
+    document.getElementById('dlg-speaker').textContent = gooseName + ': '
+    document.getElementById('dlg-speaker').style.color = '#88ccff'
+  } else {
+    document.getElementById('portrait-img').src = '../client/public/sprites/npcs/wednesday-bread/portraits/neutral.png'
+    document.getElementById('portrait-name').textContent = 'Wednesday\nBread'
+    document.getElementById('dlg-speaker').textContent = 'Wednesday Bread: '
+    document.getElementById('dlg-speaker').style.color = '#ffe066'
+  }
+
+  showLine()
+  document.getElementById('dialogue').classList.add('open')
+}
+
+function showLine() {
+  const text = document.getElementById('dlg-text')
+  if (isFinished) {
+    text.textContent = isGoose(currentNpc) ? GOOSE_FINAL : BREAD_FINAL
+    document.getElementById('feed-wrap').classList.remove('visible')
+    return
+  }
+  text.textContent = shuffledLines[lineIndex] || (isGoose(currentNpc) ? GOOSE_FINAL : BREAD_FINAL)
+
+  // Show feed button if talking to a goose and have bread
+  const showFeed = isGoose(currentNpc) && hasBread && !hasBadge
+  document.getElementById('feed-wrap').classList.toggle('visible', showFeed)
+}
+
+function nextLine() {
+  lineIndex++
+  if (lineIndex >= shuffledLines.length) {
+    isFinished = true
+    // Grant bread when finishing bread dialogue (first time)
+    if (!isGoose(currentNpc) && !hasBread) {
+      grantBread()
+    }
+  }
+  showLine()
+}
+
+function closeDialogue() {
+  document.getElementById('dialogue').classList.remove('open')
+  currentNpc = null
+}
+
+function grantBread() {
+  hasBread = true
+  const slot = document.getElementById('slot-bread')
+  slot.textContent = '🍞'
+  slot.classList.add('has-item')
+  const tip = document.createElement('div')
+  tip.className = 'item-tooltip'
+  tip.textContent = 'Slice of Wednesday Bread'
+  slot.appendChild(tip)
+}
+
+function feedGoose() {
+  closeDialogue()
+  // Consume bread
+  hasBread = false
+  const slot = document.getElementById('slot-bread')
+  slot.textContent = ''
+  slot.classList.remove('has-item')
+
+  // Fire sparkle overlay
+  fireSparkle()
+
+  // Grant badge
+  setTimeout(grantBadge, 600)
+}
+
+function fireSparkle() {
+  const burst = document.getElementById('sparkle-burst')
+  burst.innerHTML = ''
+  for (let i = 0; i < 12; i++) {
+    const star = document.createElement('div')
+    star.className = 'sparkle-star'
+    star.style.setProperty('--i', i)
+    burst.appendChild(star)
+  }
+  const overlay = document.getElementById('sparkle')
+  overlay.classList.remove('firing')
+  void overlay.offsetWidth // reflow to retrigger
+  overlay.classList.add('firing')
+  overlay.addEventListener('animationend', () => overlay.classList.remove('firing'), { once: true })
+}
+
+function grantBadge() {
+  if (hasBadge) return
+  hasBadge = true
+  const slot = document.getElementById('slot-badge')
+  slot.textContent = '🎖️'
+  slot.classList.add('has-item')
+  const tip = document.createElement('div')
+  tip.className = 'item-tooltip'
+  tip.textContent = 'Breadwinner Badge — yours to keep forever'
+  slot.appendChild(tip)
+
+  const toast = document.getElementById('badge-toast')
+  toast.classList.add('show')
+  setTimeout(() => toast.classList.remove('show'), 4000)
+}
+</script>
+</body>
+</html>

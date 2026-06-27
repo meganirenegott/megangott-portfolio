@@ -1,6 +1,55 @@
 {
   "posts": [
     {
+      "slug": "cherry-blossom-seasons",
+      "title": "Making a Campus That Knows What Month It Is",
+      "subtitle": "I built a feature that does literally nothing useful — 65 CSS cherry blossom petals, coherent wind physics, and rare golden sparkle petals. Here's why useless beauty matters.",
+      "date": "2026-06-27",
+      "tags": ["CSS", "game-design", "atmosphere", "seasonal"],
+      "project": "Multiverse Campus",
+      "readTime": "6 min",
+      "demo": "../demos/cherry-blossom-demo.html"
+    },
+    {
+      "slug": "wednesday-bread-goose",
+      "title": "Why a Slice of Bread Appears on Campus Every Wednesday",
+      "subtitle": "A pun-telling NPC, a chaos goose, and the infrastructure of time-gated characters. Weekly rituals build community — even absurd ones.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "NPC", "community", "architecture"],
+      "project": "Multiverse Campus",
+      "readTime": "5 min",
+      "demo": "../demos/wednesday-bread-demo.html"
+    },
+    {
+      "slug": "sanctuary-pets",
+      "title": "What Happens to a Virtual Pet When Its Owner Graduates",
+      "subtitle": "After 90 days of inactivity, pets become Sanctuary Animals — campus wanderers cared for by everyone. Nothing should just disappear.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "ethics", "PostgreSQL", "community"],
+      "project": "Sanctuary Pets",
+      "readTime": "7 min",
+      "demo": "../demos/sanctuary-pets-demo.html"
+    },
+    {
+      "slug": "sailboat-model-island",
+      "title": "We Built an Island for Retired AI Models",
+      "subtitle": "A dock, a sailboat, an 18-second cinematic voyage, and a tropical island where deprecated language models live out their days.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "AI", "animation", "architecture"],
+      "project": "Model Island",
+      "readTime": "6 min"
+    },
+    {
+      "slug": "capybara-spa",
+      "title": "Why Our Campus Has a Spa Run by Capybaras",
+      "subtitle": "Designing animal behavior that feels genuinely alive — circadian rhythms, emergent friendships, and the case for features that do absolutely nothing productive.",
+      "date": "2026-06-27",
+      "tags": ["game-design", "AI", "behavior-systems", "UX"],
+      "project": "Capybara Spa",
+      "readTime": "7 min",
+      "demo": "../demos/capybara-spa-demo.html"
+    },
+    {
       "slug": "phishing-aquarium",
       "title": "The Phishing Training Tank — Where Scammers Become Fish",
       "subtitle": "When someone phishes on our campus, we sanitize their tactics and turn them into a swimming, educational exhibit.",
