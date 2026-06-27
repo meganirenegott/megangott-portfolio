@@ -1,6 +1,15 @@
 {
   "posts": [
     {
+      "slug": "the-ocean-incident",
+      "title": "I Accidentally Spawned an Ocean in the Middle of Campus",
+      "subtitle": "One wrong coordinate, 47 minutes of panic, and the most important lesson about mistakes I've ever learned.",
+      "date": "2026-06-26",
+      "tags": ["debugging", "game-dev", "coordinates", "war-stories"],
+      "project": "Multiverse Campus",
+      "readTime": "6 min"
+    },
+    {
       "slug": "ghost-light-ritual",
       "title": "From Stage to Screen — Why I Built a Ghost Light on a Virtual Campus",
       "subtitle": "I started my career as a theater lighting designer. The ghost light ritual followed me into code.",
