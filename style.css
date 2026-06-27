@@ -23,6 +23,8 @@
   --glow-green-dim: rgba(0, 255, 163, 0.15);
   --glow-amber: #ffbe30;
   --glow-amber-dim: rgba(255, 190, 48, 0.15);
+  --glow-violet: #a855f7;
+  --glow-violet-dim: rgba(168, 85, 247, 0.15);
 
   /* Text */
   --text-primary: #e4e9f2;
@@ -912,6 +914,7 @@ section {
 }
 
 /* Color-code each skill group's dot */
+.skill-group--game .skill-list li::before { background: var(--glow-violet); }
 .skill-group--ui .skill-list li::before { background: var(--glow-cyan); }
 .skill-group--api .skill-list li::before { background: var(--glow-blue); }
 .skill-group--data .skill-list li::before { background: var(--glow-green); }
