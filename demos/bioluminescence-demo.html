@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪼 Bioluminescent Tide Demo — Multiverse Campus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #020810;
+            color: #e0e0e0;
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        canvas { display: block; width: 100vw; height: 100vh; }
+
+        /* ── Left panel ── */
+        #controls {
+            position: fixed;
+            top: 14px;
+            left: 14px;
+            background: rgba(2, 8, 20, 0.92);
+            border: 1px solid rgba(0, 230, 210, 0.22);
+            border-radius: 14px;
+            padding: 14px 18px;
+            font-size: 12px;
+            z-index: 10;
+            max-width: 260px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 230, 210, 0.05);
+        }
+
+        #controls h3 {
+            font-size: 15px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00e6d2, #00c8ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        #controls p { margin: 4px 0; color: #5a7d9a; line-height: 1.5; }
+        #controls .key { color: #00e6d2; font-weight: 700; }
+        #controls .note { color: #ffd54f; font-style: italic; margin-top: 8px; font-size: 11px; }
+
+        /* ── Sliders ── */
+        .slider-row {
+            margin-top: 12px;
+            border-top: 1px solid rgba(0, 230, 210, 0.1);
+            padding-top: 10px;
+        }
+
+        .slider-row label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: #7a9eb8;
+            margin-bottom: 4px;
+        }
+
+        .slider-row label span { color: #00e6d2; font-weight: 700; font-size: 12px; }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #00e6d2;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(0, 230, 210, 0.6);
+        }
+
+        /* ── Tide info (top right) ── */
+        #tideInfo {
+            position: fixed;
+            top: 14px;
+            right: 14px;
+            background: rgba(2, 8, 20, 0.92);
+            border: 1px solid rgba(0, 230, 210, 0.22);
+            border-radius: 14px;
+            padding: 12px 18px;
+            font-size: 12px;
+            z-index: 10;
+            text-align: center;
+            min-width: 180px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+        }
+
+        #tideInfo .tide-status {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.2px;
+        }
+
+        #tideInfo .tide-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 6px 0;
+        }
+
+        #tideInfo .tide-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 300ms ease, background 600ms ease;
+        }
+
+        #tideInfo .bio-badge {
+            display: none;
+            margin-top: 8px;
+            padding: 4px 10px;
+            background: rgba(0, 230, 210, 0.12);
+            border: 1px solid rgba(0, 230, 210, 0.3);
+            border-radius: 20px;
+            font-size: 11px;
+            color: #00e6d2;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        #tideInfo .bio-badge.active { display: block; }
+
+        /* ── Bottom toast ── */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(2, 8, 20, 0.9);
+            border: 1px solid rgba(0, 230, 210, 0.3);
+            border-radius: 10px;
+            padding: 8px 20px;
+            font-size: 13px;
+            color: #00e6d2;
+            font-weight: 600;
+            z-index: 10;
+            transition: opacity 0.3s;
+            opacity: 0;
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+        }
+
+        #toast.show { opacity: 1; }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+
+    <div id="controls">
+        <h3>🪼 Bioluminescent Tide Demo</h3>
+        <p><span class="key">WASD / ↑↓←→</span> Move to water</p>
+        <p><span class="key">T</span> Toggle tide (low / high)</p>
+        <p><span class="key">N</span> Toggle night intensity</p>
+        <p class="note">Walk toward the shoreline at night to see your footsteps light up the water ✨</p>
+
+        <div class="slider-row">
+            <label>Night Intensity <span id="nightVal">100%</span></label>
+            <input type="range" id="nightSlider" min="0" max="100" value="100">
+
+            <label>Tide Speed <span id="speedVal">10×</span></label>
+            <input type="range" id="speedSlider" min="1" max="20" value="10">
+        </div>
+    </div>
+
+    <div id="tideInfo">
+        <div class="tide-status" id="tideStatus">🌊 Loading...</div>
+        <div class="tide-bar"><div class="tide-fill" id="tideFill"></div></div>
+        <div id="tideTimer" style="font-size:10px;color:#4a6a80;margin-top:2px;"></div>
+        <div class="bio-badge" id="bioBadge">✨ Bioluminescence Active</div>
+    </div>
+
+    <div id="toast"></div>
+
+    <script>
+        // ── Canvas setup ──────────────────────────────────────────────────
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const dpr = window.devicePixelRatio || 1;
+        function resize() {
+            canvas.width = window.innerWidth * dpr;
+            canvas.height = window.innerHeight * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        const W = () => window.innerWidth;
+        const H = () => window.innerHeight;
+        const TILE = 32;
+
+        // ── World / camera ────────────────────────────────────────────────
+        // Player starts on the beach, facing the water
+        let camX = 250, camY = 465;
+        const keys = {};
+        window.addEventListener('keydown', e => {
+            keys[e.key.toLowerCase()] = true;
+            if (e.key === 't' || e.key === 'T') toggleTide();
+            if (e.key === 'n' || e.key === 'N') toggleNight();
+        });
+        window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
+
+        // ── Controls ──────────────────────────────────────────────────────
+        let nightIntensity = 1.0;
+        let tideSpeedMult = 10;
+        let tideOverride = null;
+
+        document.getElementById('nightSlider').addEventListener('input', e => {
+            nightIntensity = e.target.value / 100;
+            document.getElementById('nightVal').textContent = e.target.value + '%';
+        });
+        document.getElementById('speedSlider').addEventListener('input', e => {
+            tideSpeedMult = parseInt(e.target.value);
+            document.getElementById('speedVal').textContent = tideSpeedMult + '×';
+        });
+
+        function toggleTide() {
+            if (tideOverride === null || tideOverride > 0) tideOverride = -0.9;
+            else tideOverride = 0.9;
+        }
+
+        function toggleNight() {
+            nightIntensity = nightIntensity > 0.5 ? 0 : 1;
+            document.getElementById('nightSlider').value = Math.round(nightIntensity * 100);
+            document.getElementById('nightVal').textContent = Math.round(nightIntensity * 100) + '%';
+        }
+
+        // ── Hash (identical to game's hash fn) ───────────────────────────
+        function hash(x, y) {
+            const n = x * 374761393 + y * 668265263;
+            return ((n ^ (n >> 13)) * 1274126177) >>> 0;
+        }
+
+        // ── Tide ──────────────────────────────────────────────────────────
+        const BASE_TIDE_PERIOD = 15 * 60 * 1000; // 15 min
+
+        function getTideSin() {
+            if (tideOverride !== null) return tideOverride;
+            const period = BASE_TIDE_PERIOD / tideSpeedMult;
+            return Math.sin((Date.now() % period) / period * Math.PI * 2);
+        }
+
+        function getShoreline(worldX) {
+            const tideSin = getTideSin();
+            const tideOffset = tideSin * 20;
+            const inletCX = 400, inletW = 250, inletD = 120;
+            const dx = Math.abs(worldX - inletCX);
+            const inletF = dx < inletW ? (1 - (dx / inletW) ** 2) * inletD : 0;
+            const baseY = 2800;
+            return {
+                shoreY: baseY - inletF + tideOffset,
+                beachStart: baseY - inletF + tideOffset - 15,
+                waterStart: baseY - inletF + tideOffset + 15,
+                isLow: tideSin < -0.3,
+                isHigh: tideSin > 0.3,
+                tideSin,
+            };
+        }
+
+        // ── Tide-reactive color palette ───────────────────────────────────
+        // tideSin +1 = electric blue-cyan (0, 200, 255)
+        // tideSin  0 = pure teal         (0, 230, 210)
+        // tideSin -1 = neon green-cyan   (0, 255, 190)
+        function getBioColor(tideSin) {
+            const tideT = (tideSin + 1) / 2; // 0=low, 1=high
+            return {
+                r: 0,
+                g: Math.round(255 - tideT * 55),  // 255 → 200
+                b: Math.round(190 + tideT * 65),  // 190 → 255
+            };
+        }
+
+        // ── Stars (pre-seeded positions) ──────────────────────────────────
+        const STARS = Array.from({ length: 200 }, (_, i) => ({
+            x: (hash(i * 7, i * 13) % 4000) - 500,
+            y: (hash(i * 11, i * 3) % 600),
+            r: 0.5 + (hash(i, i * 5) % 10) / 10,
+            twinkle: (hash(i * 3, i * 7) % 314) / 100,
+        }));
+
+        // ── Footstep shimmer system ───────────────────────────────────────
+        const footsteps = [];
+        let lastStepTime = 0;
+
+        // ── Jellyfish helpers ─────────────────────────────────────────────
+        // Identical algorithm to planned renderJellyfish — jhash + stride + rarity
+        const JELLY_STRIDE = 96;
+        const JELLY_RARITY = 25;
+
+        function drawJellyfish(sx, sy, t, h, bioG, bioB, nightI) {
+            const bob = Math.sin(t / 2000 + (h & 0xFF) * 0.025) * 10;
+            const drift = Math.sin(t / 5000 + (h & 0xFF) * 0.018) * 8;
+            const cx = sx + drift;
+            const cy = sy + bob;
+
+            const pulse = nightI * (0.5 + Math.sin(t / 1200 + h) * 0.15);
+
+            ctx.save();
+            ctx.globalAlpha = 1;
+
+            // Outer glow halo
+            const halo = ctx.createRadialGradient(cx, cy, 0, cx, cy, 22);
+            halo.addColorStop(0,   `rgba(180, 255, 250, ${pulse * 0.6})`);
+            halo.addColorStop(0.3, `rgba(0, ${bioG}, ${bioB}, ${pulse * 0.9})`);
+            halo.addColorStop(0.7, `rgba(0, ${Math.round(bioG / 2)}, ${bioB}, ${pulse * 0.35})`);
+            halo.addColorStop(1,   'transparent');
+            ctx.fillStyle = halo;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 22, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Bell body (upper hemisphere)
+            ctx.beginPath();
+            ctx.arc(cx, cy, 14, Math.PI, 0);
+            ctx.closePath();
+            ctx.fillStyle = `rgba(0, ${bioG}, ${bioB}, 0.65)`;
+            ctx.fill();
+
+            // Bell highlight arc
+            ctx.beginPath();
+            ctx.arc(cx, cy - 3, 10, Math.PI + 0.3, -0.3);
+            ctx.strokeStyle = `rgba(200, 255, 252, 0.8)`;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // Tentacles — 5 wavy strokes
+            for (let i = 0; i < 5; i++) {
+                const tx2 = cx + (i - 2) * 5;
+                const len = 10 + (hash(i, h & 0xFF) % 7);
+                ctx.beginPath();
+                ctx.moveTo(tx2, cy + 14);
+                const cp1x = tx2 + Math.sin(t / 800 + i * 1.2 + (h & 0xFF) * 0.05) * 4;
+                const cp1y = cy + 14 + len * 0.5;
+                ctx.quadraticCurveTo(cp1x, cp1y, tx2, cy + 14 + len);
+                ctx.strokeStyle = `rgba(0, ${bioG + 20 > 255 ? 255 : bioG + 20}, ${bioB}, 0.45)`;
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+            }
+
+            // Inner bioluminescent organ
+            ctx.beginPath();
+            ctx.ellipse(cx, cy - 2, 4, 2, 0, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(210, 255, 252, 0.9)`;
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        // ── Ground tile renderer ──────────────────────────────────────────
+        function renderTile(worldX, worldY, screenX, screenY, t) {
+            const shore = getShoreline(worldX);
+            const h = hash(worldX, worldY);
+            const { tideSin, beachStart, waterStart } = shore;
+
+            if (worldY <= beachStart) return false; // land handled separately
+
+            const tideT = (tideSin + 1) / 2;
+            const { r: bioR, g: bioG, b: bioB } = getBioColor(tideSin);
+
+            if (worldY <= waterStart) {
+                // === BEACH / SHORELINE ===
+                const bp = (worldY - beachStart) / 30;
+
+                const sandR = 210 + (h % 15), sandG = 190 + (h % 12), sandB = 140 + (h % 10);
+                ctx.fillStyle = `rgb(${sandR}, ${sandG}, ${sandB})`;
+                ctx.fillRect(screenX, screenY, TILE, TILE);
+
+                // Wet sand darkening near water
+                if (bp > 0.6) {
+                    ctx.fillStyle = `rgba(100, 140, 160, ${(bp - 0.6) * 0.5})`;
+                    ctx.fillRect(screenX, screenY, TILE, TILE);
+                }
+
+                // Foam spray
+                if (bp > 0.8) {
+                    const foamX = screenX + (h % 20);
+                    const foamY = screenY + Math.sin(t / 700 + worldX * 0.1) * 2;
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                    ctx.beginPath();
+                    ctx.ellipse(foamX + 10, foamY + 10, 8, 3, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Bioluminescence lives in the water zone only — see WATER block below
+
+                // Tide pools at low tide
+                if (shore.isLow && bp > 0.3 && bp < 0.7) {
+                    const ph2 = hash(worldX + 5555, worldY + 7777);
+                    if (ph2 % 6 === 0) {
+                        const px = screenX + (ph2 % 16) + 4, py = screenY + ((ph2 >> 3) % 14) + 4;
+                        ctx.fillStyle = 'rgba(60, 90, 80, 0.6)';
+                        ctx.beginPath(); ctx.ellipse(px + 10, py + 8, 11, 7, 0, 0, Math.PI * 2); ctx.fill();
+                        ctx.fillStyle = 'rgba(72, 180, 200, 0.4)';
+                        ctx.beginPath(); ctx.ellipse(px + 10, py + 8, 9, 5, 0, 0, Math.PI * 2); ctx.fill();
+                        const cr = ph2 % 4;
+                        ctx.font = '8px sans-serif'; ctx.textAlign = 'center';
+                        if (cr === 0) ctx.fillText('⭐', px + 8, py + 10);
+                        else if (cr === 1) ctx.fillText('🦀', px + 12, py + 10);
+                        else if (cr === 2) ctx.fillText('🐚', px + 10, py + 10);
+                        else ctx.fillText('🪸', px + 10, py + 10);
+                    }
+                }
+
+                // Shells
+                if (h % 9 === 0) {
+                    ctx.fillStyle = 'rgba(180, 170, 150, 0.5)';
+                    ctx.fillRect(screenX + (h % 24) + 4, screenY + ((h >> 3) % 20) + 6, 3, 2);
+                }
+                return true;
+            }
+
+            // === WATER ===
+            const depth = Math.min(1, (worldY - waterStart) / 200);
+            ctx.fillStyle = `rgb(${Math.round(20 - depth * 10)}, ${Math.round(100 - depth * 30)}, ${Math.round(160 + depth * 40)})`;
+            ctx.fillRect(screenX, screenY, TILE, TILE);
+
+            // Wave ripples
+            const w1 = Math.sin(t / 800 + worldX * 0.05 + worldY * 0.03) * 0.12;
+            const w2 = Math.sin(t / 1200 + worldX * 0.03 - worldY * 0.02) * 0.08;
+            ctx.fillStyle = `rgba(72, 202, 228, ${Math.max(0, 0.1 + w1 + w2)})`;
+            ctx.fillRect(screenX, screenY, TILE, TILE);
+
+            // Specular highlights
+            if (depth < 0.4) {
+                const sp = Math.sin(t / 500 + worldX * 0.2 + worldY * 0.15);
+                if (sp > 0.7) {
+                    ctx.fillStyle = `rgba(255, 255, 252, ${(sp - 0.7) * 0.3})`;
+                    ctx.fillRect(screenX + (h % 20) + 6, screenY + ((h >> 4) % 20) + 6, 2, 2);
+                }
+            }
+
+            // Wave lines
+            if (h % 4 === 0) {
+                const ly = screenY + 14 + Math.sin(t / 900 + worldX * 0.08) * 3;
+                ctx.strokeStyle = `rgba(72, 202, 228, ${0.15 - depth * 0.05})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(screenX, ly);
+                ctx.quadraticCurveTo(screenX + TILE / 2, ly + 2, screenX + TILE, ly);
+                ctx.stroke();
+            }
+
+            // === BIOLUMINESCENT SHALLOW WATER GLOW + SHIMMER + GLITTER (water-only) ===
+            // Only tiles clearly in the water — sparkles require depth > 0.08 so they never
+            // appear on tiles right at the tidal edge, which shift back and forth with the tide.
+            if (depth < 0.32 && nightIntensity > 0) {
+                const { r: bioR2, g: bioG2, b: bioB2 } = getBioColor(tideSin);
+                const shallowT = 1 - (depth / 0.32); // 1.0 at edge → 0 at tile 2
+                const pulse = Math.sin(t / 600 + worldX * 0.07 + worldY * 0.05);
+
+                // Area glow wash — starts from the waterline edge
+                const areaAlpha = nightIntensity * 0.42 * shallowT * (0.75 + pulse * 0.25);
+                ctx.fillStyle = `rgba(${bioR2}, ${bioG2}, ${bioB2}, ${areaAlpha})`;
+                ctx.fillRect(screenX, screenY, TILE, TILE);
+
+                // Two shimmer wave lines — also from the edge
+                const shimmerAlpha = nightIntensity * 0.65 * shallowT;
+                const lineY  = screenY + 10 + Math.sin(t / 900  + worldX * 0.08) * 4;
+                const lineY2 = screenY + 22 + Math.sin(t / 1100 + worldX * 0.06 + 1.2) * 3;
+                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = `rgba(200, 255, 252, ${shimmerAlpha})`;
+                ctx.beginPath();
+                ctx.moveTo(screenX, lineY);
+                ctx.quadraticCurveTo(screenX + TILE / 2, lineY - 2, screenX + TILE, lineY);
+                ctx.stroke();
+                ctx.strokeStyle = `rgba(${bioR2}, ${bioG2}, ${bioB2}, ${shimmerAlpha * 0.55})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(screenX, lineY2);
+                ctx.quadraticCurveTo(screenX + TILE / 2, lineY2 + 1.5, screenX + TILE, lineY2);
+                ctx.stroke();
+
+                // Glitter sparkles — only when clearly submerged (depth > 0.08, ~16px from edge)
+                // This stops sparkles appearing on tiles right at the tidal boundary
+                if (depth > 0.08) {
+                    const sparkCount = 6 + (h % 4);
+                    for (let si = 0; si < sparkCount; si++) {
+                        const sh = hash(worldX + si * 3333, worldY + si * 7777);
+                        const phase   = (sh % 628) / 100;
+                        const speed   = 300 + (sh % 400);
+                        const twinkle = (Math.sin(t / speed + phase) + 1) / 2;
+                        if (twinkle < 0.15) continue;
+
+                        const sparkAlpha = nightIntensity * shallowT * twinkle * 0.95;
+                        const spx = screenX + (sh % 28) + 2;
+                        const spy = screenY + ((sh >> 5) % 28) + 2;
+                        const isLarge  = (sh % 7 === 0);
+                        const isYellow = (sh % 9 === 0);
+                        const spR = isLarge ? 1.5 + twinkle * 0.9 : 0.3 + twinkle * 0.5;
+                        const cR = isYellow ? 220 : 230;
+                        const cG = isYellow ? 255 : 255;
+                        const cB = isYellow ?  30 : 252;
+                        const hR = isYellow ? 210 : bioR2;
+                        const hG = isYellow ? 255 : bioG2;
+                        const hB = isYellow ?   0 : bioB2;
+                        const haloR = isLarge ? spR * 3.5 : spR * 4;
+                        const spGrad = ctx.createRadialGradient(spx, spy, 0, spx, spy, haloR);
+                        spGrad.addColorStop(0,   `rgba(${cR}, ${cG}, ${cB}, ${sparkAlpha})`);
+                        spGrad.addColorStop(0.4, `rgba(${hR}, ${hG}, ${hB}, ${sparkAlpha * 0.5})`);
+                        spGrad.addColorStop(1,   'transparent');
+                        ctx.fillStyle = spGrad;
+                        ctx.beginPath(); ctx.arc(spx, spy, haloR, 0, Math.PI * 2); ctx.fill();
+                        ctx.fillStyle = `rgba(${cR}, ${cG}, ${cB}, ${sparkAlpha})`;
+                        ctx.beginPath(); ctx.arc(spx, spy, spR, 0, Math.PI * 2); ctx.fill();
+                    }
+                }
+            }
+
+            // Zone B: tiles 3–4 (depth 0.32–0.64) — sparse taper, fine sparkles only
+            // These tiles are 64–128px below waterStart, safely below any tidal shift.
+            if (depth >= 0.32 && depth < 0.64 && nightIntensity > 0) {
+                const { r: bioR2, g: bioG2, b: bioB2 } = getBioColor(tideSin);
+                const taperT = 1 - (depth - 0.32) / 0.32; // 1.0 at tile-2 edge → 0 at tile-4
+
+                const sparkCount = 2 + (h % 2); // 2–3 sparse per tile
+                for (let si = 0; si < sparkCount; si++) {
+                    const sh = hash(worldX + si * 4444, worldY + si * 8888);
+                    const phase   = (sh % 628) / 100;
+                    const speed   = 500 + (sh % 700); // slower twinkle in deeper water
+                    const twinkle = (Math.sin(t / speed + phase) + 1) / 2;
+                    if (twinkle < 0.35) continue; // sparser — high threshold
+
+                    const sparkAlpha = nightIntensity * taperT * twinkle * 0.45;
+                    const spx = screenX + (sh % 28) + 2;
+                    const spy = screenY + ((sh >> 5) % 28) + 2;
+                    const isYellow = (sh % 14 === 0); // rarer yellow deeper down
+                    const spR = 0.3 + twinkle * 0.4;  // fine only, no large blooms
+                    const cR = isYellow ? 220 : 230;
+                    const cG = isYellow ? 255 : 255;
+                    const cB = isYellow ?  30 : 252;
+                    const hR = isYellow ? 210 : bioR2;
+                    const hG = isYellow ? 255 : bioG2;
+                    const hB = isYellow ?   0 : bioB2;
+                    const spGrad = ctx.createRadialGradient(spx, spy, 0, spx, spy, spR * 4);
+                    spGrad.addColorStop(0,   `rgba(${cR}, ${cG}, ${cB}, ${sparkAlpha})`);
+                    spGrad.addColorStop(0.4, `rgba(${hR}, ${hG}, ${hB}, ${sparkAlpha * 0.4})`);
+                    spGrad.addColorStop(1,   'transparent');
+                    ctx.fillStyle = spGrad;
+                    ctx.beginPath(); ctx.arc(spx, spy, spR * 4, 0, Math.PI * 2); ctx.fill();
+                    ctx.fillStyle = `rgba(${cR}, ${cG}, ${cB}, ${sparkAlpha})`;
+                    ctx.beginPath(); ctx.arc(spx, spy, spR, 0, Math.PI * 2); ctx.fill();
+                }
+            }
+
+            return true;
+        }
+
+        // ── Main render ───────────────────────────────────────────────────
+        function render() {
+            const w = W(), h2 = H();
+            const t = performance.now();
+            const tideSin = getTideSin();
+            const { r: bioR, g: bioG, b: bioB } = getBioColor(tideSin);
+
+            // Camera movement (player world-position centered)
+            const speed = 2.5;
+            if (keys['arrowleft'] || keys['a']) camX -= speed;
+            if (keys['arrowright'] || keys['d']) camX += speed;
+            if (keys['arrowup'] || keys['w']) camY -= speed;
+            if (keys['arrowdown'] || keys['s']) camY += speed;
+
+            // Player world position
+            const playerWX = camX + w / 2;
+            const playerWY = camY + h2 / 2;
+            const shore = getShoreline(playerWX);
+            const inShoreZone = playerWY > shore.beachStart - 10 && playerWY < shore.waterStart + 30;
+
+            // Footstep emit — pre-compute scattered glint positions per step
+            const isMoving = keys['arrowleft'] || keys['a'] || keys['arrowright'] || keys['d'] ||
+                             keys['arrowup'] || keys['w'] || keys['arrowdown'] || keys['s'];
+            if (nightIntensity > 0 && inShoreZone && isMoving && t - lastStepTime > 350) {
+                // 8 micro-glints at random polar offsets around the step — stored once, never move
+                const glints = Array.from({ length: 8 }, (_, i) => {
+                    const angle = (i / 8) * Math.PI * 2 + Math.random() * 0.7;
+                    const r = 6 + Math.random() * 22;
+                    return {
+                        ox: Math.cos(angle) * r,
+                        oy: Math.sin(angle) * r * 0.65, // slightly flatter scatter (footprint shape)
+                        phase: Math.random() * Math.PI * 2,
+                        speed: 600 + Math.random() * 800,
+                    };
+                });
+                footsteps.push({ x: playerWX, y: playerWY, born: t, glints });
+                lastStepTime = t;
+            }
+
+            // ── Sky ──
+            const skyGrad = ctx.createLinearGradient(0, 0, 0, h2 * 0.55);
+            if (nightIntensity > 0.5) {
+                skyGrad.addColorStop(0, `rgba(1, 3, 15, 1)`);
+                skyGrad.addColorStop(0.6, `rgba(2, 8, 28, 1)`);
+                skyGrad.addColorStop(1, `rgba(3, 15, 40, 1)`);
+            } else {
+                const dawn = 1 - nightIntensity * 2;
+                skyGrad.addColorStop(0, `rgb(${Math.round(20 + dawn * 135)}, ${Math.round(30 + dawn * 100)}, ${Math.round(60 + dawn * 155)})`);
+                skyGrad.addColorStop(1, `rgb(${Math.round(5 + dawn * 60)}, ${Math.round(20 + dawn * 80)}, ${Math.round(50 + dawn * 120)})`);
+            }
+            ctx.fillStyle = skyGrad;
+            ctx.fillRect(0, 0, w, h2);
+
+            // Stars — fade with day
+            if (nightIntensity > 0.05) {
+                ctx.save();
+                for (const star of STARS) {
+                    const sx = star.x - camX;
+                    const sy = star.y - camY;
+                    if (sx < -10 || sx > w + 10 || sy < -10 || sy > h2 * 0.6) continue;
+                    const twinkle = 0.4 + Math.sin(t / 1000 + star.twinkle) * 0.4;
+                    ctx.globalAlpha = nightIntensity * twinkle;
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    ctx.arc(sx, sy, star.r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.globalAlpha = 1;
+                ctx.restore();
+            }
+
+            // Moon
+            if (nightIntensity > 0.1) {
+                const moonX = w * 0.78, moonY = h2 * 0.14;
+                ctx.save();
+                ctx.globalAlpha = nightIntensity * 0.9;
+                const moonGlow = ctx.createRadialGradient(moonX, moonY, 10, moonX, moonY, 60);
+                moonGlow.addColorStop(0, 'rgba(220, 240, 255, 0.15)');
+                moonGlow.addColorStop(1, 'transparent');
+                ctx.fillStyle = moonGlow;
+                ctx.beginPath(); ctx.arc(moonX, moonY, 60, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#d8e8f8';
+                ctx.beginPath(); ctx.arc(moonX, moonY, 18, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = '#c0d4e8';
+                ctx.beginPath(); ctx.arc(moonX - 6, moonY - 4, 6, 0, Math.PI * 2); ctx.fill();
+                ctx.restore();
+            }
+
+            // ── Ground tiles ──
+            const startTX = Math.floor(camX / TILE);
+            const startTY = Math.floor(camY / TILE);
+            const endTX = Math.ceil((camX + w) / TILE) + 1;
+            const endTY = Math.ceil((camY + h2) / TILE) + 1;
+
+            for (let ty = startTY; ty < endTY; ty++) {
+                for (let tx = startTX; tx < endTX; tx++) {
+                    const wx = tx * TILE, wy = ty * TILE;
+                    const sx = wx - camX, sy = wy - camY;
+                    if (!renderTile(wx, wy, sx, sy, t)) {
+                        // Land / grass
+                        const hv = hash(wx, wy);
+                        const g = 28 + (hv % 18);
+                        ctx.fillStyle = `rgb(${g - 8}, ${g + 12}, ${g - 8})`;
+                        ctx.fillRect(sx, sy, TILE, TILE);
+                        if (hv % 8 === 0) {
+                            ctx.fillStyle = 'rgba(30, 90, 30, 0.35)';
+                            ctx.fillRect(sx + (hv % 24) + 2, sy + ((hv >> 4) % 20) + 4, 1, 5);
+                        }
+                    }
+                }
+            }
+
+            // ── Jellyfish post-pass (new!) ────────────────────────────────
+            if (nightIntensity > 0) {
+                const jWaterStart = getShoreline(camX + w / 2).waterStart;
+                // Visible water zone: from waterStart to roughly +400 world-px
+                const jWorldMinY = jWaterStart;
+                const jWorldMaxY = jWorldMinY + 400;
+                const jGridMinX = Math.floor((camX - 30) / JELLY_STRIDE) * JELLY_STRIDE;
+                const jGridMaxX = Math.ceil((camX + w + 30) / JELLY_STRIDE) * JELLY_STRIDE;
+                const jGridMinY = Math.floor(jWorldMinY / JELLY_STRIDE) * JELLY_STRIDE;
+                const jGridMaxY = Math.ceil(jWorldMaxY / JELLY_STRIDE) * JELLY_STRIDE;
+
+                for (let jy = jGridMinY; jy <= jGridMaxY; jy += JELLY_STRIDE) {
+                    for (let jx = jGridMinX; jx <= jGridMaxX; jx += JELLY_STRIDE) {
+                        const h = hash(Math.round(jx / JELLY_STRIDE), Math.round(jy / JELLY_STRIDE));
+                        if (h % JELLY_RARITY !== 0) continue;
+
+                        // Jellyfish world position — offset within grid cell for variety
+                        const jwx = jx + (h % 40) + 20;
+                        const jwy = jy + ((h >> 4) % 40) + 20;
+
+                        // Only in water zone — require full bell+halo clearance below waterStart
+                        // so no jellyfish top peeks above the waterline onto the sand
+                        const localShore = getShoreline(jwx);
+                        if (jwy < localShore.waterStart + 36) continue; // 36 = bell(14) + halo(22)
+
+                        const jsx = jwx - camX;
+                        const jsy = jwy - camY;
+
+                        // Viewport cull
+                        if (jsx < -60 || jsx > w + 60 || jsy < -60 || jsy > h2 + 60) continue;
+
+                        // Rare green jellyfish — use a separate hash so the color draw
+                        // is not correlated with the rarity hash (h is always % 25 === 0,
+                        // so h % 50 would hit 50% of jellyfish — wrong!)
+                        const colorH = hash(Math.round(jx / JELLY_STRIDE) + 5471, Math.round(jy / JELLY_STRIDE) + 3119);
+                        const isGreenJelly = (colorH % 50 === 0);
+                        const jG = isGreenJelly ? 255 : bioG;
+                        const jB = isGreenJelly ?  80 : bioB;
+                        drawJellyfish(jsx, jsy, t, h, jG, jB, nightIntensity);
+                    }
+                }
+            }
+
+            // ── Footstep glow — static bloom + scattered micro-glints ────────
+            for (let i = footsteps.length - 1; i >= 0; i--) {
+                const step = footsteps[i];
+                const age = t - step.born;
+                if (age > 3500) { footsteps.splice(i, 1); continue; }
+                const progress = age / 3500;
+
+                // Sine-arc alpha — breathes in gently, never pops, drifts away
+                const alpha = nightIntensity * 0.22 * Math.sin(progress * Math.PI);
+
+                const sx = step.x - camX;
+                const sy = step.y - camY;
+
+                // Soft static bloom — FIXED radius, only alpha changes. No cloud expansion.
+                const bloom = ctx.createRadialGradient(sx, sy, 0, sx, sy, 18);
+                bloom.addColorStop(0,   `rgba(210, 255, 252, ${alpha * 1.1})`);
+                bloom.addColorStop(0.45,`rgba(${bioR}, ${bioG}, ${bioB}, ${alpha * 0.7})`);
+                bloom.addColorStop(0.8, `rgba(${bioR}, ${bioG}, ${bioB}, ${alpha * 0.15})`);
+                bloom.addColorStop(1,   'transparent');
+                ctx.fillStyle = bloom;
+                ctx.beginPath();
+                ctx.arc(sx, sy, 18, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Scattered micro-glints — each shimmers at its own rate
+                for (const g of step.glints) {
+                    const shimmer = 0.4 + 0.6 * ((Math.sin(t / g.speed + g.phase) + 1) / 2);
+                    const ga = alpha * shimmer * 1.6;
+                    if (ga < 0.02) continue;
+                    const gx = sx + g.ox, gy = sy + g.oy;
+                    const gr = ctx.createRadialGradient(gx, gy, 0, gx, gy, 5);
+                    gr.addColorStop(0,   `rgba(220, 255, 252, ${ga})`);
+                    gr.addColorStop(0.5, `rgba(${bioR}, ${bioG}, ${bioB}, ${ga * 0.5})`);
+                    gr.addColorStop(1,   'transparent');
+                    ctx.fillStyle = gr;
+                    ctx.beginPath();
+                    ctx.arc(gx, gy, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            // ── Island silhouette ─────────────────────────────────────────
+            const isX = 400 - camX, isY = 3030 - camY;
+            if (isX > -200 && isX < w + 200 && isY > -100 && isY < h2 + 100) {
+                ctx.save();
+                ctx.globalAlpha = 0.4;
+                ctx.fillStyle = '#1a5a2a';
+                ctx.beginPath(); ctx.ellipse(isX, isY + 15, 60, 20, 0, Math.PI, 0); ctx.fill();
+                ctx.fillStyle = '#1d6b30';
+                ctx.beginPath(); ctx.ellipse(isX - 15, isY + 12, 30, 18, 0, Math.PI, 0); ctx.fill();
+                ctx.globalAlpha = 0.35;
+                ctx.font = '16px sans-serif'; ctx.textAlign = 'center';
+                ctx.fillText('🌴', isX - 10, isY - 2); ctx.fillText('🌴', isX + 18, isY + 2);
+                ctx.globalAlpha = 0.3;
+                ctx.fillStyle = '#87ceeb';
+                ctx.font = 'italic 9px Georgia';
+                ctx.fillText('Model Sanctuary', isX, isY + 30);
+                ctx.restore();
+            }
+
+            // ── Player character ──────────────────────────────────────────
+            const psx = w / 2, psy = h2 / 2;
+            // Glow aura when near water at night
+            if (nightIntensity > 0 && inShoreZone) {
+                const aura = ctx.createRadialGradient(psx, psy, 4, psx, psy, 24);
+                aura.addColorStop(0, `rgba(${bioR}, ${bioG}, ${bioB}, ${nightIntensity * 0.35})`);
+                aura.addColorStop(1, 'transparent');
+                ctx.fillStyle = aura;
+                ctx.beginPath(); ctx.arc(psx, psy, 24, 0, Math.PI * 2); ctx.fill();
+            }
+            // Shadow
+            ctx.fillStyle = 'rgba(0,0,0,0.25)';
+            ctx.beginPath(); ctx.ellipse(psx, psy + 10, 8, 3, 0, 0, Math.PI * 2); ctx.fill();
+            // Body
+            ctx.font = '24px sans-serif'; ctx.textAlign = 'center';
+            ctx.fillText('🧑', psx, psy + 6);
+
+            // ── Night overlay ─────────────────────────────────────────────
+            if (nightIntensity > 0.01) {
+                const nightAlpha = nightIntensity * 0.38;
+                ctx.fillStyle = `rgba(6, 8, 30, ${nightAlpha})`;
+                ctx.fillRect(0, 0, w, h2);
+            }
+
+            // ── Tide HUD (top right) ──────────────────────────────────────
+            const isLow = shore.isLow, isHigh = shore.isHigh;
+            const statusEl = document.getElementById('tideStatus');
+            const fillEl = document.getElementById('tideFill');
+            const timerEl = document.getElementById('tideTimer');
+            const bioBadge = document.getElementById('bioBadge');
+
+            const bioHint = nightIntensity > 0.3 ? ' · ✨ Bioluminescence' : '';
+            statusEl.textContent = isLow
+                ? `🌊 Low Tide${bioHint}`
+                : isHigh ? `🌊 High Tide${bioHint}` : `🌊 Tide changing...${bioHint}`;
+
+            // Tide-reactive label color
+            if (nightIntensity > 0.3) {
+                statusEl.style.color = '#00e6d2';
+            } else {
+                statusEl.style.color = isLow ? '#ffd54f' : '#87ceeb';
+            }
+
+            const fillPct = (tideSin + 1) / 2 * 100;
+            fillEl.style.width = fillPct + '%';
+            // Tide-reactive fill color
+            fillEl.style.background = `rgb(${bioR}, ${bioG}, ${bioB})`;
+
+            if (tideOverride !== null) {
+                timerEl.textContent = 'Manual (press T)';
+            } else {
+                const period = BASE_TIDE_PERIOD / tideSpeedMult;
+                const remaining = period - (Date.now() % period);
+                const secs = Math.floor(remaining / 1000);
+                timerEl.textContent = `Cycle: ${secs}s`;
+            }
+
+            bioBadge.classList.toggle('active', nightIntensity > 0.3);
+
+            // ── Shore prompt ──────────────────────────────────────────────
+            if (inShoreZone) {
+                const promptY = h2 - 50;
+                ctx.fillStyle = 'rgba(2, 8, 20, 0.85)';
+                ctx.beginPath();
+                ctx.roundRect(w / 2 - 140, promptY - 16, 280, 28, 8);
+                ctx.fill();
+                if (nightIntensity > 0.3) {
+                    ctx.fillStyle = '#00e6d2';
+                    ctx.font = '12px Inter, sans-serif'; ctx.textAlign = 'center';
+                    ctx.fillText('✨ Bioluminescence — walk to light up the water', w / 2, promptY + 1);
+                } else {
+                    ctx.fillStyle = '#87ceeb';
+                    ctx.font = '12px Inter, sans-serif'; ctx.textAlign = 'center';
+                    ctx.fillText('🌊 Shoreline — raise Night Intensity to see bioluminescence', w / 2, promptY + 1);
+                }
+            }
+
+            // ── Color swatch legend (bottom left) ────────────────────────
+            if (nightIntensity > 0) {
+                ctx.save();
+                const legendX = 14, legendY = h2 - 60;
+                ctx.fillStyle = 'rgba(2, 8, 20, 0.85)';
+                ctx.beginPath(); ctx.roundRect(legendX, legendY, 210, 50, 8); ctx.fill();
+                ctx.font = '10px Inter, sans-serif';
+                ctx.textAlign = 'left';
+                // Three tide color swatches
+                const swatches = [
+                    { label: 'Low tide', r: 0, g: 255, b: 190 },
+                    { label: 'Mid tide', r: 0, g: 230, b: 210 },
+                    { label: 'High tide', r: 0, g: 200, b: 255 },
+                ];
+                ctx.fillStyle = '#5a7d9a';
+                ctx.fillText('Bioluminescence color by tide:', legendX + 10, legendY + 14);
+                swatches.forEach((s, i) => {
+                    const sx2 = legendX + 10 + i * 68;
+                    ctx.fillStyle = `rgb(${s.r}, ${s.g}, ${s.b})`;
+                    ctx.beginPath(); ctx.arc(sx2 + 5, legendY + 32, 5, 0, Math.PI * 2); ctx.fill();
+                    ctx.fillStyle = '#6a8aaa';
+                    ctx.fillText(s.label, sx2 + 14, legendY + 37);
+                });
+                // Highlight current
+                const currentI = Math.round((tideSin + 1) * 1.001);
+                const highlightX = legendX + 10 + Math.min(currentI, 2) * 68 + 5;
+                ctx.strokeStyle = `rgb(${bioR}, ${bioG}, ${bioB})`;
+                ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.arc(highlightX, legendY + 32, 7, 0, Math.PI * 2); ctx.stroke();
+                ctx.restore();
+            }
+
+            requestAnimationFrame(render);
+        }
+
+        // ── Start ──────────────────────────────────────────────────────────
+        // Nudge camera so player starts right at the shoreline
+        camX = 250;
+        camY = 2800 - H() / 2 - 30;
+        render();
+    </script>
+</body>
+</html>

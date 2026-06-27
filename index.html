@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Megan Gott — Full-Stack Developer</title>
+  <meta name="description" content="Full-stack developer building real-time web applications with TypeScript, React, Python, and PostgreSQL. Passionate about game systems, security, and community-driven software.">
+  <meta name="author" content="Megan Gott">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Megan Gott — Full-Stack Developer">
+  <meta property="og:description" content="Full-stack developer building real-time web applications with TypeScript, React, Python, and PostgreSQL.">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Particle background -->
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+
+  <!-- ======================== HERO ======================== -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-content">
+        <p class="hero-greeting">Hi, I'm</p>
+        <h1 class="hero-name">Megan Gott</h1>
+        <p class="hero-tagline">
+          <strong>Full-stack developer</strong> building real-time web applications
+          with TypeScript, React, Python, and PostgreSQL. I build game systems,
+          harden security, and ship community-driven software on production platforms
+          used by real people every day.
+        </p>
+
+        <div class="tech-pills">
+          <span class="tech-pill">TypeScript</span>
+          <span class="tech-pill">React</span>
+          <span class="tech-pill">Python</span>
+          <span class="tech-pill">Flask</span>
+          <span class="tech-pill">PostgreSQL</span>
+          <span class="tech-pill">WebSockets</span>
+          <span class="tech-pill">Canvas API</span>
+          <span class="tech-pill">Node.js</span>
+        </div>
+
+        <div class="hero-links">
+          <a href="#projects" class="btn-primary">
+            View My Work
+            <span aria-hidden="true">↓</span>
+          </a>
+          <a href="https://github.com/meganirenegott" target="_blank" rel="noopener noreferrer" class="btn-ghost">
+            GitHub
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-indicator" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="arrow"></div>
+    </div>
+  </section>
+
+
+  <!-- ======================== PROJECTS ======================== -->
+  <section id="projects">
+    <div class="container">
+      <div class="projects-header reveal">
+        <p class="section-label">Featured Work</p>
+        <h2 class="section-title">Things I've Built</h2>
+        <p class="section-subtitle">
+          End-to-end features shipped on production platforms — from database
+          migrations to real-time UI. Each project links to the actual commits.
+        </p>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- Project 1: Community Resource Commons -->
+        <article class="project-card reveal reveal-delay-1" id="project-resource-commons">
+          <div class="card-accent card-accent--cyan"></div>
+          <div class="card-visual card-visual--resource">
+            <span class="card-icon" aria-hidden="true">🤝</span>
+          </div>
+          <div class="card-body">
+            <p class="card-repo">themultiverse.school</p>
+            <h3 class="card-title">Community Resource Commons</h3>
+            <p class="card-oneliner">A full-stack mutual-aid platform for discovering and sharing community resources.</p>
+            <p class="card-description">
+              Built the entire feature from scratch: Flask API with 12+ routes, PostgreSQL schema with 6 tables,
+              contributor workflows, admin dashboards for review and moderation, automated health-check background
+              jobs, email digest system, and regional resource discovery with international support.
+            </p>
+            <div class="card-decision">
+              <p class="card-decision-label">Key Decision</p>
+              <p>
+                Wrote 1,337 lines of unit tests before the feature was even merged — covering 
+                edge cases in resource submission, approval flows, and geographic matching. 
+                This caught a double-JSON.stringify bug that would have broken every edit modal in production.
+              </p>
+            </div>
+            <div class="card-tags">
+              <span class="card-tag">Python</span>
+              <span class="card-tag">Flask</span>
+              <span class="card-tag">PostgreSQL</span>
+              <span class="card-tag">Jinja2</span>
+              <span class="card-tag">Background Jobs</span>
+              <span class="card-tag">Unit Testing</span>
+            </div>
+            <a href="https://github.com/lizTheDeveloper/themultiverse.school/commits?author=meganirenegott" target="_blank" rel="noopener noreferrer" class="card-link">
+              View commits <span class="arrow-icon" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Project 2: OWASP Security Hardening -->
+        <article class="project-card reveal reveal-delay-2" id="project-security">
+          <div class="card-accent card-accent--magenta"></div>
+          <div class="card-visual card-visual--security">
+            <span class="card-icon" aria-hidden="true">🛡️</span>
+          </div>
+          <div class="card-body">
+            <p class="card-repo">multiversecampus</p>
+            <h3 class="card-title">OWASP Security Hardening</h3>
+            <p class="card-oneliner">Systematic security audit and remediation of a production feature.</p>
+            <p class="card-description">
+              Audited the meeting rooms feature against the OWASP Top 10 and fixed every finding:
+              parameterized SQL to eliminate injection, mounted auth middleware on unprotected routes,
+              added authorization checks, input validation on all POST endpoints, URL scheme whitelisting,
+              DB transactions to prevent vote-count race conditions, and HTML escaping to block XSS.
+            </p>
+            <div class="card-decision">
+              <p class="card-decision-label">Key Decision</p>
+              <p>
+                Wrapped the vote endpoint in a database transaction to prevent count drift under
+                concurrent requests — a race condition that wouldn't show up in manual testing
+                but could silently corrupt data under real traffic.
+              </p>
+            </div>
+            <div class="card-tags">
+              <span class="card-tag">Security</span>
+              <span class="card-tag">OWASP Top 10</span>
+              <span class="card-tag">SQL Injection</span>
+              <span class="card-tag">Auth Middleware</span>
+              <span class="card-tag">Input Validation</span>
+              <span class="card-tag">TypeScript</span>
+            </div>
+            <a href="https://github.com/lizTheDeveloper/multiversecampus/commit/f69e627d" target="_blank" rel="noopener noreferrer" class="card-link">
+              View commit <span class="arrow-icon" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Project 3: Pizza Book Club -->
+        <article class="project-card reveal reveal-delay-3" id="project-book-club">
+          <div class="card-accent card-accent--green"></div>
+          <div class="card-visual card-visual--bookclub">
+            <span class="card-icon" aria-hidden="true">📚</span>
+          </div>
+          <div class="card-body">
+            <p class="card-repo">multiversecampus</p>
+            <h3 class="card-title">Pizza Book Club</h3>
+            <p class="card-oneliner">A gamified reading program with NPC interactions, leaderboards, and shareable book reports.</p>
+            <p class="card-description">
+              Designed and built the full feature across the stack: a "Read It!" NPC with dialogue and sprite
+              animations, a book report form with privacy controls, a leaderboard with badge tiers,
+              shareable report pages with unique URLs, a monthly award cron job, and 4 database migrations.
+              Wrote 363-line E2E API test suite and 411-line unit test suite.
+            </p>
+            <div class="card-decision">
+              <p class="card-decision-label">Key Decision</p>
+              <p>
+                Integrated the feature into the existing biome zone system so the NPC only appears in
+                the correct campus area — requiring careful wiring across the game canvas, router, 
+                cron scheduler, and shared type definitions without breaking other zones.
+              </p>
+            </div>
+            <div class="card-tags">
+              <span class="card-tag">React</span>
+              <span class="card-tag">TypeScript</span>
+              <span class="card-tag">Zustand</span>
+              <span class="card-tag">Express</span>
+              <span class="card-tag">PostgreSQL</span>
+              <span class="card-tag">E2E Tests</span>
+              <span class="card-tag">Cron Jobs</span>
+            </div>
+            <a href="https://github.com/lizTheDeveloper/multiversecampus/commits?author=meganirenegott" target="_blank" rel="noopener noreferrer" class="card-link">
+              View commits <span class="arrow-icon" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </article>
+
+        <!-- Project 4: Bioluminescent Ocean -->
+        <article class="project-card reveal reveal-delay-4" id="project-ocean">
+          <div class="card-accent card-accent--blue"></div>
+          <div class="card-visual card-visual--ocean">
+            <span class="card-icon" aria-hidden="true">🌊</span>
+          </div>
+          <div class="card-body">
+            <p class="card-repo">multiversecampus</p>
+            <h3 class="card-title">Bioluminescent Ocean</h3>
+            <p class="card-oneliner">A procedural rendering system for dynamic ocean tides and jellyfish animations.</p>
+            <p class="card-description">
+              Built a canvas-based bioluminescent tide system with night-lighting utilities,
+              procedural tile generation, jellyfish rendering with organic movement, and a
+              standalone HTML demo. Integrated with the existing game engine's map system
+              and day/night cycle without disrupting other visual layers.
+            </p>
+            <div class="card-decision">
+              <p class="card-decision-label">Key Decision</p>
+              <p>
+                Used procedural tile hooks instead of pre-rendered sprites so the ocean
+                responds dynamically to the time-of-day system — the bioluminescence
+                intensity scales with darkness, creating an emergent visual effect
+                without hardcoded animation states.
+              </p>
+            </div>
+            <div class="card-tags">
+              <span class="card-tag">Canvas API</span>
+              <span class="card-tag">Procedural Generation</span>
+              <span class="card-tag">TypeScript</span>
+              <span class="card-tag">Game Engine</span>
+              <span class="card-tag">Animation</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-demo" id="open-bio-demo" type="button">
+                <span class="play-icon" aria-hidden="true">▶</span>
+                Try the Demo
+              </button>
+              <a href="https://github.com/lizTheDeveloper/multiversecampus/commit/8a182ad0" target="_blank" rel="noopener noreferrer" class="card-link">
+                View commit <span class="arrow-icon" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================== SKILLS ======================== -->
+  <section id="skills">
+    <div class="container">
+      <div class="skills-header reveal">
+        <p class="section-label">Capabilities</p>
+        <h2 class="section-title">What I Work With</h2>
+        <p class="section-subtitle">
+          Organized by what I do with them, not just what they're called.
+        </p>
+      </div>
+
+      <div class="skills-grid">
+
+        <div class="skill-group skill-group--ui reveal reveal-delay-1">
+          <span class="skill-icon" aria-hidden="true">🎨</span>
+          <h3 class="skill-group-title">Build UIs</h3>
+          <ul class="skill-list">
+            <li>React</li>
+            <li>TypeScript</li>
+            <li>CSS</li>
+            <li>Canvas API</li>
+            <li>Zustand</li>
+          </ul>
+        </div>
+
+        <div class="skill-group skill-group--api reveal reveal-delay-2">
+          <span class="skill-icon" aria-hidden="true">⚡</span>
+          <h3 class="skill-group-title">Design APIs</h3>
+          <ul class="skill-list">
+            <li>Express</li>
+            <li>Flask</li>
+            <li>REST</li>
+            <li>WebSockets</li>
+            <li>Socket.io</li>
+          </ul>
+        </div>
+
+        <div class="skill-group skill-group--data reveal reveal-delay-3">
+          <span class="skill-icon" aria-hidden="true">🗄️</span>
+          <h3 class="skill-group-title">Model Data</h3>
+          <ul class="skill-list">
+            <li>PostgreSQL</li>
+            <li>SQL Migrations</li>
+            <li>Schema Design</li>
+            <li>Transactions</li>
+          </ul>
+        </div>
+
+        <div class="skill-group skill-group--security reveal reveal-delay-4">
+          <span class="skill-icon" aria-hidden="true">🔒</span>
+          <h3 class="skill-group-title">Ship Safely</h3>
+          <ul class="skill-list">
+            <li>OWASP Hardening</li>
+            <li>Unit Testing</li>
+            <li>E2E Testing</li>
+            <li>CI / Git Workflows</li>
+          </ul>
+        </div>
+
+        <div class="skill-group skill-group--systems reveal reveal-delay-5">
+          <span class="skill-icon" aria-hidden="true">🔮</span>
+          <h3 class="skill-group-title">Create Systems</h3>
+          <ul class="skill-list">
+            <li>NPC AI & Dialogue</li>
+            <li>Particle Engines</li>
+            <li>Cron Scheduling</li>
+            <li>Real-time Sync</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================== STATS ======================== -->
+  <section id="stats">
+    <div class="container">
+      <div class="stats-bar reveal">
+        <div class="stat-item">
+          <p class="stat-number" data-target="235" data-suffix="+">0</p>
+          <p class="stat-label">Commits</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-number" data-target="72" data-suffix="K+">0</p>
+          <p class="stat-label">Lines Shipped</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-number" data-target="15" data-suffix="+">0</p>
+          <p class="stat-label">DB Migrations</p>
+        </div>
+        <div class="stat-item">
+          <p class="stat-number" data-target="2">0</p>
+          <p class="stat-label">Production Codebases</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ======================== FOOTER ======================== -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-left">
+          <p>Megan Gott · 2026</p>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/meganirenegott" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="mailto:meganirenegott@gmail.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Demo Modal -->
+  <div class="demo-modal-overlay" id="demo-modal" aria-hidden="true">
+    <div class="demo-modal-header">
+      <div class="demo-modal-title">
+        🪼 Bioluminescent Tide Demo
+        <span class="badge">Interactive</span>
+      </div>
+      <button class="demo-modal-close" id="close-demo" type="button">
+        <kbd>Esc</kbd> Close
+      </button>
+    </div>
+    <div class="demo-modal-frame">
+      <iframe id="demo-iframe" title="Bioluminescent Tide Demo"></iframe>
+    </div>
+    <p class="demo-modal-hint">
+      <kbd>WASD</kbd> or <kbd>↑↓←→</kbd> to move · <kbd>T</kbd> toggle tide · <kbd>N</kbd> toggle night · Walk toward the shoreline to light up the water
+    </p>
+  </div>
+
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>
