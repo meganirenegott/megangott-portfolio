@@ -25,6 +25,8 @@
   --glow-amber-dim: rgba(255, 190, 48, 0.15);
   --glow-violet: #a855f7;
   --glow-violet-dim: rgba(168, 85, 247, 0.15);
+  --glow-teal: #2dd4bf;
+  --glow-teal-dim: rgba(45, 212, 191, 0.15);
 
   /* Text */
   --text-primary: #e4e9f2;
@@ -853,7 +855,7 @@ section {
 
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
 }
 
@@ -920,6 +922,7 @@ section {
 .skill-group--data .skill-list li::before { background: var(--glow-green); }
 .skill-group--security .skill-list li::before { background: var(--glow-magenta); }
 .skill-group--systems .skill-list li::before { background: var(--glow-amber); }
+.skill-group--ai .skill-list li::before { background: var(--glow-teal); }
 
 
 /* ============================================
