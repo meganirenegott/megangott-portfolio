@@ -1,14 +1,8 @@
-There's a rubber duck on our campus that asks clarifying questions.
-
-It doesn't quack. It doesn't float. It walks you through a structured debugging prompt, and by the end you've usually found the bug yourself. It's called The Consulting Duck, and it's one of 17 odd items designed to roast work culture while quietly being useful.
+Not all of the 17 odd items are roasts. Some of them are actually useful, or at least adjacent to useful. They do something nice for you, or for the people around you, or they make a bad day slightly funnier. These are the ones that help (sort of).
 
 ![The Consulting Duck: "It does not quack. It asks clarifying questions."](images/odd-items-consulting-duck.png)
 
-## The ones that actually help
-
-Some of the odd items are pure jokes. The Consulting Duck is a joke that also teaches you a real skill. Rubber duck debugging is a legitimate technique: you explain your code out loud to something that can't respond, and the act of explaining reveals the bug. Developers have been doing this for decades. We just gave the duck a name tag and a drop rate.
-
-The items in this post are the "helpful" ones, in the loosest possible sense. They do something nice for you, or for the people around you, or they at least make a bad day slightly funnier.
+## The helpful ones
 
 ### 🦆 The Consulting Duck
 
