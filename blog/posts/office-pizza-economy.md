@@ -52,16 +52,8 @@ Every student who reads that flavor text will laugh, because they've all felt th
 
 When you hold Vague Feedback, nearby players periodically say "hmm" in ambient chat. It's the subtlest item in the whole set. Most people won't notice at first. When they figure out where the "hmm" is coming from, that moment of realization is the whole joke.
 
-If you've ever gotten a performance review that said nothing, this one's for you.
+The roast here is real though. Good feedback is direct, clear, and actionable. "Your function handles the happy path but doesn't account for empty inputs" is useful. "Interesting work" is not. A lot of people come to this school specifically because they want honest feedback from people who care enough to be specific. The Vague Feedback item is a reminder of what we're not doing here. We're making fun of it because we take the real thing seriously.
 
 ### 🪪 Expired Hall Pass and others
 
 The **Expired Hall Pass** gives you a 50/50 coin flip on whether you skip an event. The **Heavy Backpack** adds a cosmetic lean to your character, no gameplay effect, just a vibe. **Group Chat (Muted)** silences notification pings for 5 minutes, and its description (*"247 unread messages. It is fine. Everything is fine."*) is a direct roast of every work chat you've ever muted and pretended was fine.
-
-## The accidental economy
-
-I didn't set out to build an economy. I set out to build conversation starters, little moments of "hey, look at this" that give students a reason to talk to each other.
-
-But when you give people items with different rarities and a way to trade them, they start connecting on their own. They learn each other's names because they want to ask "do you have a Sock?" They explore campus because they heard Rinley drops something good. They come back because they're curious what they'll find.
-
-These aren't live yet, but the systems are built and the items are ready. I'm excited to see what kind of economy a sock creates.
