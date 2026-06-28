@@ -318,11 +318,63 @@
 
         function drawSprite(name, x, y, w, h, flipX) {
             const img = sprites[name];
-            if (!img || !img.complete || !img.naturalWidth) return false;
+            if (img && img.complete && img.naturalWidth) {
+                ctx.save();
+                ctx.translate(x, y);
+                if (flipX) ctx.scale(-1, 1);
+                ctx.drawImage(img, -w / 2, -h / 2, w, h);
+                ctx.restore();
+                return true;
+            }
+            // Procedural fallback for missing sprites
             ctx.save();
             ctx.translate(x, y);
             if (flipX) ctx.scale(-1, 1);
-            ctx.drawImage(img, -w / 2, -h / 2, w, h);
+            if (name === 'denise') {
+                // Goldfish body
+                const s = w / 32;
+                ctx.fillStyle = '#f5a623';
+                ctx.beginPath(); ctx.ellipse(0, 2*s, 12*s, 9*s, 0, 0, Math.PI*2); ctx.fill();
+                ctx.strokeStyle = '#d4880a'; ctx.lineWidth = 1.2*s;
+                ctx.beginPath(); ctx.ellipse(0, 2*s, 12*s, 9*s, 0, 0, Math.PI*2); ctx.stroke();
+                // Tail fin
+                ctx.fillStyle = '#f5a623';
+                ctx.beginPath(); ctx.moveTo(-11*s, 0); ctx.lineTo(-17*s, -6*s); ctx.lineTo(-17*s, 8*s); ctx.closePath(); ctx.fill();
+                ctx.strokeStyle = '#d4880a'; ctx.stroke();
+                // Dorsal fin
+                ctx.fillStyle = '#ffbb44';
+                ctx.beginPath(); ctx.moveTo(-4*s, -7*s); ctx.lineTo(2*s, -13*s); ctx.lineTo(6*s, -7*s); ctx.closePath(); ctx.fill();
+                // Eye
+                ctx.fillStyle = '#fff';
+                ctx.beginPath(); ctx.arc(6*s, -1*s, 3.5*s, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#222';
+                ctx.beginPath(); ctx.arc(7*s, -1*s, 1.8*s, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#fff';
+                ctx.beginPath(); ctx.arc(7.8*s, -2*s, 0.7*s, 0, Math.PI*2); ctx.fill();
+                // Smile
+                ctx.strokeStyle = '#d4880a'; ctx.lineWidth = 1*s;
+                ctx.beginPath(); ctx.arc(7*s, 3*s, 3*s, 0.1, Math.PI*0.7); ctx.stroke();
+                // Rubber ducky on head
+                ctx.fillStyle = '#ffe033';
+                ctx.beginPath(); ctx.ellipse(1*s, -11*s, 4*s, 3.5*s, 0, 0, Math.PI*2); ctx.fill(); // body
+                ctx.beginPath(); ctx.arc(4*s, -13*s, 2.5*s, 0, Math.PI*2); ctx.fill(); // head
+                ctx.fillStyle = '#ff8800';
+                ctx.beginPath(); ctx.moveTo(6*s, -13*s); ctx.lineTo(8.5*s, -12.5*s); ctx.lineTo(6*s, -12*s); ctx.closePath(); ctx.fill(); // beak
+                ctx.fillStyle = '#222';
+                ctx.beginPath(); ctx.arc(4.5*s, -13.5*s, 0.6*s, 0, Math.PI*2); ctx.fill(); // eye
+            } else {
+                // Generic fallback: colored circle with first letter
+                const npc = specialNPCs.find(n => n.sprite === name);
+                const color = npc ? npc.color : '#888';
+                ctx.fillStyle = color;
+                ctx.globalAlpha = 0.8;
+                ctx.beginPath(); ctx.arc(0, 0, w/2, 0, Math.PI*2); ctx.fill();
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = '#fff';
+                ctx.font = `700 ${w*0.5}px Inter, sans-serif`;
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText(name.charAt(0).toUpperCase(), 0, 1);
+            }
             ctx.restore();
             return true;
         }
