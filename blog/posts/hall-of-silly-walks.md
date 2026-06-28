@@ -57,6 +57,8 @@ clean design, vibrant colors, no background"
 
 This keeps the style consistent while leaving the creativity wide open. You can ask for anything, and the pixel art prefix makes sure it looks like it belongs on campus.
 
+![A generated walk appears in your history and you can activate it](images/silly-walks-generated.png)
+
 ## The best part is: some people do
 
 When I shipped this feature, I wasn't sure anyone would buy it. It's a $5 cosmetic that makes your avatar walk funny. It doesn't help you code. It doesn't improve your grades. It doesn't unlock any content.
