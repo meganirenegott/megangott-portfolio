@@ -18,6 +18,8 @@ The system lives behind a ✨ button in the bottom-left corner of the screen. Cl
 
 The architecture is extensible by design. Adding a new weather system requires exactly one thing: add an entry to the `ATMOSPHERE_FILTERS` array and implement a `renderFilter()` case. Zero other files change. The panel auto-discovers new filters and renders their controls.
 
+![The Atmosphere Panel — a glassmorphism popover listing all nine weather effects with emoji icons, colored toggle switches, and sliders with custom vocabulary labels like "Drizzle → Downpour" and "A Few → Galaxy." A sparkle button in the bottom corner opens the panel. Cherry blossom petals and fireflies drift across the campus behind it.](images/atmosphere-panel.png)
+
 ## The nine effects
 
 Each effect is its own CSS or canvas overlay. The details matter because particle effects live or die on the details.
@@ -40,6 +42,8 @@ Each effect is its own CSS or canvas overlay. The details matter because particl
 
 **🌸 Cherry Blossoms** — The one that started it all. Originally a [standalone seasonal feature](/blog/post.html?slug=cherry-blossom-seasons) that ran for two weeks in April, refactored into the Atmosphere Panel after students fell in love with using it as a camera overlay during video calls. All the same physics — coherent wind, sparkle variants, three petal shapes — but now available year-round and controllable from the same interface as everything else. The overlay still renders on top of video call windows, which remains the most popular use case.
 
+![All nine atmosphere effects shown side by side — Snowflakes over a winter campus, Autumn Leaves tumbling across paths, diagonal Rain with splash effects, Fireflies glowing at dusk, Confetti with twisting ribbons, a rainbow Shooting Star trailing across the night sky, iridescent Bubbles floating upward, neon green Matrix Rain cascading down, and Cherry Blossoms drifting over a sunlit scene.](images/atmosphere-nine-effects.png)
+
 ## Why vocabulary matters
 
 The slider labels are the detail I'm proudest of, and they took almost no code. Each `FilterDef` in the atmosphere system has `densityLabels` and `speedLabels` fields — arrays of human-readable names that map to the slider range:
@@ -60,6 +64,8 @@ Admins can broadcast any atmosphere effect to all connected clients simultaneous
 This creates *shared emotional moments*. An admin broadcasts confetti during a graduation ceremony. Snowflakes on the first day of winter break. Shooting stars during a late-night hackathon. The weather isn't decorative — it's *communicative*. It says "something is happening right now, and we're all experiencing it together."
 
 Broadcast effects override personal settings and show an "admin" badge in the panel so students know it wasn't their choice. When the admin turns it off, everyone's personal settings restore. The override is respectful — it communicates "this is temporary and intentional" rather than silently changing your environment.
+
+![An admin broadcasts confetti across the entire campus during a graduation ceremony. Colorful confetti squares and twisting ribbons fill the air as students in graduation caps celebrate in a courtyard. An "ADMIN BROADCAST: Confetti" notification with an admin badge appears in the corner.](images/atmosphere-admin-broadcast.png)
 
 ## Mood is a feature
 

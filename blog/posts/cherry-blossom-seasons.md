@@ -10,6 +10,8 @@ I built the cherry blossom filter because I think atmosphere is infrastructure �
 
 Real places have seasons. Your video feed should too.
 
+![A video call on the virtual campus with the cherry blossom overlay active — pink petals in multiple shades drift across the camera feed at a gentle diagonal, with one golden sparkle petal catching light. A small cherry blossom settings button glows in the corner of the video window. The campus behind the call shows cherry blossom trees in bloom.](images/cherry-blossom-video-overlay.png)
+
 ## 65 petals, 3 shapes, 7 colors
 
 Each cherry blossom petal is a CSS element with its own personality. When the overlay initializes, it spawns 65 petals (configurable from 5 to 200) and randomizes seven properties per petal:
@@ -62,6 +64,8 @@ The overlay respects `prefers-reduced-motion`. If the OS says no animations, the
 Beyond that, every user gets full control over their own camera view: a 🌸 button in the corner opens a settings panel where you can toggle the filter on or off, adjust petal density (5–200), and dial the wind speed from Still to Gusty. Your settings only affect your camera feed — the person on the other end of the call sees their own settings. Preferences save to `localStorage`, so your camera aesthetic persists across sessions.
 
 This matters because "atmospheric" shouldn't mean "mandatory." Some people find particle effects distracting. Some people are on slow machines. The feature should *default* to delightful and *allow* removal, not the other way around.
+
+![The cherry blossom settings panel — a compact popover showing a toggle switch (ON), a Petal Density slider from 5 to 200 (set at 65), and a Wind Speed slider with labels from "Still" through "Breezy" to "Gusty." A preview area shows the three petal shape variants: teardrop, round, and pointed. A note reads "Only affects your camera."](images/cherry-blossom-settings-panel.png)
 
 ## From seasonal to permanent
 

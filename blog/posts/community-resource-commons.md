@@ -16,6 +16,8 @@ So I designed the Commons around three layers:
 
 **An AI-assisted review pipeline** that handles the mechanical verification (does this URL work? is this a real organization? does the category match?) so humans can focus on the judgment calls.
 
+![The Community Resource Commons public browser — a search interface with category filter buttons for Housing, Food, Healthcare, Legal, Education, Transportation, and Library. A location filter dropdown shows regional options. Resource cards display organization names, category badges, descriptions, and contact info. No login required.](images/commons-resource-browser.png)
+
 ## The AI review pipeline
 
 This was the most interesting engineering problem. The goal was to keep the door open for community contributions while making sure nothing unsafe or broken reaches the public library, without creating a review bottleneck for staff.
@@ -32,6 +34,8 @@ Submission → Anti-spam checks → Technical validation (DNS, URL, dedup)
 The most important architectural decision: **the system fails toward human review, never toward publication.** If any verification step is uncertain or unavailable, the submission goes to the admin queue with full context. Admins see confidence scores, category match results, and cross-reference notes, then make the final call.
 
 This brought the admin review load down to roughly 20% of submissions. The AI handles the repetitive verification so humans can spend their time on the questions that actually require judgment.
+
+![The AI review pipeline — a submission flows from a contributor through anti-spam filters, technical validation (URL and DNS checks), and AI cross-referencing. Two paths branch out: verified submissions auto-publish to the public library (green path), while uncertain ones route to an admin dashboard with AI notes attached for human review (amber path).](images/commons-ai-pipeline.png)
 
 ## Public vs. referral visibility
 
