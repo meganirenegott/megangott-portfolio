@@ -177,12 +177,12 @@
     },
     {
       "slug": "rock-garden",
-      "title": "A Room Full of Rocks and Nothing Else",
-      "subtitle": "The Rock Garden has no quests, no collectibles, no mini-games. It's a contemplation space with one lore whisper — and one secret disco ball for anyone cursed as a rock.",
+      "title": "The Rock Garden, the Rock Concert, and the Value of Quiet Spaces",
+      "subtitle": "A contemplation space with no quests, no collectibles, and one secret disco ball for anyone Baba Yaga has turned into a rock.",
       "date": "2026-06-01",
       "tags": ["Interactive Worlds", "Build UIs"],
       "project": "Rock Garden",
-      "readTime": "8 min",
+      "readTime": "6 min",
       "demo": "../demos/rock-garden-demo.html"
     },
     {
