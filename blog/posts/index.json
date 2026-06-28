@@ -105,12 +105,12 @@
     },
     {
       "slug": "the-wall-at-catch-15",
-      "title": "The Wall at Catch #15",
-      "subtitle": "How a fishing minigame ran out of research papers — and the fix that made it scale to 200+ catches.",
+      "title": "Fixing Duplicate Papers in the Research Fishing Minigame",
+      "subtitle": "How the arxiv fishing feature ran out of fresh papers after 15 catches, and the fix that made it scale to 200+.",
       "date": "2026-06-20",
       "tags": ["Full-Stack APIs", "Data & Infra", "Ship Safely"],
       "project": "Fishing for Research",
-      "readTime": "5 min"
+      "readTime": "4 min"
     },
     {
       "slug": "unauthorized-push",
