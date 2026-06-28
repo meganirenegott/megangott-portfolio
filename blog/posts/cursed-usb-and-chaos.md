@@ -26,6 +26,8 @@ The items in this post are all digital safety lessons disguised as jokes. Each o
 
 Don't open suspicious attachments. This one is suspicious. You open it anyway because it's a game, and out comes a surprise. The lesson sticks because the experience is memorable: you clicked the thing you shouldn't have clicked, and something wild happened.
 
+I had a lot of fun making silly hats for the snakes. Little party hats, tiny top hats, a cowboy hat on one of them. That's how you know it's trustworthy. A snake in a party hat would never do you wrong.
+
 ![The Box of Snakes: "Something is moving inside. Shaking it seems unwise."](images/odd-items-box-of-snakes.png)
 
 ### 📊 Almost Done Project™
