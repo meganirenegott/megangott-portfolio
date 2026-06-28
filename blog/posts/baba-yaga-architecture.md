@@ -2,6 +2,8 @@ Baba Yaga's Hut is a narrative encounter on the Multiverse campus. Students walk
 
 It's one HTML file. 1,200 lines. One `<canvas>` element. 19 custom pixel art sprites. No framework, no build step, no dependencies.
 
+![Baba Yaga's Hut on the virtual campus — a rustic wooden cabin perched on two chicken legs at the edge of a dark enchanted forest. Warm orange light glows from the windows. Mushrooms sprout from the mossy thatched roof. Hanging potion bottles, candles, and herb pots surround the base. A student approaches along a cobblestone path. Fireflies dot the air. A normal campus building is visible in the background, contrasting the magical with the mundane.](images/baba-yaga-hut-exterior.png)
+
 ## Why one canvas?
 
 The hut interior has multiple interactive zones: a cauldron, a potion shelf, a crystal ball, an herb rack, candle sconces, and Baba Yaga herself. Each zone responds to hover and click events.
@@ -20,6 +22,8 @@ const ZONES = {
 ```
 
 Mouse events hit-test against these zones in canvas space. The same coordinate system drives both rendering and interaction. No drift, no sync bugs.
+
+![The hut interior rendered on a single canvas — a cozy witch's room with a bubbling green cauldron, shelves of colorful potions, a glowing purple crystal ball, hanging herbs, and Baba Yaga herself in a carved chair. Dotted pink rectangles outline each interactive zone's hit-test area. A dialogue box at the bottom shows Baba Yaga speaking.](images/baba-yaga-hut-interior-zones.png)
 
 ## The dialogue tree
 

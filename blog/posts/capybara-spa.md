@@ -4,6 +4,8 @@ Specifically, it's a small zone called the Capybara Spa — a cluster of warm-wa
 
 They do absolutely nothing productive, and students visit them every single day.
 
+![The Capybara Spa zone on campus \u2014 warm-water hot spring pools surrounded by smooth rocks, bamboo fences, and tropical plants. Capybaras named Pudding, Cocoa, and Mochi are in different states: soaking in the warm pool, grooming each other on a rock (friendship pair), sleeping curled up on a sun-warmed stone, and grazing nearby. Students sit on benches watching peacefully. Lanterns and a wooden "Capybara Spa" sign mark the entrance.](images/capybara-spa-zone.png)
+
 ## Designing animal behavior that feels alive
 
 The capybaras started as a test case for a compositional behavior system I was building — a framework where animal behavior is assembled from reusable trait modules rather than hand-coded per species.
