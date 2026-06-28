@@ -2,6 +2,8 @@ If you've ever played *Untitled Goose Game*, you know the joy of being a horribl
 
 The Horrible Goose started as a pet. Students could select it from the pet customizer and it would follow them around campus. Cute, harmless.
 
+![The Horrible Goose causing chaos on the virtual campus quad — a large white goose mid-sprint through a crowd of panicked pixel art students, a stolen hat clenched in its beak. Students scatter in every direction while papers fly. The goose radiates chaotic energy against the bright campus backdrop.](images/teaching-goose-chaos.png)
+
 Then I had a better idea: what if the goose was an admin-only event creature? Release it during a campus event, and it finds the biggest group of students, flies over, and causes absolute mayhem — honking, stealing items, chasing people, leaving droppings.
 
 The key design challenge: **how does the goose decide where to go and what to do?**

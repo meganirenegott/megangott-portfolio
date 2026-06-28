@@ -2,6 +2,8 @@ Every Wednesday on our virtual campus, a giant animated slice of bread appears i
 
 And somewhere nearby, a horrible goose is circling. Honking. Clearly with plans for the bread.
 
+![The Wednesday Bread event on the virtual campus quad — a giant golden slice of bread with cute eyes bounces in the center of a green quad, surrounded by three stationary geese honking in unison. In the background, a fourth chaos goose sprints after a student who's trying to reclaim a stolen notebook. Other students laugh and point. Campus buildings frame the scene in warm afternoon light.](images/wednesday-bread-quad.png)
+
 This is the Wednesday Bread NPC, and building it required more infrastructure than you'd expect for a pun-telling carbohydrate.
 
 ## The idea

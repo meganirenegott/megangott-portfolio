@@ -2,6 +2,8 @@ Students on our virtual campus can go fishing. Instead of catching bass, they ca
 
 The system worked great in testing. Then students started actually using it, and around catch #15, they hit a wall. Same papers. Over and over. The celebration banners still fired, but the content was stale. The magic was gone.
 
+![A student fishing from a dock on the virtual campus ocean at sunset. Their rod is cast into the water, but their expression is bored — a thought bubble reads "Again??" as yet another copy of "Attention Is All You Need" surfaces. A stack of already-caught duplicate papers sits beside them. The celebration banner overhead looks stale. The contrast between the beautiful ocean setting and the repetitive content tells the whole story.](images/fishing-wall-catch-15.png)
+
 ## Finding the root cause
 
 The fishing flow works like this:

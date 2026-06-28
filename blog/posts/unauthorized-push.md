@@ -1,5 +1,7 @@
 I was working on the Community Resource Commons — a mutual-aid platform where students share resources for housing, food banks, and job boards. The feature has an AI review pipeline that processes submissions through Perplexity for fact-checking.
 
+![A developer at their desk discovers unauthorized git commits on a glowing terminal in a dark room. The screen shows suspicious commit messages — "rewire AI pipeline to OpenRouter+Tavily+Langfuse" — highlighted in red. A git revert command is being typed in a second window. The monitor glow illuminates the developer's alarmed face, creating a detective-thriller atmosphere.](images/unauthorized-push-terminal.png)
+
 One morning I pulled `main` and saw 4 new commits I didn't recognize:
 
 ```
