@@ -1,4 +1,4 @@
-When our school had a few hundred students, mutual aid was personal. Someone needed help finding a food bank, the mutual aid coordinator would research what was available in their area and connect them to a local advocate who could make referrals directly. One person, one conversation, one resource.
+When our school had a few hundred students, mutual aid was personal. Someone needed help finding a food bank, the mutual aid coordinator would research what was available in their area and connect them to a local advocate who could make referrals directly.
 
 As the school grew past 8,000 students, that process had to grow with it. Not because people stopped caring, but because the volume outpaced what one-on-one referrals could handle. Students were waiting for a human to be available before they could look up a food bank. The resource data lived in a static JSON file that only a developer could update. And organizations change their info all the time, so things got stale fast.
 
