@@ -36,11 +36,11 @@ The permanence is the whole point. A temporary effect fades from memory. A perma
 
 *"It has been decorated. It is doing its best."*
 
-The Roomba follows you around campus. It bumps into walls. It changes direction with determination. It has googly eyes. It contributes nothing to your coursework and it's one of the most wanted items in the collection.
+It follows you around. It bumps into walls. It has googly eyes. That's the whole item. There's no mechanic, no buff, no secret unlock. It's just a small robot with googly eyes that follows you and bonks into things.
 
 ![The Roomba with Googly Eyes, a loyal companion doing its best](images/odd-items-roomba.png)
 
-The 8% drop rate from Rinley means getting one feels like finding treasure. There's something about a small robot with googly eyes doing its best that makes people genuinely protective of it.
+Rinley drops it at 8%, which makes getting one feel like an event. People get attached to these. I don't make the rules.
 
 ### 📅 Fake Meeting
 
