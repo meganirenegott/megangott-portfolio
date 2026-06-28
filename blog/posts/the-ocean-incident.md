@@ -12,7 +12,7 @@ I was building the fishing feature. Our campus is a 2D game world with procedura
 
 The ocean rendering code needed a `baseShorelineY` coordinate — the Y position where sand meets water. I was working with Claude, and we were going back and forth about the coordinate system. Our campus uses tile coordinates, but the rendering code works in world pixels. I kept confusing the two.
 
-It was past my bedtime. I was in that state where you're tired enough to think you're being productive but actually making everything worse. I set `baseShorelineY` to 520.
+It was day 2 of a campus hackathon. I was more tired than I realized, in that state where you think you're being productive but you're actually making everything worse. I set `baseShorelineY` to 520.
 
 ```javascript
 const baseShorelineY = 520  // 🫠 this is the urban zone
@@ -60,14 +60,7 @@ The PR that fixed THE-542? `fix: swap dorm grid axes so buildings stay on land`.
 
 ## What I actually learned
 
-This happened nearly four months ago. Since then I've:
-
-- Accidentally given every student the wrong pet
-- Broken the day/night cycle so it was permanently midnight
-- Made a goose that crashed the server
-- Shipped a security fix for unauthorized commits
-
-And the ocean incident is still my favorite mistake. Here's why:
+The ocean incident is still my favorite mistake. Here's why:
 
 **Mistakes are how you learn the coordinate system.** Before the ocean bug, I had a vague understanding of how our world coordinates worked. After it, I had a visceral, embodied understanding. I will never confuse tile coordinates with world pixels again, because I once flooded a campus with my confusion.
 
