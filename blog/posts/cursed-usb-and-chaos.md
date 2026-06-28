@@ -63,3 +63,5 @@ The pool of effects includes gentle rotations, color shifts, font swaps, and lay
 ```
 
 Students who get the Cursed USB Drive tend to keep the shuffled styles for a while. It becomes a badge: "yeah, I plugged in the USB." Which, if you think about it, is exactly what happens in real life too. People plug in the USB. At least here, the worst thing that happens is Comic Sans.
+
+And that's the other thing worth mentioning: none of this is permanent. Discard the item and your settings snap right back to normal. No lasting damage, no consequences you can't undo. It's a safe way to make a mistake, see what happens, and learn from it without any real cost. That matters in a place where people are already dealing with enough real errors in their code. The items let you be curious and reckless in a space where reckless is fine.
