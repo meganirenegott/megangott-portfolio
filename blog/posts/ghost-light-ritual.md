@@ -8,7 +8,7 @@ If you've never worked in theater: a ghost light is a single bare bulb on a tall
 
 Every theater I ever worked in had one. You'd be the last person out, and you'd wheel the ghost light to center stage, plug it in, and stand there for a second in that huge dark room with just this one warm light. It was one of my favorite moments in the whole job.
 
-![A ghost light on an empty theater stage. A single bare incandescent bulb on a tall metal stand, center stage, casting a warm amber pool of light on the wooden floor. Empty seats fade into darkness beyond. Dust motes float in the beam. Burgundy curtains frame the edges.](images/ghost-light-stage.png)
+![A warm, slightly haunted theater at night. A ghost light glows amber center stage on a wooden floor. Friendly translucent ghost blobs peek from behind burgundy curtains, sit in velvet seats, and float near the balcony, watching the light with gentle expressions.](images/ghost-light-stage.png)
 
 ## How it became a feature
 
