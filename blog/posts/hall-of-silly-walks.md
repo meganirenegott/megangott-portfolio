@@ -1,16 +1,22 @@
-The Hall of Silly Walks is a building on campus. You walk inside, and you're greeted with a prompt: **describe how you want to walk.**
+People in real cities are changing how they walk to confuse AI surveillance cameras. Deliberately weird gaits to throw off tracking algorithms. It's equal parts dystopian and creative, and it got me thinking: if walking weird is going to be a form of resistance, it should at least be fun.
 
-That's it. Natural language. No menus, no presets. Just tell the system what you want.
+The Monty Python sketch gets at this too. The Ministry of Silly Walks is funny not because silly walking is inherently hilarious, but because it's treated with total bureaucratic seriousness. Government funding for silly walks. Forms to fill out. The absurdity is the point, and the point is that absurdity has value.
+
+So we built the Hall of Silly Walks. It's a building on campus. You walk inside, and you're greeted with a prompt: **describe how you want to walk.**
+
+That's it. Natural language. No menus, no presets.
 
 *"Moonwalk but underwater."*
 
 *"Strut like a flamingo at a disco."*
 
-*"Spin around like a helicopter."*
-
 *"Move like a knight in chess, two squares forward and one to the side."*
 
-Your prompt goes to our Pixel Lab sprite generator, which produces a custom 4-directional walking animation for your avatar. The system prepends a pixel-art style prefix to keep everything visually consistent with the campus aesthetic, and a few seconds later, you have a brand new way to move.
+*"Glide like I'm on a conveyor belt."*
+
+Some people want to make a statement. Some people just want a cool movement pattern for vibes. Both are good reasons.
+
+Your prompt goes to our Pixel Lab sprite generator, which produces a custom 4-directional walking animation for your avatar. The system prepends a pixel-art style prefix to keep everything consistent with the campus aesthetic, and a few seconds later, you have a brand new way to move.
 
 ## The knight in chess
 
@@ -69,12 +75,14 @@ And the best part isn't that they bought it, it's *what they prompted*. People c
 
 One student made their avatar walk like a penguin and kept it for weeks. Another student generated five different walks and rotated through them daily like outfits. Someone prompted "walk like you just realized you left the stove on" and it became a campus legend.
 
-## Why this matters
+## Tactical frivolity
 
-The Hall of Silly Walks is, by any practical measure, the least important feature on our platform. It doesn't teach coding. It doesn't track progress. It doesn't appear on any roadmap under "critical path."
+The Hall of Silly Walks doesn't teach coding. It doesn't track progress. It doesn't appear on any roadmap under "critical path."
 
-But it does something no curriculum feature can: it gives people permission to be playful. In a learning environment where students spend most of their time confronting things they don't know yet, the ability to make your avatar hop like a chess piece is a small, silly act of self-expression. And self-expression is how people make a space feel like theirs.
+But there's a concept called tactical frivolity: the idea that play, absurdity, and creativity are themselves forms of resistance. When the world around you is increasingly surveilled and optimized, choosing to do something joyfully pointless is a small act of defiance. You don't have to justify your silly walk. The silly walk justifies itself.
 
-The name is a nod to the Monty Python sketch, and the spirit is the same: there's a building, a purchase flow, a sprite generation pipeline, a database schema. All of this real infrastructure exists so someone can type "walk like a knight in chess" and watch their avatar hop in L-shapes across a virtual campus.
+In a learning environment where students spend most of their time confronting things they don't know yet, the ability to make your avatar hop like a chess piece is a tiny reclamation of agency. It says: this space is mine, and I get to be weird in it.
+
+There's a building, a purchase flow, a sprite generation pipeline, a database schema. All of this real infrastructure exists so someone can type "walk like a knight in chess" and watch their avatar hop in L-shapes across a virtual campus.
 
 And I wouldn't change a thing.
