@@ -1,22 +1,22 @@
-Every virtual campus needs rituals — moments where students pause, reflect, and celebrate what they've been doing. Our campus already had fishing for research papers and encounters with Baba Yaga, but there was no simple way for students to just... check in. To say "here's what I learned today" and have that feel like it *mattered*.
+Every virtual campus needs rituals, moments where students pause, reflect, and celebrate what they've been doing. Our campus already had fishing for research papers and encounters with Baba Yaga, but there was no simple way for students to just... check in. To say "here's what I learned today" and have that feel like it *mattered*.
 
 That's where the Bubble Wand came from.
 
 ## The idea
 
-There's a sculpture on our campus — a giant, whimsical bubble wand with a rainbow ring and a candy-striped handle. When you click it, a panel opens asking one question: **"What did you learn today?"**
+There's a sculpture on our campus, a giant, whimsical bubble wand with a rainbow ring and a candy-striped handle. When you click it, a panel opens asking one question: **"What did you learn today?"**
 
-![The bubble wand sculpture on campus — a rainbow-ringed wand with sparkle effects](images/bubble-wand-sculpture.png)
+![A whimsical bubble wand sculpture on a virtual campus plaza. A giant rainbow-ringed wand with a candy-striped handle stands on a grassy green area, golden sparkles twinkling around it, with charming buildings and students in the background.](images/bubble-wand-sculpture.png)
 
-You type a quick reflection — a sentence, a paragraph, whatever feels right — and hit "Blow Bubbles!" The panel closes, and iridescent soap bubbles start floating up from the wand. They drift lazily in every direction, shimmering with rainbow hue shifts, and slowly pop after 18–35 seconds. The animation runs for three full minutes.
+You type a quick reflection, a sentence, a paragraph, whatever feels right, and hit "Blow Bubbles!" The panel closes, and iridescent soap bubbles start floating up from the wand. They drift lazily in every direction, shimmering with rainbow hue shifts, and slowly pop after 18 to 35 seconds. The animation runs for three full minutes.
 
-![The reflection panel — a glassmorphic modal with a textarea and a "Blow Bubbles!" button](images/bubble-wand-panel.png)
+![The reflection panel, a glassmorphic modal with a textarea and a "Blow Bubbles!" button](images/bubble-wand-panel.png)
 
 It's a celebration. A visual, ambient, zero-pressure way to mark the end of a learning session.
 
 ## The bubble physics
 
-The trickiest part was making the bubbles feel real. Soap bubbles don't rise in straight lines — they drift, wobble, and each one behaves slightly differently.
+The trickiest part was making the bubbles feel real. Soap bubbles don't rise in straight lines. They drift, wobble, and each one behaves slightly differently.
 
 Every bubble is a CSS element with 7 custom properties:
 
@@ -42,9 +42,9 @@ let dy = Math.sin(angle) * distance;
 dy -= 200 + Math.random() * 250;  // bias upward
 ```
 
-The upward bias is key — bubbles tend to rise, but they can drift in *any* direction. Some float left, some right, some almost horizontally before lazily rising. This looks natural because real soap bubbles behave exactly this way.
+The upward bias is key. Bubbles tend to rise, but they can drift in *any* direction. Some float left, some right, some almost horizontally before lazily rising. This looks natural because real soap bubbles behave exactly this way.
 
-![Bubbles emerging from the wand — a burst of iridescent soap bubbles drifting upward](images/bubble-wand-bubbles-spawning.png)
+![Close-up of iridescent soap bubbles against a dark background. Each bubble has a rainbow conic gradient surface shifting through the full spectrum, with bright white highlight reflections. Bubbles vary in size, some large in the foreground, some tiny in the background.](images/bubble-wand-bubbles-spawning.png)
 
 ## The iridescent shimmer
 
@@ -69,7 +69,7 @@ The `--ho` (hue offset) is randomized per bubble, so each one starts at a differ
 
 The `radial-gradient` overlay creates the light reflection spot you see on real bubbles: a bright highlight at roughly the 10-o'clock position.
 
-![Bubbles floating across the screen after 8 seconds — dispersed and shimmering](images/bubble-wand-bubbles-floating.png)
+![Soap bubbles dispersed across a twilight scene, drifting in every direction with an upward bias. Some float left, some right, some almost horizontally before lazily rising. The bubbles shimmer with iridescent rainbow colors against a dark gradient sky.](images/bubble-wand-bubbles-floating.png)
 
 ## The full stack behind it
 
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS learning_reflections (
 
 **Client:** A `BubbleWandPanel` React component that dispatches a custom DOM event (`bubble-wand:blow`) on successful submission, which triggers the `SoapBubbleOverlay` component to start spawning bubbles.
 
-The event-driven architecture means the panel and the bubble overlay are completely decoupled. Any future feature could trigger bubbles by dispatching the same event.
+Because it's event-driven, the panel and the bubble overlay are completely separate. Any future feature could trigger bubbles by dispatching the same event.
 
 ## Why it works as a check-in
 
@@ -99,6 +99,6 @@ I didn't expect the Bubble Wand to become one of the most-used features on campu
 1. **Zero pressure.** There's no grading, no minimum length, no right answer. Just "what did you learn today?"
 2. **Immediate visual reward.** The bubbles are beautiful and they last three minutes. You *see* your reflection turn into something.
 3. **Persistent history.** The Learning Journal stores every reflection. Students can scroll back and see their own growth over weeks and months.
-4. **It's whimsical.** The rainbow wand, the candy-striped handle, the sparkle effects — it doesn't take itself seriously. That lowers the barrier to participation.
+4. **It's whimsical.** The rainbow wand, the candy-striped handle, the sparkle effects, it doesn't take itself seriously. That lowers the barrier to participation.
 
 The best features don't have to be complex. Sometimes a textarea, a database table, and some really good CSS is all you need.
