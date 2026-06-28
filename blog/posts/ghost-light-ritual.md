@@ -4,7 +4,7 @@ One thing that always stayed with me was the ghost light.
 
 ## What a ghost light is
 
-If you've never worked in theater: a ghost light is a single bare bulb on a tall stand, left burning on an empty stage when everyone goes home. It's practical — it keeps someone from walking into the orchestra pit in the dark. But it's also a ritual. The light stays on to protect the space. To promise that the company will return. To keep the theater warm for whoever arrives first tomorrow morning.
+If you've never worked in theater: a ghost light is a single bare bulb on a tall stand, left burning on an empty stage when everyone goes home. It's practical, it keeps someone from walking into the orchestra pit in the dark. But it's also a ritual. The light stays on to protect the space. To promise that the company will return. To keep the theater warm for whoever arrives first tomorrow morning.
 
 Every theater I ever worked in had one. You'd be the last person out, and you'd wheel the ghost light to center stage, plug it in, and stand there for a second in that huge dark room with just this one warm light. It was one of my favorite moments in the whole job.
 
@@ -12,21 +12,21 @@ Every theater I ever worked in had one. You'd be the last person out, and you'd 
 
 ## How it became a feature
 
-Students on campus were talking about hope. It was one of those late-night conversations that happens when people are working on hard things — debugging something that won't compile, pushing through a project that feels impossible. Someone said something about "protecting hope" and it brought me right back to standing alone in a dark theater with the ghost light.
+Students on campus were talking about hope. It was one of those late-night conversations that happens when people are working on hard things, debugging something that won't compile, pushing through a project that feels impossible. Someone said something about "protecting hope" and it brought me right back to standing alone in a dark theater with the ghost light.
 
 I wanted to build something that captured that feeling: a quiet, warm, simple check-in where people could share what gives them hope. Not a social feed, not a leaderboard, not gamified engagement metrics. Just a question and a light.
 
 **"What gives you hope?"**
 
-The ghost light sits on the virtual campus. When you click it, a panel opens with that single question. You write your answer — a sentence, a paragraph, whatever feels honest — and click "Leave your light." Golden sparkles rise from the stage, and a message appears: *"Your light has been left on the stage."*
+The ghost light sits on the virtual campus. When you click it, a panel opens with that single question. You write your answer, a sentence, a paragraph, whatever feels honest, and click "Leave your light." Golden sparkles rise from the stage, and a message appears: *"Your light has been left on the stage."*
 
-![Sparkles rising after submitting a reflection — golden particles float upward while the message "Your light has been left on the stage" appears](images/ghost-light-sparkles.png)
+![Sparkles rising after submitting a reflection. Golden particles float upward while the message "Your light has been left on the stage" appears.](images/ghost-light-sparkles.png)
 
-Your reflection joins a persistent journal. You can look back at your own entries over time. The reflections are private — only you see yours — but the act of writing creates something shared: a campus where people are quietly tending their own small lights.
+Your reflection joins a persistent journal. You can look back at your own entries over time. The reflections are private, only you see yours, but the act of writing creates something shared: a campus where people are quietly tending their own small lights.
 
 ## Building the warm glow
 
-The visual language had to feel exactly right. Theater ghost lights aren't flashy — they're warm, intimate, a little lonely. The CSS had to capture that.
+The visual language had to feel exactly right. Theater ghost lights aren't flashy. They're warm, intimate, a little lonely. The CSS had to capture that.
 
 The bulb uses a radial gradient from warm white to amber:
 
@@ -42,9 +42,9 @@ The bulb uses a radial gradient from warm white to amber:
 }
 ```
 
-The triple `box-shadow` creates three layers of light falloff — a tight warm core, a mid-range amber halo, and a faint extended glow. The slow `bulb-glow` animation pulses the shadow size so the light breathes, just like a real incandescent bulb.
+The triple `box-shadow` creates three layers of light falloff: a tight warm core, a mid-range amber halo, and a faint extended glow. The slow `bulb-glow` animation pulses the shadow size so the light breathes, just like a real incandescent bulb.
 
-The stage has floating dust motes — tiny canvas particles that drift slowly upward through the dark. They're barely visible (`alpha: 0.04–0.1`), but they give the scene depth and atmosphere. In a real theater, you'd see these in the ghost light's beam.
+The stage also has floating dust motes, tiny canvas particles that drift slowly upward through the dark. They're barely visible (`alpha: 0.04` to `0.1`), but they give the scene depth and atmosphere. In a real theater, you'd see these in the ghost light's beam.
 
 ```javascript
 const MOTES = Array.from({length: 25}, () => ({
@@ -91,7 +91,7 @@ And the Ghost Light panel is similarly simple, just with different copy and a di
 window.dispatchEvent(new Event('ghost-light:sparkle'))
 ```
 
-The event-driven architecture means each feature's visual celebration is decoupled from the shared submission system. The prompt system doesn't know or care whether it's spawning soap bubbles or golden sparkles.
+Because it's event-driven, each feature's visual celebration is separate from the shared submission system. The prompt system doesn't know or care whether it's spawning soap bubbles or golden sparkles.
 
 ## The reflections are the feature
 
@@ -111,6 +111,6 @@ These are the kinds of things people write when nobody's watching. They wouldn't
 
 I spent years in dark theaters. I know what it feels like to be the last one out, to wheel the ghost light to center stage, to let that single warm bulb stand watch over an empty room.
 
-Building this feature let me bring that ritual into a space I never expected — a virtual campus where students are learning to code. The metaphor translates perfectly: a light left on in the dark, a quiet promise that someone will come back, a simple act of tending hope.
+Building this feature let me bring that ritual into a space I never expected, a virtual campus where students are learning to code. A light left on in the dark, a quiet promise that someone will come back, a simple act of tending hope.
 
 Sometimes the best features come from the life you lived before you learned to code.
