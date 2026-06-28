@@ -34,25 +34,25 @@ So students end up exploring the campus without realizing it. They talk to NPCs 
 
 ## The full catalog
 
-| Item | What It Does | Why I Made It |
-|------|-------------|---------------|
-| 🐍 Box of Snakes | Open it to reveal a surprise | The joy of a mystery gift |
-| 🥔 Hot Potato | Playfully passes to a nearby friend every 30s | Gets people interacting and laughing |
-| ✨ Glitter Bomb | Covers a room in sparkly glitter | Celebration you can leave behind |
-| 💾 Cursed USB Drive | Playfully shuffles your UI styles | The screenshot everyone wants to share |
-| 📜 Haunted Syllabus | +1 skill, -1 sanity (cosmetic) | Every student relates to this |
-| 🎒 Heavy Backpack | Cosmetic weight animation | Pure vibes, no gameplay impact |
-| 🎂 Birthday Cake | Spreads a +Happy sparkle to nearby friends | Sharing kindness is a mechanic |
-| 🦆 Consulting Duck | Walks you through rubber duck debugging | Actually useful, delightfully named |
-| 📅 Fake Meeting | 3-minute item immunity | Self-care disguised as corporate satire |
-| 🧦 Unmatched Sock | Trade it for any equal-rarity item | Creates a playful barter economy |
-| 💬 Group Chat (Muted) | Quiet time — silences pings for 5 min | Relatable, genuinely helpful |
-| 🍕 Office Pizza | +2 slices if you're in Pizza Book Club | Rewards the curious |
-| 📋 Vague Feedback | Nearby friends periodically say "hmm" | Subtle ambient comedy |
-| 🤖 Roomba (Googly Eyes) | Follows you around, bumps into things | Pure delight, 8% drop rate |
-| 🪪 Expired Hall Pass | 50/50 chance to skip an event | A friendly coin flip |
-| 📊 Almost Done Project™ | Cosmetic "Scope Creep" counter | Every dev has been here |
-| 💭 Unsolicited Opinion | Auto-sends helpful-ish advice in chat | Hilariously relatable |
+| Item | Rarity | What It Does |
+|------|--------|-------------|
+| 🐍 Box of Snakes | Common | Open it to reveal a surprise |
+| 🥔 Hot Potato | Common | Auto-passes to a nearby friend every 30s |
+| 📋 Vague Feedback | Common | Nearby friends periodically say "hmm" |
+| 🧦 Unmatched Sock | Common | Trade it for any equal-rarity item |
+| ✨ Glitter Bomb | Uncommon | Covers a room in sparkly glitter |
+| 💾 Cursed USB Drive | Abhorrent | Playfully shuffles your UI styles |
+| 📜 Haunted Syllabus | Uncommon | +1 skill, -1 sanity (cosmetic) |
+| 🎒 Heavy Backpack | Uncommon | Cosmetic weight animation, pure vibes |
+| 🎂 Birthday Cake | Uncommon | Spreads a +Happy sparkle to nearby friends |
+| 🦆 Consulting Duck | Uncommon | Walks you through rubber duck debugging |
+| 💬 Group Chat (Muted) | Uncommon | Silences pings for 5 min |
+| 🍕 Office Pizza | Uncommon | +2 slices if you're in Pizza Book Club |
+| 🤖 Roomba (Googly Eyes) | Uncommon | Follows you around, bumps into things |
+| 📅 Fake Meeting | Rare | 3-minute item immunity |
+| 🪪 Expired Hall Pass | Rare | 50/50 chance to skip an event |
+| 📊 Almost Done Project™ | Epic | Cosmetic "Scope Creep" counter |
+| 💭 Unsolicited Opinion | Abhorrent | Auto-sends helpful-ish advice in chat |
 
 ## What happened when we shipped them
 
