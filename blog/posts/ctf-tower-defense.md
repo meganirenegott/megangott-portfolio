@@ -12,11 +12,15 @@ The CTF Tower Defense system maps campus infrastructure onto network concepts:
 
 The game runs on a 100ms tick loop with 200ms state broadcasts, typically across 10 waves of increasing difficulty.
 
+![The campus reimagined as a network — buildings labeled with port numbers (HTTP :80, SSH :22, DNS :53, SMTP :25), neon data streams connecting them, script kiddies and trojans marching through entry points while firewalls, IDS sensors, and honeypots defend the paths. Wave 3/10 in progress.](images/ctf-campus-network.png)
+
 ## The real tradeoff
 
 Here's what makes it educational instead of just fun: **essential ports must stay open.** You can't just close everything and turtle. HTTP/80 serves the campus website. SSH/22 lets administrators in. Closing a port drains resources because the campus "services" stop working.
 
 This teaches the core security tradeoff that every real sysadmin faces: you can't secure a system by turning it off. You have to keep services running while defending against attacks that use those same services. The game makes this physical and immediate — close too many ports and your resources bleed out. Leave too many open and the bots pour through.
+
+![The port management UI — toggle switches for HTTP :80 (open), SSH :22 (warning: 3 bots incoming), DNS :53 (closed, draining -5/sec), FTP :21 (closed, draining -3/sec). Campus Resources at 67% and falling. A tooltip warns: "Essential ports must stay open — closing drains resources."](images/ctf-port-tradeoff.png)
 
 ## The CTF layer
 
@@ -28,6 +32,8 @@ Overlaid on the tower defense is a Capture The Flag social deduction game:
 
 Team assignment is **hidden** — neither side knows who's on which team. The social deduction element means you can't trust anyone. The student asking helpful questions in chat might be red team, mapping your defenses.
 
+![Red Team vs Blue Team — on the red side, a hooded attacker deploys scripts while a prompt-injected NPC glitches and a capybara sits in a neon cage. On the blue side, a defender cleanses a compromised NPC with a healing beam while a SIEM dashboard tracks network traffic. A "VS?" in the center represents hidden team assignments.](images/ctf-red-vs-blue.png)
+
 ## The Glitch Contagion bridge
 
 The CTF system connects to other campus features through Glitch Contagion — a cross-system status effect:
@@ -38,6 +44,8 @@ The CTF system connects to other campus features through Glitch Contagion — a 
 - Corruption level 60+: you get noclipped into the Backrooms
 
 The contagion creates stakes that extend beyond the game. Getting corrupted during CTF affects your pet, your screen, and might send you into the Backrooms. The game world and the campus world aren't separate — they're the same world, and the consequences of the security game ripple outward.
+
+![Four stages of Glitch Contagion — Level 0-14: normal student and pet on a clean campus. Level 15-29: scan lines and pixel displacement distort the view. Level 30-59: the pet mutates into a glitch variant with corrupted pixels and extra limbs. Level 60+: the screen tears apart and the student is noclipped into the Backrooms' yellow hallways.](images/ctf-glitch-contagion.png)
 
 ## Why play teaches better than study
 

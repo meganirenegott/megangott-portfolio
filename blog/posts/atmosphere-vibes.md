@@ -4,6 +4,8 @@ Rain doesn't have a "speed" slider. Rain has a slider that goes from "Drizzle" t
 
 Matrix code rain goes from "Slow Hack" to "Overdrive."
 
+This whole system exists because of a [cherry blossom camera overlay](/blog/post.html?slug=cherry-blossom-seasons). I built cherry blossoms as a two-week seasonal event, and students loved them so much — especially as a camera overlay during video calls, where petals drifted across their faces in standups — that they demanded I make them permanent. Once I did, the requests kept coming: "Can we have snow?" "What about rain?" "Fireflies would be amazing at night." So I built an entire atmosphere infrastructure. The cherry blossoms were the proof of concept. This is the production system.
+
 This is a post about vibes-as-infrastructure — why controlling the atmosphere of a digital space matters, and why the words you use to label a slider are as important as the code behind it.
 
 ## The Atmosphere Panel
@@ -36,7 +38,7 @@ Each effect is its own CSS or canvas overlay. The details matter because particl
 
 **💚 Matrix Rain** — Neon green character columns falling at varying speeds. 12% of characters are the "bright leader" variant — the leading character in each column is brighter and larger, creating the signature cascading effect from the films. The column density is randomized so they don't form a uniform grid. Speed vocabulary: "Slow Hack" → "Normal" → "Overdrive."
 
-**🌸 Cherry Blossoms** — The original. Refactored from its own standalone component into the Atmosphere Panel system. All the same physics — coherent wind, sparkle variants, three petal shapes — but now controllable from the same interface as everything else.
+**🌸 Cherry Blossoms** — The one that started it all. Originally a [standalone seasonal feature](/blog/post.html?slug=cherry-blossom-seasons) that ran for two weeks in April, refactored into the Atmosphere Panel after students fell in love with using it as a camera overlay during video calls. All the same physics — coherent wind, sparkle variants, three petal shapes — but now available year-round and controllable from the same interface as everything else. The overlay still renders on top of video call windows, which remains the most popular use case.
 
 ## Why vocabulary matters
 

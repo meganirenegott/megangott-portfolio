@@ -15,6 +15,8 @@ Each trait is a self-contained behavior module with an `update()` tick, state tr
 
 The same composition system means you can describe a never-before-seen creature — `communal + photosynthetic + glider + nocturnal + aerial + curious` — and the behavior engine produces coherent movement, feeding patterns, and social dynamics without a single line of species-specific code.
 
+![Six trait categories displayed as color-coded hexagonal tiles — Social, Feeding, Movement, Rhythm, Environmental, Temperament — with connecting lines showing how traits compose into a capybara (herding, grazer, swimmer, diurnal, aquatic, docile) and a crow (pair-bonding, scavenger, flyer, diurnal, arboreal, aloof)](images/fauna-trait-composition.png)
+
 ## The species registry
 
 Every species is defined in JSON:
@@ -41,7 +43,11 @@ New species appear on campus with "new discovery" fanfare — a small announceme
 
 The campus ecosystem isn't static. It evolves. Every week, there's something new to observe. And because the behaviors are compositional rather than scripted, the new creatures feel genuinely surprising — combinations of traits that produce emergent patterns nobody explicitly designed.
 
+![A "New Discovery!" banner announces the Moonjelly Moth — translucent bioluminescent creatures with jellyfish-like tendrils glide in a communal group near moonlit treetops, with a bestiary entry showing their six traits: communal, photosynthetic, glider, nocturnal, aerial, curious](images/fauna-moonjelly-moth.png)
+
 ## Why ecosystems matter
+
+![The full campus ecosystem at twilight — capybaras herding in a pond, crows perched on rooftops, glowing creatures climbing trees, moths gliding overhead, amphibians at the water's edge, and burrowing creatures peeking from garden paths, with a bestiary counter reading "Species Discovered: 24/??"](images/fauna-ecosystem-campus.png)
 
 A campus with one species of animal feels like a game with a pet feature. A campus with a living, growing ecosystem of dozens of species — each with distinct behaviors, habitats, and social dynamics — feels like a *world*.
 

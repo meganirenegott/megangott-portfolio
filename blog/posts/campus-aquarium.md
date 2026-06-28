@@ -8,6 +8,10 @@ The Campus Aquarium is a dome-shaped building with an ocean-blue exterior, place
 
 Inside: eight tanks. Four freshwater (river, lake, koi pond, tropical) and four saltwater (coral reef, deep sea, tropical, jellyfish). Each tank has its own lighting, color palette, and fauna. The freshwater koi pond has warm amber light and slow-moving fish. The deep sea tank is dark teal with sparse bioluminescent creatures. The jellyfish tank pulses with ethereal blue-white.
 
+![The Campus Aquarium — a beautiful ocean-blue dome with glass panels revealing fish silhouettes inside, wave patterns on the roof, a "Welcome" entrance with coral planters and a starfish decoration. A student approaches on a cobblestone path, campus buildings visible in the background.](images/aquarium-dome-exterior.png)
+
+![Eight aquarium tanks in a dark gallery — River, Lake, Koi Pond, and Tropical Freshwater on top; Coral Reef, Deep Sea, Tropical Saltwater, and Jellyfish below. Each tank has its own distinct color palette and fauna. Caustic light patterns dance across the ceiling. Students walk the observation floor between the glowing tanks.](images/aquarium-eight-tanks.png)
+
 ## Swimming
 
 The feature that changed everything: you can enter the tanks.
@@ -15,6 +19,8 @@ The feature that changed everything: you can enter the tanks.
 Press E near a tank and your avatar transitions from standing on the observation floor to *swimming inside the water*. WASD controls switch from walking to swimming — slightly floatier, with momentum decay that feels like moving through a fluid. Your avatar's animation changes. Bubble particles trail behind you.
 
 The fish react to you. Schools of small fish scatter when you swim through them, then regroup behind you. Larger fish maintain their paths but angle slightly away. The jellyfish are indifferent — they drift on their own currents regardless of your presence.
+
+![Swimming inside the coral reef tank — a student swims with bubble particles trailing behind, a school of tropical fish scatters in a starburst pattern, a large angelfish angles away, and a clownfish companion pet follows with its own drift pattern. Vibrant coral formations line the floor with caustic light shimmer. Through the glass, other students watch from the observation floor.](images/aquarium-swimming-inside.png)
 
 ## Aquatic pets
 
@@ -52,6 +58,8 @@ Each aquatic pet has a happiness system driven by player interaction:
 - **Neglect**: Leaving your pet alone in the tank for too long decreases happiness slowly. When you return, there's a happiness boost — the reunion effect.
 
 The happiness level affects the pet's behavior. A happy pet swims closer to the glass when you're watching from outside. A very happy pet does occasional tricks unprompted — a flip, a bubble ring, a chase of its own tail. The happiness system creates a quiet emotional loop: visit your pet, watch it react, feel responsible for it, want to come back.
+
+![A student watches their pet koi through the glass — the koi swims close with a happiness meter showing four out of five hearts. Interaction options float nearby: heart (happy wiggle), wave (surface breach), treat (spin). A UI panel reads "Your Koi — Happiness: ★★★★☆ — Last visited: 2 hours ago" with a reunion boost indicator.](images/aquarium-pet-happiness.png)
 
 ## Why an aquarium
 

@@ -6,17 +6,23 @@ Inspired by Portal 2, our fast travel system gives students a portal gun — a d
 
 The portals are visible to everyone. Any student can walk through any portal — they're public infrastructure, not private shortcuts. This means a student who places useful portals (library-to-cafeteria, dorm-to-lecture-hall) is providing a service to the whole campus.
 
+![alex_c's portal pair — an orange portal at the Library entrance and a blue portal at the Dormitory, connected by a dotted energy beam across campus](images/portal-pair-campus.png)
+
 ## The social layer
 
 Each portal tracks traversal counts. Popular portals — the ones placed at genuinely useful locations — accumulate hundreds of traversals. There's a quiet social visibility to it: you can see who placed the portal, and you can see how many people have used it.
 
 Portal placement becomes a community decision. Students negotiate: "Can you put your blue portal near the Rock Garden? We're all going there today." The portal gun turns fast travel from a solo utility into a collaborative infrastructure project.
 
+![Aria warps through a portal — entering the orange portal at the Library with a "FWOOMPH" and simultaneously emerging from the blue portal at the Dorms, 327 traversals logged](images/portal-traversal-warp.png)
+
 ## The constraints
 
 Portals have optional expiry timers. Some are permanent until replaced; some last 30 minutes. Each student can maintain one pair at a time — placing a new portal replaces your oldest one. This creates turnover and prevents the map from drowning in portals.
 
 Admin endpoints provide census data: who owns which guns, where portals are placed, traversal stats. It's a lightweight analytics system for understanding how students actually navigate the campus — which routes are popular, which areas are underserved.
+
+![Portal Info overlay showing maya_k's Library ↔ Rock Garden pair (847 traversals), plus a leaderboard of today's most popular portals across the campus network](images/portal-social-stats.png)
 
 ## Why the toy matters
 

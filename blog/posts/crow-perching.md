@@ -10,7 +10,11 @@ A crow pet doesn't pathfind to the player's position. Instead, it pathfinds to a
 
 When you move, the crow evaluates whether it needs to relocate. If you've walked far enough that the nearest perch to your new position is different from the current perch, the crow takes off — a brief flight animation across the gap — and lands on the new perch. If you're just walking around in the same area, the crow stays put and watches.
 
+![The crow mid-flight between Academic Hall and the Student Union — feathers trailing behind as it relocates to stay near its owner](images/crow-flight-relocate.png)
+
 The watching is the important part. The crow sprite faces the player. It tracks you. Not following, but *observing*. It's a subtle difference, but it completely changes how the pet feels. A cat that follows you is a companion. A crow that watches you from a building is a *presence*.
+
+![A crow pet perched on the rooftop of Academic Hall, watching its owner walk across the quad below — a dotted gaze line and heart icon show the bond](images/crow-perching-rooftop.png)
 
 ## The startle radius
 
@@ -19,6 +23,8 @@ Crows have an inverted startle system compared to other pets. Most pets (capybar
 If the player walks directly under the crow's perch, the crow shuffles sideways along the roofline. Not fleeing — just adjusting. Maintaining distance. If the player somehow gets very close (maybe climbed a building in a future feature), the crow takes off and finds a new perch entirely.
 
 This communicates a personality: "I'm here because I want to be, not because you told me to be. Don't crowd me."
+
+![The crow shuffles sideways along the roofline of the Humanities Building as a student walks directly underneath — ruffled feathers, alert but not panicked](images/crow-startle-shuffle.png)
 
 ## Why some animals shouldn't be near you
 

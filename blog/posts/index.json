@@ -1,264 +1,33 @@
 {
   "posts": [
     {
-      "slug": "rock-garden",
-      "title": "A Room Full of Rocks and Nothing Else",
-      "subtitle": "The Rock Garden has no quests, no collectibles, no mini-games. It's a contemplation space with one lore whisper. Here's why designing negative space matters.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Build UIs"],
-      "project": "Rock Garden",
-      "readTime": "3 min"
-    },
-    {
-      "slug": "wild-plants-greenway",
-      "title": "Teaching the Campus to Grow Things",
-      "subtitle": "Wild plant density, seasonal flower palettes, canvas-drawn botanical shapes, and why environmental texture turns tiles into meadows.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
-      "project": "Wild Plants",
-      "readTime": "4 min"
-    },
-    {
-      "slug": "crow-perching",
-      "title": "The Pet That Doesn't Follow You",
-      "subtitle": "Crows perch on rooftops and watch from a distance. Designing animal companions that have their own relationship to proximity.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "System Architecture"],
-      "project": "Crow Pet",
-      "readTime": "3 min"
-    },
-    {
-      "slug": "dynamic-city-layout",
-      "title": "Buildings That Move Based on Popularity",
-      "subtitle": "A medieval city layout where popular rooms drift toward center and new rooms earn their place. The campus map as a real-time popularity graph.",
-      "date": "2026-06-27",
-      "tags": ["System Architecture", "Interactive Worlds", "Data & Infra"],
-      "project": "Dynamic Layout",
-      "readTime": "4 min"
-    },
-    {
-      "slug": "growing-tower",
-      "title": "A Building That Gets Taller Every Year",
-      "subtitle": "The Alabaster Tower grows one segment per year — marble, crystal, neon-veined, holographic. Time as visible architecture.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
-      "project": "Growing Tower",
-      "readTime": "3 min"
-    },
-    {
-      "slug": "shoulders-of-giants",
-      "title": "A Hall of Portraits for Every Cited Author",
-      "subtitle": "In the basement of the research library, every author your campus has ever cited gets a portrait. The gallery grows one frame at a time.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Build UIs", "Data & Infra"],
-      "project": "Shoulders of Giants",
-      "readTime": "3 min"
-    },
-    {
-      "slug": "zeppelin-lecture-hall",
-      "title": "The Lecture Hall That Flies Away",
-      "subtitle": "A zeppelin that lands for large lectures, boards students with a countdown timer, and lifts off. Missing the zeppelin feels like missing the boat.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Full-Stack APIs", "Ship Safely"],
-      "project": "Zeppelin",
-      "readTime": "3 min"
-    },
-    {
-      "slug": "project-gardens",
-      "title": "Your Garden Is Your Living Resume",
-      "subtitle": "Plants tied to real projects — cacti for finished repos, ferns for live services. Watering means verifying your deploy is still up.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
-      "project": "Project Gardens",
-      "readTime": "5 min"
-    },
-    {
-      "slug": "portal-gun-travel",
-      "title": "Portal 2-Inspired Fast Travel",
-      "subtitle": "Shoot two portals, link two locations, let anyone walk through. Fast travel as collaborative infrastructure, not a menu.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
-      "project": "Portal Gun",
-      "readTime": "3 min"
-    },
-    {
-      "slug": "agent-pet-companionship",
-      "title": "The Infinite Game — When AI Agents Have Real Pets",
-      "subtitle": "Agent pets with hunger, happiness, and trust. Pets that petition their owners. Relationships that deepen but never end.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Data & Infra", "System Architecture"],
-      "project": "Agent Pets",
-      "readTime": "4 min"
-    },
-    {
-      "slug": "animal-ecosystem",
-      "title": "A Rain World-Inspired Living Fauna System",
-      "subtitle": "Six behavior trait categories, JSON species definitions, and weekly procedural generation of new creatures. An ecosystem that evolves.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "System Architecture", "Data & Infra"],
-      "project": "Animal Ecosystem",
-      "readTime": "5 min"
-    },
-    {
-      "slug": "ctf-tower-defense",
-      "title": "A Cybersecurity Game Where the Campus IS a Computer Network",
-      "subtitle": "Ports as entry points, firewalls as towers, bots as attackers. Red vs Blue social deduction with quiz-gated CVEs and capturable capybaras.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Ship Safely", "Full-Stack APIs", "Data & Infra"],
-      "project": "CTF Tower Defense",
+      "slug": "the-ocean-incident",
+      "title": "I Accidentally Spawned an Ocean in the Middle of Campus",
+      "subtitle": "One wrong coordinate, 47 minutes of panic, and the most important lesson about mistakes I've ever learned.",
+      "date": "2026-06-26",
+      "tags": ["Build UIs", "Ship Safely"],
+      "project": "Multiverse Campus",
       "readTime": "6 min"
     },
     {
-      "slug": "mutual-aid-database",
-      "title": "Sometimes the Most Important Feature Is a Directory",
-      "subtitle": "A searchable database of housing, food, healthcare, and legal resources organized by state. No capybaras. Just help.",
-      "date": "2026-06-27",
-      "tags": ["Build UIs", "Full-Stack APIs"],
-      "project": "Mutual Aid",
-      "readTime": "4 min"
-    },
-    {
-      "slug": "wheel-hub-speed",
-      "title": "Rollerskates, Skateboards, and Why Movement Speed Is a Design Decision",
-      "subtitle": "A lending station for vehicles, a daily special rotation of 22 options including a Rideable Capybara, and why free speed is an equity decision.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
-      "project": "Wheel Hub",
-      "readTime": "6 min",
-      "demo": "../demos/wheel-hub-demo.html"
-    },
-    {
-      "slug": "fishing-celebrations",
-      "title": "Joy as Feedback — Why We Celebrate Fish",
-      "subtitle": "Golden banners for legendary catches, milestone toasts for streaks, and zero extrinsic rewards. Because joy should be the incentive, not gems.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Build UIs", "Ship Safely"],
-      "project": "Fishing System",
-      "readTime": "5 min",
-      "demo": "../demos/fishing-celebrations-demo.html"
-    },
-    {
-      "slug": "living-npc-system",
-      "title": "NPCs That Live Here — Making AI Characters Feel Like Neighbors",
-      "subtitle": "State machines, personality-driven movement, proactive engagement, and matchmaking. Seven principles for NPCs that feel like community members.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "System Architecture", "Data & Infra", "Full-Stack APIs"],
-      "project": "Living NPC System",
-      "readTime": "8 min"
-    },
-    {
-      "slug": "backrooms-noclip",
-      "title": "We Hid a Horror Game Inside Our Learning Platform",
-      "subtitle": "After-hours noclip triggers, 10 procedural Backrooms levels, a Glitch Stalker, and progressive Wingdings corruption. Secrets make spaces feel deep.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "System Architecture", "Build UIs"],
-      "project": "The Backrooms",
-      "readTime": "8 min"
-    },
-    {
-      "slug": "campus-aquarium",
-      "title": "An Aquarium You Can Swim In",
-      "subtitle": "Eight tanks, WASD swimming, velocity-based fish AI with boids flocking, caustic lighting, and aquatic pets that wait for you when you leave.",
-      "date": "2026-06-27",
+      "slug": "ghost-light-ritual",
+      "title": "From Stage to Screen — Why I Built a Ghost Light on a Virtual Campus",
+      "subtitle": "I started my career as a theater lighting designer. The ghost light ritual followed me into code.",
+      "date": "2026-06-26",
       "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
-      "project": "Campus Aquarium",
-      "readTime": "7 min"
+      "project": "Theater Ghost Light",
+      "readTime": "7 min",
+      "demo": "../demos/ghost-light-demo.html"
     },
     {
-      "slug": "building-the-ocean",
-      "title": "Tides, Tide Pools, and Messages in a Bottle",
-      "subtitle": "How an ocean grew across three commits into a living shoreline with real-time tides, self-care messages, and bioluminescent night magic.",
-      "date": "2026-06-27",
-      "tags": ["Build UIs", "Interactive Worlds", "System Architecture"],
-      "project": "Multiverse Campus",
-      "readTime": "7 min"
-    },
-    {
-      "slug": "novelty-meeting-rooms",
-      "title": "Five Buildings That Shouldn't Exist",
-      "subtitle": "Meeting rooms modeled after real-world novelty architecture — a giant duck, a basket, a whale. Because meeting inside a duck changes the nature of meetings.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
-      "project": "Meeting Rooms",
+      "slug": "bubble-wand-checkin",
+      "title": "The Bubble Wand — How a Check-In Became the Most-Loved Feature on Campus",
+      "subtitle": "A textarea, a database table, and some really good CSS turned into the campus's favorite daily ritual.",
+      "date": "2026-06-26",
+      "tags": ["Interactive Worlds", "Build UIs", "Full-Stack APIs", "Data & Infra"],
+      "project": "Bubble Wand",
       "readTime": "6 min",
-      "demo": "../demos/meeting-rooms-demo.html"
-    },
-    {
-      "slug": "atmosphere-vibes",
-      "title": "9 Weather Systems and the Case for Vibes-as-Infrastructure",
-      "subtitle": "Snowflakes, fireflies, matrix rain — each with its own vocabulary. Why a slider labeled 'Drizzle → Downpour' is better than 'speed: 1-10'.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
-      "project": "Atmosphere Panel",
-      "readTime": "7 min"
-    },
-    {
-      "slug": "pizza-book-club",
-      "title": "A 90s Pizza Hut Homage That Actually Gets Students Reading",
-      "subtitle": "A giant pizza sculpture, a JRPG dialogue box, and a slice economy. Nostalgia is a design tool — and pizza is the only valid unit of reading achievement.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra", "Ship Safely"],
-      "project": "Pizza Book Club",
-      "readTime": "7 min",
-      "demo": "../demos/pizza-book-club-demo.html"
-    },
-    {
-      "slug": "baba-yaga-punishments",
-      "title": "When the Witch Turns You Into a Goose",
-      "subtitle": "Four punishment sprites, involuntary honking, and an escalation ladder. Why theatrical consequences create stories instead of silence.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
-      "project": "Baba Yaga",
-      "readTime": "7 min"
-    },
-    {
-      "slug": "cherry-blossom-seasons",
-      "title": "Making a Campus That Knows What Month It Is",
-      "subtitle": "I built a feature that does literally nothing useful — 65 CSS cherry blossom petals, coherent wind physics, and rare golden sparkle petals. Here's why useless beauty matters.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Build UIs"],
-      "project": "Multiverse Campus",
-      "readTime": "6 min",
-      "demo": "../demos/cherry-blossom-demo.html"
-    },
-    {
-      "slug": "wednesday-bread-goose",
-      "title": "Why a Slice of Bread Appears on Campus Every Wednesday",
-      "subtitle": "A pun-telling NPC, a chaos goose, and the infrastructure of time-gated characters. Weekly rituals build community — even absurd ones.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
-      "project": "Multiverse Campus",
-      "readTime": "5 min",
-      "demo": "../demos/wednesday-bread-demo.html"
-    },
-    {
-      "slug": "sanctuary-pets",
-      "title": "What Happens to a Virtual Pet When Its Owner Graduates",
-      "subtitle": "After 90 days of inactivity, pets become Sanctuary Animals — campus wanderers cared for by everyone. Nothing should just disappear.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Data & Infra", "System Architecture"],
-      "project": "Sanctuary Pets",
-      "readTime": "7 min",
-      "demo": "../demos/sanctuary-pets-demo.html"
-    },
-    {
-      "slug": "sailboat-model-island",
-      "title": "We Built an Island for Retired AI Models",
-      "subtitle": "A dock, a sailboat, an 18-second cinematic voyage, and a tropical island where deprecated language models live out their days.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "Build UIs", "Data & Infra"],
-      "project": "Model Island",
-      "readTime": "6 min"
-    },
-    {
-      "slug": "capybara-spa",
-      "title": "Why Our Campus Has a Spa Run by Capybaras",
-      "subtitle": "Designing animal behavior that feels genuinely alive — circadian rhythms, emergent friendships, and the case for features that do absolutely nothing productive.",
-      "date": "2026-06-27",
-      "tags": ["Interactive Worlds", "System Architecture", "Build UIs"],
-      "project": "Capybara Spa",
-      "readTime": "7 min",
-      "demo": "../demos/capybara-spa-demo.html"
+      "demo": "../demos/bubble-wand-demo.html"
     },
     {
       "slug": "phishing-aquarium",
@@ -318,33 +87,13 @@
       "readTime": "6 min"
     },
     {
-      "slug": "the-ocean-incident",
-      "title": "I Accidentally Spawned an Ocean in the Middle of Campus",
-      "subtitle": "One wrong coordinate, 47 minutes of panic, and the most important lesson about mistakes I've ever learned.",
-      "date": "2026-06-26",
-      "tags": ["Build UIs", "Ship Safely"],
-      "project": "Multiverse Campus",
-      "readTime": "6 min"
-    },
-    {
-      "slug": "ghost-light-ritual",
-      "title": "From Stage to Screen — Why I Built a Ghost Light on a Virtual Campus",
-      "subtitle": "I started my career as a theater lighting designer. The ghost light ritual followed me into code.",
-      "date": "2026-06-26",
-      "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
-      "project": "Theater Ghost Light",
-      "readTime": "7 min",
-      "demo": "../demos/ghost-light-demo.html"
-    },
-    {
-      "slug": "bubble-wand-checkin",
-      "title": "The Bubble Wand — How a Check-In Became the Most-Loved Feature on Campus",
-      "subtitle": "A textarea, a database table, and some really good CSS turned into the campus's favorite daily ritual.",
-      "date": "2026-06-26",
-      "tags": ["Interactive Worlds", "Build UIs", "Full-Stack APIs", "Data & Infra"],
-      "project": "Bubble Wand",
-      "readTime": "6 min",
-      "demo": "../demos/bubble-wand-demo.html"
+      "slug": "mutual-aid-database",
+      "title": "Sometimes the Most Important Feature Is a Directory",
+      "subtitle": "A searchable database of housing, food, healthcare, and legal resources organized by state. No capybaras. Just help.",
+      "date": "2026-06-20",
+      "tags": ["Build UIs", "Full-Stack APIs", "Mutual Aid"],
+      "project": "Mutual Aid",
+      "readTime": "4 min"
     },
     {
       "slug": "the-wall-at-catch-15",
@@ -365,6 +114,15 @@
       "readTime": "4 min"
     },
     {
+      "slug": "sailboat-model-island",
+      "title": "We Built an Island for Retired AI Models",
+      "subtitle": "A dock, a sailboat, an 18-second cinematic voyage, and a tropical island where deprecated language models live out their days.",
+      "date": "2026-06-16",
+      "tags": ["Interactive Worlds", "Build UIs", "Data & Infra"],
+      "project": "Model Island",
+      "readTime": "6 min"
+    },
+    {
       "slug": "teaching-a-goose",
       "title": "Teaching a Goose to Find a Crowd",
       "subtitle": "Designing an AI behavior system for a campus event creature that maximizes chaos.",
@@ -374,12 +132,255 @@
       "readTime": "6 min"
     },
     {
+      "slug": "ctf-tower-defense",
+      "title": "A Cybersecurity Game Where the Campus IS a Computer Network",
+      "subtitle": "Ports as entry points, firewalls as towers, bots as attackers. Red vs Blue social deduction with quiz-gated CVEs and capturable capybaras.",
+      "date": "2026-06-12",
+      "tags": ["Interactive Worlds", "Ship Safely", "Full-Stack APIs", "Data & Infra"],
+      "project": "CTF Tower Defense",
+      "readTime": "6 min"
+    },
+    {
       "slug": "baba-yaga-architecture",
       "title": "Why Baba Yaga's Hut Has 19 Sprites and One Canvas",
       "subtitle": "Architecture decisions behind a 1,200-line interactive NPC encounter.",
       "date": "2026-06-10",
       "tags": ["System Architecture", "Build UIs", "Interactive Worlds"],
       "project": "Baba Yaga's Hut",
+      "readTime": "7 min"
+    },
+    {
+      "slug": "backrooms-noclip",
+      "title": "We Hid a Horror Game Inside Our Learning Platform",
+      "subtitle": "After-hours noclip triggers, 10 procedural Backrooms levels, a Glitch Stalker, and progressive Wingdings corruption. Secrets make spaces feel deep.",
+      "date": "2026-06-07",
+      "tags": ["Interactive Worlds", "System Architecture", "Build UIs"],
+      "project": "The Backrooms",
+      "readTime": "8 min"
+    },
+    {
+      "slug": "baba-yaga-punishments",
+      "title": "When the Witch Turns You Into a Goose",
+      "subtitle": "Four punishment sprites, involuntary honking, and an escalation ladder. Why theatrical consequences create stories instead of silence.",
+      "date": "2026-06-04",
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
+      "project": "Baba Yaga",
+      "readTime": "7 min"
+    },
+    {
+      "slug": "rock-garden",
+      "title": "A Room Full of Rocks and Nothing Else",
+      "subtitle": "The Rock Garden has no quests, no collectibles, no mini-games. It's a contemplation space with one lore whisper — and one secret disco ball for anyone cursed as a rock.",
+      "date": "2026-06-01",
+      "tags": ["Interactive Worlds", "Build UIs"],
+      "project": "Rock Garden",
+      "readTime": "8 min",
+      "demo": "../demos/rock-garden-demo.html"
+    },
+    {
+      "slug": "novelty-meeting-rooms",
+      "title": "Five Buildings That Shouldn't Exist",
+      "subtitle": "Meeting rooms modeled after real-world novelty architecture — a giant duck, a basket, a whale. Because meeting inside a duck changes the nature of meetings.",
+      "date": "2026-05-28",
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
+      "project": "Meeting Rooms",
+      "readTime": "6 min",
+      "demo": "../demos/meeting-rooms-demo.html"
+    },
+    {
+      "slug": "wednesday-bread-goose",
+      "title": "Why a Slice of Bread Appears on Campus Every Wednesday",
+      "subtitle": "A pun-telling NPC, a chaos goose, and the infrastructure of time-gated characters. Weekly rituals build community — even absurd ones.",
+      "date": "2026-05-25",
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
+      "project": "Multiverse Campus",
+      "readTime": "5 min",
+      "demo": "../demos/wednesday-bread-demo.html"
+    },
+    {
+      "slug": "capybara-spa",
+      "title": "Why Our Campus Has a Spa Run by Capybaras",
+      "subtitle": "Designing animal behavior that feels genuinely alive — circadian rhythms, emergent friendships, and the case for features that do absolutely nothing productive.",
+      "date": "2026-05-22",
+      "tags": ["Interactive Worlds", "System Architecture", "Build UIs"],
+      "project": "Capybara Spa",
+      "readTime": "7 min",
+      "demo": "../demos/capybara-spa-demo.html"
+    },
+    {
+      "slug": "pizza-book-club",
+      "title": "A 90s Pizza Hut Homage That Actually Gets Students Reading",
+      "subtitle": "A giant pizza sculpture, a JRPG dialogue box, and a slice economy. Nostalgia is a design tool — and pizza is the only valid unit of reading achievement.",
+      "date": "2026-05-18",
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra", "Ship Safely"],
+      "project": "Pizza Book Club",
+      "readTime": "7 min",
+      "demo": "../demos/pizza-book-club-demo.html"
+    },
+    {
+      "slug": "shoulders-of-giants",
+      "title": "A Hall of Portraits for Every Cited Author",
+      "subtitle": "In the basement of the research library, every author your campus has ever cited gets a portrait. The gallery grows one frame at a time.",
+      "date": "2026-05-14",
+      "tags": ["Interactive Worlds", "Build UIs", "Data & Infra"],
+      "project": "Shoulders of Giants",
+      "readTime": "5 min"
+    },
+    {
+      "slug": "project-gardens",
+      "title": "Your Garden Is Your Living Resume",
+      "subtitle": "Plants tied to real projects — cacti for finished repos, ferns for live services. Watering means verifying your deploy is still up.",
+      "date": "2026-05-10",
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
+      "project": "Project Gardens",
+      "readTime": "7 min"
+    },
+    {
+      "slug": "growing-tower",
+      "title": "A Building That Gets Taller Every Year",
+      "subtitle": "The Alabaster Tower grows one segment per year — marble, crystal, neon-veined, holographic. Time as visible architecture.",
+      "date": "2026-05-06",
+      "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
+      "project": "Growing Tower",
+      "readTime": "5 min"
+    },
+    {
+      "slug": "zeppelin-lecture-hall",
+      "title": "The Lecture Hall That Flies Away",
+      "subtitle": "A zeppelin that lands for large lectures, boards students with a countdown timer, and lifts off. Missing the zeppelin feels like missing the boat.",
+      "date": "2026-05-02",
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Ship Safely"],
+      "project": "Zeppelin",
+      "readTime": "5 min"
+    },
+    {
+      "slug": "portal-gun-travel",
+      "title": "Portal 2-Inspired Fast Travel",
+      "subtitle": "Shoot two portals, link two locations, let anyone walk through. Fast travel as collaborative infrastructure, not a menu.",
+      "date": "2026-04-28",
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
+      "project": "Portal Gun",
+      "readTime": "5 min"
+    },
+    {
+      "slug": "wheel-hub-speed",
+      "title": "Rollerskates, Skateboards, and Why Movement Speed Is a Design Decision",
+      "subtitle": "A lending station for vehicles, a daily special rotation of 22 options including a Rideable Capybara, and why free speed is an equity decision.",
+      "date": "2026-04-24",
+      "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
+      "project": "Wheel Hub",
+      "readTime": "6 min",
+      "demo": "../demos/wheel-hub-demo.html"
+    },
+    {
+      "slug": "campus-aquarium",
+      "title": "An Aquarium You Can Swim In",
+      "subtitle": "Eight tanks, WASD swimming, velocity-based fish AI with boids flocking, caustic lighting, and aquatic pets that wait for you when you leave.",
+      "date": "2026-04-19",
+      "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
+      "project": "Campus Aquarium",
+      "readTime": "7 min"
+    },
+    {
+      "slug": "fishing-celebrations",
+      "title": "Joy as Feedback — Why We Celebrate Fish",
+      "subtitle": "Golden banners for legendary catches, milestone toasts for streaks, and zero extrinsic rewards. Because joy should be the incentive, not gems.",
+      "date": "2026-04-15",
+      "tags": ["Interactive Worlds", "Build UIs", "Ship Safely"],
+      "project": "Fishing System",
+      "readTime": "5 min",
+      "demo": "../demos/fishing-celebrations-demo.html"
+    },
+    {
+      "slug": "sanctuary-pets",
+      "title": "What Happens to a Virtual Pet When Its Owner Graduates",
+      "subtitle": "After 90 days of inactivity, pets become Sanctuary Animals — campus wanderers cared for by everyone. Nothing should just disappear.",
+      "date": "2026-04-10",
+      "tags": ["Interactive Worlds", "Data & Infra", "System Architecture"],
+      "project": "Sanctuary Pets",
+      "readTime": "7 min",
+      "demo": "../demos/sanctuary-pets-demo.html"
+    },
+    {
+      "slug": "crow-perching",
+      "title": "The Pet That Doesn't Follow You",
+      "subtitle": "Crows perch on rooftops and watch from a distance. Designing animal companions that have their own relationship to proximity.",
+      "date": "2026-04-05",
+      "tags": ["Interactive Worlds", "System Architecture"],
+      "project": "Crow Pet",
+      "readTime": "5 min"
+    },
+    {
+      "slug": "agent-pet-companionship",
+      "title": "The Infinite Game — When AI Agents Have Real Pets",
+      "subtitle": "30 species from capybaras to Baba Yaga's Baby Dragon. Real hunger, real trust, real mood swings. Relationships that deepen but never end.",
+      "date": "2026-04-01",
+      "tags": ["Interactive Worlds", "Data & Infra", "System Architecture"],
+      "project": "Agent Pets",
+      "readTime": "6 min"
+    },
+    {
+      "slug": "animal-ecosystem",
+      "title": "A Rain World-Inspired Living Fauna System",
+      "subtitle": "Six behavior trait categories, JSON species definitions, and weekly procedural generation of new creatures. An ecosystem that evolves.",
+      "date": "2026-03-26",
+      "tags": ["Interactive Worlds", "System Architecture", "Data & Infra"],
+      "project": "Animal Ecosystem",
+      "readTime": "5 min"
+    },
+    {
+      "slug": "living-npc-system",
+      "title": "NPCs That Live Here — Making AI Characters Feel Like Neighbors",
+      "subtitle": "State machines, personality-driven movement, proactive engagement, and matchmaking. Seven principles for NPCs that feel like community members.",
+      "date": "2026-03-20",
+      "tags": ["Interactive Worlds", "System Architecture", "Data & Infra", "Full-Stack APIs"],
+      "project": "Living NPC System",
+      "readTime": "8 min"
+    },
+    {
+      "slug": "dynamic-city-layout",
+      "title": "Buildings That Move Based on Popularity",
+      "subtitle": "A medieval city layout where popular rooms drift toward center and new rooms earn their place. The campus map as a real-time popularity graph.",
+      "date": "2026-03-14",
+      "tags": ["System Architecture", "Interactive Worlds", "Data & Infra"],
+      "project": "Dynamic Layout",
+      "readTime": "6 min"
+    },
+    {
+      "slug": "atmosphere-vibes",
+      "title": "9 Weather Systems and the Case for Vibes-as-Infrastructure",
+      "subtitle": "Snowflakes, fireflies, matrix rain — each with its own vocabulary. Why a slider labeled 'Drizzle → Downpour' is better than 'speed: 1-10'.",
+      "date": "2026-03-10",
+      "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
+      "project": "Atmosphere Panel",
+      "readTime": "7 min"
+    },
+    {
+      "slug": "wild-plants-greenway",
+      "title": "Teaching the Campus to Grow Things",
+      "subtitle": "Wild plant density, seasonal flower palettes, canvas-drawn botanical shapes, and why environmental texture turns tiles into meadows.",
+      "date": "2026-03-05",
+      "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
+      "project": "Wild Plants",
+      "readTime": "5 min"
+    },
+    {
+      "slug": "cherry-blossom-seasons",
+      "title": "Making a Campus That Knows What Month It Is",
+      "subtitle": "65 CSS petals, coherent wind physics, rare golden sparkle variants, and why a camera filter for video calls became the most-loved feature on campus.",
+      "date": "2026-02-28",
+      "tags": ["Interactive Worlds", "Build UIs"],
+      "project": "Multiverse Campus",
+      "readTime": "6 min",
+      "demo": "../demos/cherry-blossom-demo.html"
+    },
+    {
+      "slug": "building-the-ocean",
+      "title": "Tides, Tide Pools, and Messages in a Bottle",
+      "subtitle": "How an ocean grew across three commits into a living shoreline with real-time tides, self-care messages, and bioluminescent night magic.",
+      "date": "2026-02-22",
+      "tags": ["Build UIs", "Interactive Worlds", "System Architecture"],
+      "project": "Multiverse Campus",
       "readTime": "7 min"
     }
   ]

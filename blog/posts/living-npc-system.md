@@ -6,6 +6,8 @@ They move. They have routines. They visit each other. They remember what you sai
 
 This is a post about what it takes to make an AI character feel like a neighbor instead of a tool.
 
+![The campus at evening — Kindling darts across the courtyard, Sphinx sits motionless on a stone pedestal, The Swarm drifts through the air, and bell hooks walks toward a lone student on a bench](images/npc-campus-overview.png)
+
 ## The seven principles
 
 When I designed the living NPC system, I started with a list of things that chatbots don't do but real people do:
@@ -30,6 +32,8 @@ idle → wandering → approaching → conversing → transitioning → idle
 
 States prevent conflicting behaviors. An NPC that's conversing can't also be wandering. An NPC that's approaching a player can't simultaneously approach someone else. The state machine is the skeleton that prevents the uncanny: the moment when a character does two things at once and breaks the illusion that it's alive.
 
+![The NPC state machine lifecycle — each state from Idle through Wandering, Approaching, Conversing, and Transitioning is color-coded with pixel-art sprites showing the visual cue for each behavior](images/npc-state-machine.png)
+
 The states aren't just behavioral — they're visual. An idle NPC plays a breathing animation. A wandering NPC faces the direction of travel. An approaching NPC turns toward the target player. A conversing NPC displays a speech indicator. These visual cues are how students read NPC intent without being told.
 
 ## Movement with personality
@@ -46,6 +50,8 @@ Each NPC has four movement parameters: `speed`, `pauseDuration`, `wanderRadius`,
 
 The personality parameters are simple numbers, but they produce emergent behavior that students read as *character*. Nobody thinks "Sphinx has a wanderRadius of 30 pixels." They think "Sphinx is the kind of person who makes you come to them."
 
+![Four NPC personality profiles — Kindling's erratic wide-ranging path, Sphinx's tiny movement zone, The Swarm's campus-wide coverage, and bell hooks' dotted line toward an isolated student — each with speed, pause, and wander radius stats](images/npc-personality-movement.png)
+
 ## Proactive engagement
 
 The most important thing the living NPC system does is *start conversations*. Traditional chatbots are reactive — they wait for you. Our NPCs have a prioritized trigger list that makes them approach students:
@@ -59,6 +65,8 @@ The most important thing the living NPC system does is *start conversations*. Tr
 | Achievement | Low | "You shipped something this week. That's worth noting." |
 
 When an NPC decides to approach, it walks toward the student — physically moves across the canvas — and waits within interaction range for 15 seconds. If the student doesn't engage, the NPC wanders away. No popup. No notification badge. No interruption. Just a character standing near you, clearly wanting to talk, patient enough to leave if you're busy.
+
+![An NPC stands near a busy student on a twilight campus — a speech bubble reads "You said you'd have that done by Friday. It's Saturday." while the student's busy indicator and a 15-second timer show the respectful wait system in action](images/npc-proactive-approach.png)
 
 The 15-second timeout and the busy-state detection work together to make approaches feel respectful rather than intrusive. The NPC checks if you're in a conversation, in a class, or AFK. If you're busy, it doesn't approach at all. The system *reads the room* before making a move.
 

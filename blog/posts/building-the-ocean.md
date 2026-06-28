@@ -8,6 +8,8 @@ And fishing. Eight fish species weighted by rarity (common sardines through lege
 
 The ocean at this stage was functional but flat. It looked nice. It had a game mechanic. But it didn't feel like *water*. Real water moves.
 
+![The campus shoreline — a sandy beach with turquoise-to-navy depth gradient, foam spray along the wave break, and specular highlights. A student fishes at the water's edge with a "Bite!" progress bar and recent catches (Sardine, Catfish, Bass). A distant island with palm trees is barely visible on the horizon.](images/ocean-shoreline-fishing.png)
+
 ## Phase 2: Tides, tide pools, and messages in a bottle
 
 The second commit changed everything. I added a 15-minute real-time tide cycle — the shoreline shifts ±20 pixels on a sine wave, which doesn't sound like much, but it means the beach is different depending on when you visit.

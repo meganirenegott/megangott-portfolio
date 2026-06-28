@@ -8,17 +8,25 @@ The dynamic city layout system arranges buildings in concentric rings around a c
 
 When a room gains popularity over time, its building drifts closer to the center. When a room loses popularity, it drifts outward. The positions are recalculated periodically and smoothed to prevent jarring jumps — buildings slide gradually into their new positions over minutes, not frames.
 
+![ML Workshop drifting from the outer ring toward the inner circle after gaining +12 occupancy — a ghost of its former position fades on the right](images/city-layout-building-drift.png)
+
 The result: the campus layout is a real-time popularity map. The most-used buildings cluster near spawn. The less-used buildings drift to the edges. Students can literally see which parts of campus are thriving by looking at the map.
+
+![The campus map as a real-time popularity heatmap — popular buildings like ML Study Group and Code Review cluster in the inner ring near the central town square, while quiet rooms drift to the outer edges](images/city-layout-concentric-rings.png)
 
 ## Landmarks stay put
 
 Not everything moves. Five landmark buildings have fixed positions: Announcements, Job Search, Learn to Code, Agents, and Agentic SDLC. These are institutional constants — they anchor the map and provide orientation points. Without landmarks, a fully dynamic map would be disorienting. With them, students always know where the center is.
+
+![The five landmark buildings centered in the town square — Announcements, Job Search, Learn to Code, Agents, and Agentic SDLC — providing a stable navigational anchor for the rest of the campus](images/city-layout-landmarks.png)
 
 ## Room-to-building sync
 
 Every public Matrix chat room automatically gets a building on the campus map. Create a room, and a building appears. This means the campus grows organically as the community creates spaces — no admin intervention needed.
 
 Room creators and moderators can customize their building: upload a custom sprite (or generate one via PixelLab), edit the interior layout, and set the building's visual style. The building becomes a physical expression of the community that uses it.
+
+![Four custom building sprites — The Forest Den (treehouse), Quantum Cafe (glass dome), Mycelium Mill (mushroom cottage), and Valor Tower (castle) — each reflecting its community’s personality](images/city-layout-custom-buildings.png)
 
 ## Why algorithmic urbanism matters
 

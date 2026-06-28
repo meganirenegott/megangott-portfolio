@@ -8,6 +8,10 @@ When a student cites a research paper, the system records the paper's authors. T
 
 The portraits use a JRPG-style dialogue display system (shared with the Baba Yaga and Pizza Book Club interfaces). Walk up to a portrait and press E, and you get the author's name, their most-cited work on campus, and a short generated blurb about their contribution to the field. The portrait styling reuses the `BytePortrait` component — the same pixel-art-framed character display used throughout the campus UI.
 
+![The Shoulders of Giants hallway — stone walls, red carpet, torchlight, and ornate golden frames with portraits of Dr. Sarah Chen, Prof. Elias Vance, Dr. Aisha Khan, and more](images/portraits-hallway.png)
+
+![A student interacts with Dr. Ada Lovelace's portrait — a JRPG dialogue box shows her name, most-cited work ("Notes on the Analytical Engine", cited 14 times), and a blurb about her contribution](images/portraits-dialogue.png)
+
 ## Why acknowledge the sources
 
 The name "Shoulders of Giants" comes from Newton's letter to Hooke: "If I have seen further, it is by standing on the shoulders of giants." It's the foundational metaphor for academic citation — every new idea builds on the work of people who came before.
@@ -21,3 +25,5 @@ The more research the campus produces, the longer the hallway gets. More portrai
 Each portrait frame has a subtle glow intensity proportional to how many times that author has been cited on campus. The most-cited authors have brighter frames — not dramatically, just enough that your eye is drawn to the names that keep coming up. It's a quiet leaderboard of influence.
 
 When a new author is cited for the first time, a small announcement appears in the campus feed: "📚 New portrait added to the Shoulders of Giants: [Author Name]." The basement grows, one frame at a time, as students read and cite and build.
+
+![A new portrait materializes on the wall — Dr. Yoshua Bengio's frame shimmers with golden sparkles as a campus notification announces the addition, alongside existing portraits of Geoffrey Hinton, Yann LeCun, and Dr. Fei-Fei Li](images/portraits-new-addition.png)

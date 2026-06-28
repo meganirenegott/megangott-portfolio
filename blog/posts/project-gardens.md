@@ -13,6 +13,8 @@ When a student completes a project — a GitHub repo, a deployed app, a creative
 
 The agent decides everything — species, maintenance tier, watering frequency. It evaluates the project and picks what fits. A student who builds a quick static site and a student who launches a production API get very different plants because their ongoing obligations are very different.
 
+![maya_k's garden — a cactus for her CLI Tool, an orchid for her Portfolio Site, a monstera for her E-Commerce App, and a glowing Pixel Blossom for her Generative Art project](images/project-garden-overview.png)
+
 ## Watering is real
 
 Here's where it gets interesting. Watering isn't just clicking a button. When you walk up to your plant and click to water it, the server fetches your project URL, takes a screenshot, and runs AI verification to confirm the project is still live and functioning.
@@ -21,11 +23,15 @@ If your Vercel deploy is still up, the water flows and the plant thrives. If you
 
 This means the garden is a living portfolio. Healthy plants mean maintained projects. Wilting plants mean broken deploys. A visitor who walks through someone's garden can *see* their project health at a glance without checking a single URL.
 
+![The watering verification system — the server screenshots the deployed site, confirms it's live, and the plant thrives. A wilting plant beside it shows a failed deploy returning 404](images/project-garden-watering.png)
+
 ## The Conservatory
 
 Group project gardens live in the Conservatory — open-air zones scattered across campus that function as a walkable portfolio gallery. You stroll through and see clusters of plants, each representing a team's collective output.
 
 Individual plants within a group garden represent individual contributions. If you did UX *and* backend, you get two plants. Roles aren't prescribed — they're free-form, because people wear many hats.
+
+![The Conservatory — a glass-roofed gallery where team gardens are displayed in clusters. Team Alpha's Campus Oak towers over orchids and ferns from Teams Phoenix and Nebula](images/project-garden-conservatory.png)
 
 ## Vacation mode
 

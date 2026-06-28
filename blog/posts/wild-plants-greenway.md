@@ -6,6 +6,8 @@ So I turned the plant density up and taught the greenway flowers to bloom.
 
 The fix was embarrassingly simple. Wild plants were already in the biome system — they had spawn rules, species data, and rendering code. But their density was so low and their icons so small that nobody noticed them.
 
+![Before and after — the same campus area with plant density increased from 0.10 to 0.18 in urban zones and 0.20 to 0.30 in parks](images/wild-plants-density-comparison.png)
+
 Three changes made the campus feel alive:
 
 1. **Density increase**: Urban biome wild plant density went from 0.10 to 0.18. Park biome went from 0.20 to 0.30. More plants, everywhere.
@@ -14,11 +16,15 @@ Three changes made the campus feel alive:
 
 The result: walking across campus, you now pass through clusters of vegetation that vary by biome. The urban zones near buildings have sparse succulents and small flowers. The park zones have lush rings of ferns and wildflowers. The edges have tall grasses.
 
+![The campus after the plant update — students walking through meadows between buildings, with biome-appropriate vegetation clusters](images/wild-plants-campus-overview.png)
+
 ## Greenway flowers that bloom
 
 The greenway flower system adds seasonal color. Students can plant seeds in designated greenway zones — click a seed in your inventory, choose a zone, and the seed is consumed and planted.
 
 But the rendering is where the craft lives. Each flower is drawn with a canvas fallback renderer that produces actual botanical shapes instead of colored dots:
+
+![Greenway flower zone — canvas-drawn botanical sprites with five-petal flowers, overlapping bush circles, and rare plants with ambient glow rings](images/wild-plants-greenway-flowers.png)
 
 - **Flowers**: A stem line, five petal ellipses arranged radially, and a yellow center dot.
 - **Bushes**: Three overlapping circles (the rounded bush shape) with a small accent dot.

@@ -23,6 +23,8 @@ When the trigger fires, the client receives a noclip event. The screen glitches 
 
 The impossibility of intentional access is crucial. You can't decide to go to the Backrooms. It decides to take you. That lack of agency — the moment when the world malfunctions around you without your consent — is what makes it frightening instead of fun. (It's also fun. But the fear comes first.)
 
+![The noclip moment — above, a student walks alone on a quiet nighttime campus. A violent datamosh tear rips across the screen with magenta and cyan static. Below, the student falls through into Level 0: an endless expanse of yellow-brown wallpaper, wet carpet, and buzzing fluorescent lights stretching into infinity.](images/backrooms-noclip-trigger.png)
+
 ## Ten levels
 
 The Backrooms has ten procedurally-navigated levels, each with distinct aesthetics faithful to the established canon:
@@ -42,6 +44,8 @@ The Backrooms has ten procedurally-navigated levels, each with distinct aestheti
 
 Each level is a tile-based maze generated from a seed. The layouts aren't fully random — they use templates and rules that ensure navigability while maintaining the feeling of infinite, hostile sameness.
 
+![Ten Backrooms levels — The Lobby's yellow wallpaper, Habitable Zone's concrete corridors, Pipe Dreams' steam tunnels, Electrical Station's server rooms, Abandoned Office's cubicles, The Hotel's numbered doors, Suburban Night's empty streets, Thalassophobia's flooded rooms, The Cave's bioluminescent caverns, and The Darkened Suburbs' near-total darkness](images/backrooms-ten-levels.png)
+
 ## The Glitch Stalker
 
 You're not alone in the Backrooms. An entity called the Glitch Stalker roams the levels — a corrupted sprite that flickers between frames, sometimes visible as a silhouette in a doorway, sometimes only audible as static distortion.
@@ -49,6 +53,8 @@ You're not alone in the Backrooms. An entity called the Glitch Stalker roams the
 The Stalker doesn't chase you directly. It *wanders* — similar to our other NPC movement systems, but with a bias toward the player's recent positions. It follows your *trail*, not your location. This means you might turn a corner and see it standing where you were thirty seconds ago, looking at the spot where you stood.
 
 If the Stalker makes contact, it applies Glitch Corruption.
+
+![The Glitch Stalker — a corrupted humanoid silhouette stands in a doorway at the end of a yellow-brown corridor, its sprite flickering with red and cyan color channel bleeding. It stares at faint footprints on the carpet where the student was standing moments ago. Static distortion radiates outward from the entity like a corruption field.](images/backrooms-glitch-stalker.png)
 
 ## Glitch Corruption
 
@@ -67,6 +73,8 @@ Glitch Corruption is the most creative status effect I've ever designed. It's a 
 The datamosh effect uses a custom shader utility that deliberately misaligns pixel rows, bleeds color channels across boundaries, and introduces block artifacts — all the visual symptoms of a corrupted video file, applied progressively to your character sprite.
 
 The Wingdings text replacement is my favorite touch. It applies to *your* UI, not others'. So you might be trying to navigate a menu and the label that should say "Inventory" says "✌︎☠︎✞︎☜︎☠︎❄︎⚐︎☼︎✡︎". You can still click it. But the familiar has become alien — which is the entire thesis of the Backrooms.
+
+![Five stages of Glitch Corruption — Stage 1: subtle flickers. Stage 2: the avatar datamoshes like a corrupted JPEG. Stage 3: UI text replaces with Wingdings, chat garbles. Stage 4: severe artifacts, the avatar is barely recognizable. Stage 5: total corruption, the screen is a mosaic of glitch artifacts. A corruption progress bar runs from green to red across the top.](images/backrooms-corruption-stages.png)
 
 ## The escape
 

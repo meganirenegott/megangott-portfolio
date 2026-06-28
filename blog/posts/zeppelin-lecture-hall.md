@@ -8,7 +8,11 @@ The Zeppelin Lecture Hall is a dirigible that exists in two states on the campus
 
 **Airborne**: When a lecture begins, the zeppelin inflates (a canvas animation that scales the sprite vertically over 3 seconds), the tethers release, and it lifts off. Students who boarded during the countdown are inside. Students who missed the window see it floating above the campus, unreachable until it lands again.
 
+![The zeppelin landed on its launch pad, tethered to mooring posts — the largest object on the map, with a countdown timer reading "Next Lecture: 14:32"](images/zeppelin-landed.png)
+
 The boarding sequence uses a `ZeppelinBoardingOverlay` — a countdown timer with a live participant list, showing who's already aboard and how many seats remain. The overlay creates urgency: you can see the timer ticking down and your classmates' names appearing. It feels like boarding a flight, not joining a Zoom call.
+
+![The Zeppelin Boarding Overlay — 2:47 remaining, 47/200 seats filled, passenger names appearing in real time as students walk up the gangplank](images/zeppelin-boarding.png)
 
 ## Inside the zeppelin
 
@@ -21,5 +25,7 @@ The BBB integration required implementing the checksum authentication system (46
 A Zoom link says: "Here's a meeting." A zeppelin that lands, opens its doors, counts down, lifts off, and floats above the campus with everyone inside says: "This is an *event*."
 
 The framing changes attendance psychology. Missing a Zoom link feels like forgetting a tab. Missing the zeppelin feels like missing the boat — literally. The countdown creates commitment. The visual of the airship floating overhead creates FOMO for the students who didn't board.
+
+![The zeppelin airborne over campus trailing a "LECTURE IN SESSION" banner — students below look up with speech bubbles: "I missed it!" and "Wait for me!"](images/zeppelin-airborne.png)
 
 Lectures are the same content either way. But a lecture in a zeppelin is a story, and stories are what people show up for.

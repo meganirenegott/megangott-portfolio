@@ -2,6 +2,8 @@ There's a building east of the quad called The Wheel Hub. It's a lending station
 
 This sounds straightforward. It is straightforward. The interesting part isn't the code — it's what happens to exploration when you change movement speed.
 
+![The Wheel Hub — a cozy lending station with a gear logo sign, roller skates on hooks, skateboards on a wall rack, and bicycles lined up inside. A student grabs a bicycle as a speech bubble reads "The campus is huge and full of surprises. Grab some wheels and go explore." Paths branch in every direction from the entrance.](images/wheel-hub-building.png)
+
 ## The standard picks
 
 Three vehicles are always available:
@@ -24,6 +26,8 @@ The specials all grant campus-wide fast travel regardless of their default chara
 
 The daily special creates a conversation. "What's the special today?" "It's the Rideable Capybara." Students check the Wheel Hub even if they don't need a vehicle, just to see what's available. Predictability within surprise — you know there will be a special, you just don't know which one.
 
+![Today's Special at The Wheel Hub — a Rideable Capybara with a saddle and reins stands on a spotlight pedestal, glowing with a purple aura. Silhouettes of other specials surround the base: unicycle, penny-farthing, moon boots, jetpack, flying broomstick, magic carpet, giant flamingo, disco octopus. A student exclaims "It's the Rideable Capybara!"](images/wheel-hub-daily-special.png)
+
 ## Speed changes what you see
 
 Here's what I learned from watching students use the Wheel Hub: **movement speed is a lens, not just a stat.**
@@ -33,6 +37,8 @@ A student walking at 1× speed tends to explore locally. They go to class, they 
 A student on a bicycle at 2× speed behaves completely differently. They overshoot their destination and discover the inlet they'd never walked to. They loop around the perimeter and find the dock with the sailboat. They pass through the Sculpture Garden on their way somewhere else and stop to read the pizza sculpture for the first time.
 
 Speed doesn't just get you there faster. It changes your *radius of curiosity*. Things that were "too far away to bother" at 1× become "right over there" at 2×. The campus functionally doubles in size — not because I added content, but because I reduced the friction of reaching it.
+
+![Walking (1×) vs Bicycle (2×) — on the left, a student's trail covers only the classroom, quad, and library while the rest of campus is grayed out. On the right, a bicycle trail sweeps across the entire campus, discovering the Sculpture Garden, the dock with the sailboat, and the inlet. "Speed changes your radius of curiosity."](images/wheel-hub-speed-radius.png)
 
 ## Session-scoped lending
 
@@ -51,6 +57,8 @@ That last point is the one I care about most. **Speed is an equity decision disg
 When you're riding a vehicle, a small pill-shaped badge appears in the bottom-left corner of the canvas: amber for standard vehicles, purple for flying or special vehicles. It shows your current speed multiplier and vehicle name.
 
 Tap the badge once to arm the return. Tap again to confirm and return your wheels. This two-tap pattern prevents accidental dismounts — you don't want to lose your bicycle because you clicked the wrong thing during a fishing session.
+
+![A student skateboarding across campus at sunset — the HUD shows an amber "Skateboard — 1.6×" badge and a purple "Magic Carpet — Special" badge. A two-step return diagram demonstrates the tap-to-arm then tap-to-confirm pattern that prevents accidental dismounts.](images/wheel-hub-speed-badge.png)
 
 ## What the flavor text says
 

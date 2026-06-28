@@ -1,16 +1,14 @@
-The first time I saw cherry blossoms fall, I was walking across a bridge in Portland. It was mid-April, and the trees along the waterfront had erupted into clouds of pale pink. Petals drifted across the path in front of me — not falling straight down, but *traveling*, caught in a breeze that pushed them all in the same direction. Some spun. Some wobbled. One landed in my coffee.
+On our virtual campus, when you walk close enough to another student, a video proximity call opens automatically. You see each other's cameras. You talk. It's the closest thing to bumping into someone in a hallway that remote learning has.
 
-I remember thinking: *this is what a place feels like when it knows what season it is.*
+The cherry blossom overlay is a camera filter for those calls. When it's active, CSS-animated petals drift across your video feed — falling gently over your face, catching light behind your head, occasionally landing on your shoulder. It turns a utilitarian video rectangle into something that feels like sitting under a tree in spring.
 
-## Why I built a feature that does nothing
+## Why atmosphere matters in video calls
 
-The cherry blossom overlay on our virtual campus does not teach anyone anything. It doesn't track progress. It doesn't gamify reading or reward attendance. It appears on April 1st, runs for two weeks, and vanishes. Its entire purpose is to make you stop walking and look up.
+Video calls on a learning platform are functional by default. You see a face in a box. The box has no personality, no warmth, no sense of place. Every call looks the same whether it's Monday morning or Friday afternoon, January or June.
 
-I built it because I think atmosphere is infrastructure. When students log into a learning platform and everything looks the same every single day — same background, same lighting, same energy — the space feels frozen. It doesn't feel like a *place*. It feels like an application.
+I built the cherry blossom filter because I think atmosphere is infrastructure — even in a video feed. When petals drift across your camera, the call feels different. It feels like you're *somewhere*, not just connected to someone. The overlay doesn't change the conversation, but it changes the feeling of the conversation. And feelings are what make students stay on a call an extra five minutes, ask one more question, feel one degree more comfortable.
 
-Real places change. The light shifts. The seasons turn. You walk in one morning and something's different and you can't quite name it, but it makes you feel like the world is paying attention.
-
-So I gave our campus seasons. Starting with spring.
+Real places have seasons. Your video feed should too.
 
 ## 65 petals, 3 shapes, 7 colors
 
@@ -38,7 +36,7 @@ Getting the wind right was the part I obsessed over. In most particle effects, e
 
 All 65 petals share a `--drift-x` direction that's biased left-to-right, simulating a prevailing breeze. The magnitude varies per petal (some drift 40px, some drift 120px), but they all move the same way. This one constraint makes the entire effect feel like weather instead of noise.
 
-Users can adjust the wind speed from "Still" to "Gusty" using a settings panel. At Still, the drift is minimal and petals fall nearly straight down. At Gusty, they streak sideways, and the sway amplitudes increase. The vocabulary matters — I didn't label the slider "wind speed (px/s)." I labeled it *Still* through *Gusty* because that's how people think about wind.
+Users can adjust the wind speed on their camera view from "Still" to "Gusty" using a settings panel. At Still, the drift is minimal and petals fall nearly straight down across your video feed. At Gusty, they streak sideways, and the sway amplitudes increase. The vocabulary matters — I didn't label the slider "wind speed (px/s)." I labeled it *Still* through *Gusty* because that's how people think about wind.
 
 ## Sparkle petals
 
@@ -57,25 +55,31 @@ Five percent of petals are sparkle variants. They're the same shape and color, b
 
 The shimmer animation pulses the `box-shadow` radius and `brightness` on a 1.2-second cycle. At peak intensity, the glow radius nearly triples and the brightness jumps to 1.6x. It's subtle enough that you might not notice it immediately — and that's the point. Sparkle petals are a micro-discovery. The first time you spot one, you feel like you found something.
 
-## Accessibility and the off switch
+## Your camera, your petals
 
 The overlay respects `prefers-reduced-motion`. If the OS says no animations, the petals don't render. Period.
 
-Beyond that, every user gets controls: a 🌸 button in the corner opens a settings panel where you can adjust petal density (5–200), wind speed (Still–Gusty), or turn the whole thing off. Preferences save to `localStorage`, so your settings persist across sessions.
+Beyond that, every user gets full control over their own camera view: a 🌸 button in the corner opens a settings panel where you can toggle the filter on or off, adjust petal density (5–200), and dial the wind speed from Still to Gusty. Your settings only affect your camera feed — the person on the other end of the call sees their own settings. Preferences save to `localStorage`, so your camera aesthetic persists across sessions.
 
 This matters because "atmospheric" shouldn't mean "mandatory." Some people find particle effects distracting. Some people are on slow machines. The feature should *default* to delightful and *allow* removal, not the other way around.
 
-## April 1 through April 14
+## From seasonal to permanent
 
-The cherry blossom overlay is date-gated. It appears on April 1st and disappears on April 14th. No toggle. No early access. No "turn on cherry blossoms in July."
+The cherry blossom overlay originally ran only from April 1st through April 14th. Two weeks a year, date-gated, no early access. I believed seasonal scarcity was the whole point — if cherry blossoms were always there, they'd be wallpaper.
 
-I thought about making it permanent or user-triggerable, but seasonal scarcity is the whole point. If cherry blossoms are always there, they're wallpaper. If they appear for two weeks a year, they're an *event*. Students notice. They mention it in chat. "The blossoms are back!" becomes a thing people say.
+I was wrong. Or rather, I was right about scarcity, but I underestimated what would happen when students started using the petals as a **camera overlay for video calls.**
 
-The best interactions with a digital space are the ones that make you feel like the space has a life of its own. A campus that changes with the seasons says: *this isn't a tool you use. This is a place you inhabit.*
+Somewhere in the first week of April, students discovered that the cherry blossom CSS overlay rendered on top of everything — including their video call windows. Petals drifted across their faces during standups. Sparkle petals caught the light behind their heads during pair programming. Within three days, students were asking if they could keep it after April 14th. "My camera looks so good with petals" became a recurring message in chat.
+
+The demand was overwhelming and genuine. Students weren't asking for a feature — they were asking to keep something that made their daily calls feel more human. So I made it permanent. The cherry blossom overlay moved from a date-gated seasonal event to an always-available option, which eventually grew into the full [Atmosphere Panel](/blog/post.html?slug=atmosphere-vibes) with nine weather systems. The petals were the seed.
+
+The best interactions with a digital space are the ones that make you feel like the space has a life of its own. And sometimes the best product decision is listening when people love something and giving them more of it.
 
 ## What I learned
 
-Building the cherry blossom overlay taught me something I keep coming back to: **the features people love most are often the ones that do the least.** No database. No API. No server calls. Just CSS, a date check, and the belief that beauty is worth engineering for.
+Building the cherry blossom overlay taught me something I keep coming back to: **atmosphere is a feature, not a decoration.** No database. No API. No server calls. Just CSS and the belief that how a video call *feels* is worth engineering for.
+
+It also taught me to listen. I was so sure that scarcity was the right call. But when students started using petals as their video call aesthetic and asked to keep them, the right move was to say yes — and then build eight more weather systems because the demand was clearly there. The cherry blossoms didn't just become a feature. They became the proof of concept for an entire atmosphere infrastructure.
 
 The nicest compliment I got about this feature was from a student who messaged me on a Monday in April: "I logged in this morning and something felt different but I couldn't figure out what it was for like five minutes. Then I saw a petal land on my avatar's head."
 

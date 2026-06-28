@@ -14,6 +14,8 @@ The Multiverse Mutual Aid Database is a static web application (HTML + CSS + Jav
 
 Resources are filterable by state and by identity — 10 identity filters that help students find organizations specifically serving their communities.
 
+![Seven resource categories — Housing, Food, Transportation, Education, Library, Healthcare, Legal — each with an icon, resource count, and example subtypes. Below, 10 identity filter badges including BIPOC, LGBTQ+, Disability, Veteran, Immigrant/Refugee, and more](images/mutual-aid-categories.png)
+
 ## Why I built it
 
 Coding bootcamp students face a particular constellation of challenges: they're in an intense program, often transitioning careers, sometimes relocating, frequently experiencing financial pressure. The skills they're learning will help long-term, but they need support *now* — this week, this month.
@@ -24,7 +26,11 @@ Most mutual aid directories are local and scattered. You have to know which orga
 
 The interface uses a map (Leaflet.js) as the primary navigation metaphor, with a filterable resource database below. Each resource entry includes the organization name, description, contact info, service area, eligibility requirements, and direct links.
 
+![The Multiverse Mutual Aid Database — a Leaflet.js map of the United States with color-coded pins for housing, food, healthcare, legal, and education resources. A filter panel on the left with category checkboxes and a state selector showing California. Resource cards below list organizations with contact info and service areas.](images/mutual-aid-map.png)
+
 Users can suggest new resources via a "Suggest a Resource" button — community-sourced, because local knowledge is always more current than any curated database.
+
+![Resource cards for New York showing the NYC Coalition for Housing Justice, City Harvest Food Rescue, and Stuyvesant Heights Legal Services — each with category badges, descriptions, addresses, phone numbers, and eligibility info. Category filter pills across the top and a "Suggest a Resource" button at the bottom.](images/mutual-aid-resource-cards.png)
 
 The site is static — no server, no database, no authentication. Resources are stored in JSON files and loaded client-side. This keeps the infrastructure cost at zero and ensures the site stays up even if everything else goes down. A mutual aid resource directory shouldn't require server maintenance to remain available.
 
