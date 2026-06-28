@@ -51,12 +51,11 @@
     {
       "slug": "hall-of-silly-walks",
       "title": "The Hall of Silly Walks",
-      "subtitle": "Monty Python, AI surveillance evasion, and the joy of prompting your avatar to move like a knight in chess.",
+      "subtitle": "The joy of prompting your avatar to move like a knight in chess.",
       "date": "2026-06-26",
       "tags": ["Interactive Worlds", "Build UIs", "Data & Infra"],
       "project": "Multiverse Campus",
-      "readTime": "6 min",
-      "demo": "../demos/silly-walk-demo.html"
+      "readTime": "5 min"
     },
     {
       "slug": "odd-items-philosophy",
