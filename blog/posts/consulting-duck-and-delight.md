@@ -61,5 +61,3 @@ If you've ever blocked off your own calendar just to get an hour of uninterrupte
 ## Why these matter as social lubricant
 
 Every one of these items gives you something to talk about. The Consulting Duck gives you a shared debugging ritual. The Birthday Cake gives everyone in the room a reason to type "🎂" in chat. The Glitter Bomb gives a room a story. The Roomba gives you a companion that other people ask about. The Fake Meeting gives you an inside joke with anyone who's ever worked in an office.
-
-These aren't live yet, but they're coming soon. I keep thinking about the first time someone uses a Birthday Cake in a study session and everyone nearby gets sparkles. That's the moment this stops being a feature and starts being a memory.
