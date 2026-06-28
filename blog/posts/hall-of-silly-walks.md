@@ -73,7 +73,7 @@ Students bought it within the first hour.
 
 And the best part isn't that they bought it, it's *what they prompted*. People came up with walks I never would have imagined. Walks inspired by their favorite characters. Walks that were inside jokes with their study group. Walks that referenced memes I'd never seen.
 
-One student made their avatar walk like a penguin and kept it for weeks. Another student generated five different walks and rotated through them daily like outfits. Someone prompted "walk like you just realized you left the stove on" and it became a campus legend.
+One student made their avatar walk like a penguin and kept it for weeks. Another generated five different walks and rotated through them daily like outfits.
 
 ## Tactical frivolity
 
@@ -84,5 +84,3 @@ But there's a concept called tactical frivolity: the idea that play, absurdity, 
 In a learning environment where students spend most of their time confronting things they don't know yet, the ability to make your avatar hop like a chess piece is a tiny reclamation of agency. It says: this space is mine, and I get to be weird in it.
 
 There's a building, a purchase flow, a sprite generation pipeline, a database schema. All of this real infrastructure exists so someone can type "walk like a knight in chess" and watch their avatar hop in L-shapes across a virtual campus.
-
-And I wouldn't change a thing.
