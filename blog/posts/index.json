@@ -96,7 +96,7 @@
     },
     {
       "slug": "mutual-aid-database",
-      "title": "Sometimes the Most Important Feature Is a Directory",
+      "title": "The Mutual Aid Directory",
       "subtitle": "A searchable database of housing, food, healthcare, and legal resources organized by state. No capybaras. Just help.",
       "date": "2026-06-20",
       "tags": ["Build UIs", "Full-Stack APIs", "Mutual Aid"],
