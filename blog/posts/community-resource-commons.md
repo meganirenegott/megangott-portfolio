@@ -47,6 +47,8 @@ I designed a two-tier visibility model enforced at the database level.
 
 Some resources serve people who can't safely appear in a public directory. The system enforces that boundary with automated auditing, and a daily background job checks that referral resources haven't leaked into any public-facing context.
 
+Resources are also labeled if they require government interactions. For example, applying for SNAP food assistance in the USA means filling out government forms and providing documentation. That's important context for someone browsing resources, so the label is visible upfront so people know what to expect before they click through.
+
 Referral resources also always route to human review, no matter how confident the automated checks are. Sensitive resources deserve a human decision every time.
 
 ## Database design
