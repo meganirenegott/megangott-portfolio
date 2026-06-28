@@ -1,4 +1,4 @@
-Students on our virtual campus can go fishing. Instead of catching bass, they catch arxiv papers: "Attention Is All You Need," "Playing Atari with Deep Reinforcement Learning," that sort of thing. It's a gamified way to nudge people toward reading foundational ML research.
+Students on our virtual campus can go fishing. Instead of catching bass, they catch research papers from arxiv, which is an open repository where scientists and engineers publish their work. Papers like "Attention Is All You Need" or "Playing Atari with Deep Reinforcement Learning." It's a playful way to get people reading real computer science research without it feeling like homework.
 
 The system worked great in testing. Then students started actually using it, and around catch #15, they hit a wall. Same papers. Over and over. The celebration banners still fired, but the content was stale.
 
