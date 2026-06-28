@@ -326,57 +326,482 @@
                 ctx.restore();
                 return true;
             }
-            // Procedural fallback for missing sprites
+            // Procedural canvas fallbacks for all missing sprites
             ctx.save();
             ctx.translate(x, y);
             if (flipX) ctx.scale(-1, 1);
-            if (name === 'denise') {
-                // Goldfish body
-                const s = w / 32;
-                ctx.fillStyle = '#f5a623';
-                ctx.beginPath(); ctx.ellipse(0, 2*s, 12*s, 9*s, 0, 0, Math.PI*2); ctx.fill();
-                ctx.strokeStyle = '#d4880a'; ctx.lineWidth = 1.2*s;
-                ctx.beginPath(); ctx.ellipse(0, 2*s, 12*s, 9*s, 0, 0, Math.PI*2); ctx.stroke();
-                // Tail fin
-                ctx.fillStyle = '#f5a623';
-                ctx.beginPath(); ctx.moveTo(-11*s, 0); ctx.lineTo(-17*s, -6*s); ctx.lineTo(-17*s, 8*s); ctx.closePath(); ctx.fill();
-                ctx.strokeStyle = '#d4880a'; ctx.stroke();
-                // Dorsal fin
-                ctx.fillStyle = '#ffbb44';
-                ctx.beginPath(); ctx.moveTo(-4*s, -7*s); ctx.lineTo(2*s, -13*s); ctx.lineTo(6*s, -7*s); ctx.closePath(); ctx.fill();
-                // Eye
-                ctx.fillStyle = '#fff';
-                ctx.beginPath(); ctx.arc(6*s, -1*s, 3.5*s, 0, Math.PI*2); ctx.fill();
-                ctx.fillStyle = '#222';
-                ctx.beginPath(); ctx.arc(7*s, -1*s, 1.8*s, 0, Math.PI*2); ctx.fill();
-                ctx.fillStyle = '#fff';
-                ctx.beginPath(); ctx.arc(7.8*s, -2*s, 0.7*s, 0, Math.PI*2); ctx.fill();
-                // Smile
-                ctx.strokeStyle = '#d4880a'; ctx.lineWidth = 1*s;
-                ctx.beginPath(); ctx.arc(7*s, 3*s, 3*s, 0.1, Math.PI*0.7); ctx.stroke();
-                // Rubber ducky on head
-                ctx.fillStyle = '#ffe033';
-                ctx.beginPath(); ctx.ellipse(1*s, -11*s, 4*s, 3.5*s, 0, 0, Math.PI*2); ctx.fill(); // body
-                ctx.beginPath(); ctx.arc(4*s, -13*s, 2.5*s, 0, Math.PI*2); ctx.fill(); // head
-                ctx.fillStyle = '#ff8800';
-                ctx.beginPath(); ctx.moveTo(6*s, -13*s); ctx.lineTo(8.5*s, -12.5*s); ctx.lineTo(6*s, -12*s); ctx.closePath(); ctx.fill(); // beak
-                ctx.fillStyle = '#222';
-                ctx.beginPath(); ctx.arc(4.5*s, -13.5*s, 0.6*s, 0, Math.PI*2); ctx.fill(); // eye
-            } else {
-                // Generic fallback: colored circle with first letter
-                const npc = specialNPCs.find(n => n.sprite === name);
-                const color = npc ? npc.color : '#888';
-                ctx.fillStyle = color;
-                ctx.globalAlpha = 0.8;
-                ctx.beginPath(); ctx.arc(0, 0, w/2, 0, Math.PI*2); ctx.fill();
+            const s = w / 32;
+            const drawn = drawProceduralSprite(name, s);
+            if (!drawn) {
+                // Ultimate fallback: colored circle
+                const npc = (typeof specialNPCs !== 'undefined') ? specialNPCs.find(n => n.sprite === name) : null;
+                const color = npc ? npc.color : '#6688aa';
+                ctx.fillStyle = color; ctx.globalAlpha = 0.85;
+                ctx.beginPath(); ctx.arc(0, 0, w/2.2, 0, Math.PI*2); ctx.fill();
                 ctx.globalAlpha = 1;
-                ctx.fillStyle = '#fff';
-                ctx.font = `700 ${w*0.5}px Inter, sans-serif`;
-                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                ctx.fillText(name.charAt(0).toUpperCase(), 0, 1);
             }
             ctx.restore();
             return true;
+        }
+
+        function drawFishBody(bodyColor, outlineColor, s, opts = {}) {
+            const ew = opts.ew || 12, eh = opts.eh || 8;
+            // Body
+            ctx.fillStyle = bodyColor;
+            ctx.beginPath(); ctx.ellipse(0, 0, ew*s, eh*s, 0, 0, Math.PI*2); ctx.fill();
+            ctx.strokeStyle = outlineColor; ctx.lineWidth = 1*s;
+            ctx.beginPath(); ctx.ellipse(0, 0, ew*s, eh*s, 0, 0, Math.PI*2); ctx.stroke();
+            // Tail
+            ctx.fillStyle = opts.tailColor || bodyColor;
+            ctx.beginPath(); ctx.moveTo(-ew*s, -1*s); ctx.lineTo(-(ew+5)*s, -(eh-1)*s); ctx.lineTo(-(ew+5)*s, (eh-1)*s); ctx.lineTo(-ew*s, 1*s); ctx.closePath(); ctx.fill();
+            ctx.strokeStyle = outlineColor; ctx.stroke();
+            // Eye
+            ctx.fillStyle = '#fff';
+            ctx.beginPath(); ctx.arc((ew-5)*s, -2*s, 3*s, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = '#222';
+            ctx.beginPath(); ctx.arc((ew-4)*s, -2*s, 1.5*s, 0, Math.PI*2); ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.beginPath(); ctx.arc((ew-3.5)*s, -2.8*s, 0.5*s, 0, Math.PI*2); ctx.fill();
+        }
+
+        function drawProceduralSprite(name, s) {
+            switch(name) {
+                // === PETS / TANK FISH ===
+                case 'goldfish':
+                    drawFishBody('#ffaa00', '#cc7700', s); return true;
+                case 'koi':
+                    drawFishBody('#fff5ee', '#cc8866', s, {ew:14, eh:8});
+                    // Koi patches
+                    ctx.fillStyle = '#ff4400'; ctx.globalAlpha = 0.7;
+                    ctx.beginPath(); ctx.ellipse(-3*s, -2*s, 4*s, 3*s, 0.3, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.ellipse(5*s, 2*s, 3*s, 2.5*s, -0.2, 0, Math.PI*2); ctx.fill();
+                    ctx.globalAlpha = 1; return true;
+                case 'betta':
+                    // Dramatic flowing fins
+                    ctx.fillStyle = '#6a0dad'; ctx.globalAlpha = 0.5;
+                    ctx.beginPath(); ctx.ellipse(-4*s, -8*s, 10*s, 6*s, 0.3, 0, Math.PI*2); ctx.fill(); // dorsal
+                    ctx.beginPath(); ctx.ellipse(-6*s, 6*s, 10*s, 5*s, -0.2, 0, Math.PI*2); ctx.fill(); // ventral
+                    ctx.beginPath(); ctx.ellipse(-14*s, 0, 8*s, 7*s, 0, 0, Math.PI*2); ctx.fill(); // tail flow
+                    ctx.globalAlpha = 1;
+                    drawFishBody('#8b00ff', '#5500aa', s, {ew:10, eh:6}); return true;
+                case 'axolotl':
+                    // Rounded body with external gills
+                    ctx.fillStyle = '#ffb6c1';
+                    ctx.beginPath(); ctx.ellipse(0, 0, 13*s, 7*s, 0, 0, Math.PI*2); ctx.fill();
+                    ctx.strokeStyle = '#e88e9e'; ctx.lineWidth = 1*s;
+                    ctx.beginPath(); ctx.ellipse(0, 0, 13*s, 7*s, 0, 0, Math.PI*2); ctx.stroke();
+                    // Tail
+                    ctx.fillStyle = '#ffb6c1';
+                    ctx.beginPath(); ctx.moveTo(-12*s, 0); ctx.quadraticCurveTo(-18*s, -3*s, -20*s, 2*s); ctx.quadraticCurveTo(-16*s, 5*s, -12*s, 2*s); ctx.fill();
+                    // Gills (3 frills on each side of head)
+                    ctx.strokeStyle = '#ff6b8a'; ctx.lineWidth = 1.5*s;
+                    for (let i = 0; i < 3; i++) {
+                        const a = -0.8 + i * 0.4;
+                        ctx.beginPath(); ctx.moveTo(8*s, -5*s); ctx.lineTo(8*s + Math.cos(a)*8*s, -5*s + Math.sin(a)*8*s); ctx.stroke();
+                    }
+                    // Face
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(7*s, -2*s, 3*s, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(8*s, -2*s, 1.2*s, 0, Math.PI*2); ctx.fill();
+                    // Smile
+                    ctx.strokeStyle = '#e88e9e'; ctx.lineWidth = 0.8*s;
+                    ctx.beginPath(); ctx.arc(8*s, 1*s, 2*s, 0.1, Math.PI*0.8); ctx.stroke();
+                    return true;
+                case 'turtle-fw':
+                case 'sea-turtle':
+                case 'turtle-form':
+                    const tc = name === 'sea-turtle' || name === 'turtle-form' ? '#2e8b57' : '#556b2f';
+                    // Shell
+                    ctx.fillStyle = tc;
+                    ctx.beginPath(); ctx.ellipse(0, -1*s, 11*s, 9*s, 0, 0, Math.PI*2); ctx.fill();
+                    ctx.strokeStyle = '#1a5e32'; ctx.lineWidth = 1.2*s;
+                    ctx.beginPath(); ctx.ellipse(0, -1*s, 11*s, 9*s, 0, 0, Math.PI*2); ctx.stroke();
+                    // Shell pattern
+                    ctx.strokeStyle = '#1a5e32'; ctx.lineWidth = 0.8*s;
+                    ctx.beginPath(); ctx.ellipse(0, -1*s, 6*s, 5*s, 0, 0, Math.PI*2); ctx.stroke();
+                    // Head
+                    ctx.fillStyle = '#7caa6e';
+                    ctx.beginPath(); ctx.ellipse(12*s, -2*s, 5*s, 4*s, 0, 0, Math.PI*2); ctx.fill();
+                    // Eye
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(14*s, -3*s, 2*s, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(14.5*s, -3*s, 1*s, 0, Math.PI*2); ctx.fill();
+                    // Flippers
+                    ctx.fillStyle = '#7caa6e';
+                    ctx.beginPath(); ctx.ellipse(6*s, 7*s, 5*s, 2*s, 0.4, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.ellipse(-6*s, 7*s, 5*s, 2*s, -0.4, 0, Math.PI*2); ctx.fill();
+                    return true;
+                case 'clownfish':
+                    drawFishBody('#ff6600', '#cc4400', s, {ew:10, eh:6});
+                    // White stripes
+                    ctx.strokeStyle = '#fff'; ctx.lineWidth = 2*s;
+                    ctx.beginPath(); ctx.moveTo(4*s, -6*s); ctx.lineTo(4*s, 6*s); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(-3*s, -5*s); ctx.lineTo(-3*s, 5*s); ctx.stroke();
+                    return true;
+                case 'seahorse':
+                    ctx.fillStyle = '#daa520';
+                    // Curved body
+                    ctx.beginPath();
+                    ctx.moveTo(2*s, -12*s); ctx.quadraticCurveTo(8*s, -8*s, 6*s, 0);
+                    ctx.quadraticCurveTo(4*s, 6*s, 0, 10*s);
+                    ctx.quadraticCurveTo(-4*s, 14*s, -2*s, 10*s);
+                    ctx.quadraticCurveTo(0, 6*s, 2*s, 0);
+                    ctx.quadraticCurveTo(-2*s, -6*s, 2*s, -12*s);
+                    ctx.fill();
+                    ctx.strokeStyle = '#b8860b'; ctx.lineWidth = 1*s; ctx.stroke();
+                    // Snout
+                    ctx.fillStyle = '#daa520';
+                    ctx.beginPath(); ctx.moveTo(6*s, -8*s); ctx.lineTo(12*s, -7*s); ctx.lineTo(6*s, -6*s); ctx.fill();
+                    // Eye
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(4*s, -9*s, 2*s, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(4.5*s, -9*s, 1*s, 0, Math.PI*2); ctx.fill();
+                    return true;
+                case 'pufferfish':
+                    ctx.fillStyle = '#ffd700';
+                    ctx.beginPath(); ctx.arc(0, 0, 10*s, 0, Math.PI*2); ctx.fill();
+                    ctx.strokeStyle = '#ccaa00'; ctx.lineWidth = 1*s;
+                    ctx.beginPath(); ctx.arc(0, 0, 10*s, 0, Math.PI*2); ctx.stroke();
+                    // Spines
+                    ctx.strokeStyle = '#ccaa00'; ctx.lineWidth = 1*s;
+                    for (let i = 0; i < 12; i++) {
+                        const a = (Math.PI*2/12)*i;
+                        ctx.beginPath(); ctx.moveTo(Math.cos(a)*10*s, Math.sin(a)*10*s);
+                        ctx.lineTo(Math.cos(a)*13*s, Math.sin(a)*13*s); ctx.stroke();
+                    }
+                    // Eye
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(5*s, -3*s, 3*s, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(6*s, -3*s, 1.5*s, 0, Math.PI*2); ctx.fill();
+                    // Tail fin
+                    ctx.fillStyle = '#ffc800';
+                    ctx.beginPath(); ctx.moveTo(-10*s, 0); ctx.lineTo(-14*s, -4*s); ctx.lineTo(-14*s, 4*s); ctx.closePath(); ctx.fill();
+                    return true;
+                case 'jellyfish':
+                case 'jellyfish-form':
+                    const jc = name === 'jellyfish-form' ? '#cc88dd' : '#dda0dd';
+                    ctx.fillStyle = jc; ctx.globalAlpha = 0.7;
+                    ctx.beginPath(); ctx.ellipse(0, -3*s, 10*s, 7*s, 0, Math.PI, 0); ctx.fill(); // bell
+                    ctx.globalAlpha = 1;
+                    ctx.strokeStyle = jc; ctx.lineWidth = 0.8*s;
+                    // Tentacles
+                    for (let i = -3; i <= 3; i++) {
+                        ctx.beginPath(); ctx.moveTo(i*2.5*s, 3*s);
+                        ctx.quadraticCurveTo(i*2.5*s + 2*s, 8*s, i*2.5*s - 1*s, 14*s); ctx.stroke();
+                    }
+                    // Eyes
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-3*s, -4*s, 2*s, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(3*s, -4*s, 2*s, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#555'; ctx.beginPath(); ctx.arc(-2.5*s, -4*s, 1*s, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(3.5*s, -4*s, 1*s, 0, Math.PI*2); ctx.fill();
+                    return true;
+                case 'octopus':
+                case 'octopus-form':
+                    const oc = name === 'octopus-form' ? '#9933cc' : '#800080';
+                    ctx.fillStyle = oc;
+                    ctx.beginPath(); ctx.ellipse(0, -4*s, 10*s, 8*s, 0, 0, Math.PI*2); ctx.fill();
+                    ctx.strokeStyle = '#550055'; ctx.lineWidth = 1*s;
+                    ctx.beginPath(); ctx.ellipse(0, -4*s, 10*s, 8*s, 0, 0, Math.PI*2); ctx.stroke();
+                    // Tentacles
+                    ctx.fillStyle = oc;
+                    for (let i = -3; i <= 3; i++) {
+                        ctx.beginPath(); ctx.moveTo(i*2.5*s, 3*s);
+                        ctx.quadraticCurveTo(i*2.5*s + 3*s, 9*s, i*2.5*s, 14*s);
+                        ctx.quadraticCurveTo(i*2.5*s - 1*s, 9*s, i*2.5*s, 3*s);
+                        ctx.fill();
+                    }
+                    // Eyes
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-4*s, -5*s, 3*s, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(4*s, -5*s, 3*s, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(-3.5*s, -5*s, 1.5*s, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(4.5*s, -5*s, 1.5*s, 0, Math.PI*2); ctx.fill();
+                    return true;
+
+                // === PLAYER FORMS ===
+                case 'fish-form':
+                    drawFishBody('#48cae4', '#0096a0', s, {ew:11, eh:7}); return true;
+                case 'dolphin':
+                    ctx.fillStyle = '#0096c7';
+                    ctx.beginPath(); ctx.ellipse(0, 0, 14*s, 6*s, 0, 0, Math.PI*2); ctx.fill();
+                    ctx.strokeStyle = '#006090'; ctx.lineWidth = 1*s;
+                    ctx.beginPath(); ctx.ellipse(0, 0, 14*s, 6*s, 0, 0, Math.PI*2); ctx.stroke();
+                    // Snout
+                    ctx.fillStyle = '#0096c7';
+                    ctx.beginPath(); ctx.moveTo(13*s, -1*s); ctx.lineTo(18*s, -2*s); ctx.lineTo(13*s, 1*s); ctx.fill();
+                    // Dorsal fin
+                    ctx.beginPath(); ctx.moveTo(0, -6*s); ctx.lineTo(-3*s, -12*s); ctx.lineTo(-6*s, -6*s); ctx.fill();
+                    // Tail fluke
+                    ctx.beginPath(); ctx.moveTo(-13*s, 0); ctx.lineTo(-18*s, -5*s); ctx.lineTo(-16*s, 0); ctx.lineTo(-18*s, 5*s); ctx.closePath(); ctx.fill();
+                    // Belly
+                    ctx.fillStyle = '#b0e0f0'; ctx.globalAlpha = 0.6;
+                    ctx.beginPath(); ctx.ellipse(2*s, 2*s, 10*s, 3*s, 0, 0, Math.PI); ctx.fill();
+                    ctx.globalAlpha = 1;
+                    // Eye
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(9*s, -2*s, 2.5*s, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(10*s, -2*s, 1.2*s, 0, Math.PI*2); ctx.fill();
+                    return true;
+                case 'shark':
+                    ctx.fillStyle = '#4a6670';
+                    ctx.beginPath(); ctx.ellipse(0, 0, 14*s, 7*s, 0, 0, Math.PI*2); ctx.fill();
+                    ctx.strokeStyle = '#2a3e48'; ctx.lineWidth = 1*s;
+                    ctx.beginPath(); ctx.ellipse(0, 0, 14*s, 7*s, 0, 0, Math.PI*2); ctx.stroke();
+                    // Dorsal fin
+                    ctx.fillStyle = '#4a6670';
+                    ctx.beginPath(); ctx.moveTo(-2*s, -7*s); ctx.lineTo(0, -14*s); ctx.lineTo(4*s, -7*s); ctx.fill();
+                    ctx.strokeStyle = '#2a3e48'; ctx.stroke();
+                    // Tail
+                    ctx.fillStyle = '#4a6670';
+                    ctx.beginPath(); ctx.moveTo(-13*s, 0); ctx.lineTo(-18*s, -6*s); ctx.lineTo(-16*s, 0); ctx.lineTo(-18*s, 5*s); ctx.closePath(); ctx.fill();
+                    // Belly
+                    ctx.fillStyle = '#c0ccd0';
+                    ctx.beginPath(); ctx.ellipse(2*s, 2*s, 10*s, 3.5*s, 0, 0, Math.PI); ctx.fill();
+                    // Eye
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(9*s, -2*s, 2.5*s, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(10*s, -2*s, 1.2*s, 0, Math.PI*2); ctx.fill();
+                    // Teeth
+                    ctx.fillStyle = '#fff';
+                    ctx.beginPath(); ctx.moveTo(12*s, 1*s); ctx.lineTo(13*s, 3*s); ctx.lineTo(14*s, 1*s); ctx.fill();
+                    return true;
+                case 'whale':
+                    ctx.fillStyle = '#1e88e5';
+                    ctx.beginPath(); ctx.ellipse(0, 0, 15*s, 9*s, 0, 0, Math.PI*2); ctx.fill();
+                    ctx.strokeStyle = '#1565c0'; ctx.lineWidth = 1*s;
+                    ctx.beginPath(); ctx.ellipse(0, 0, 15*s, 9*s, 0, 0, Math.PI*2); ctx.stroke();
+                    // Belly
+                    ctx.fillStyle = '#90caf9';
+                    ctx.beginPath(); ctx.ellipse(2*s, 3*s, 11*s, 4*s, 0, 0, Math.PI); ctx.fill();
+                    // Tail fluke
+                    ctx.fillStyle = '#1e88e5';
+                    ctx.beginPath(); ctx.moveTo(-14*s, 0); ctx.lineTo(-20*s, -6*s); ctx.lineTo(-17*s, 0); ctx.lineTo(-20*s, 6*s); ctx.closePath(); ctx.fill();
+                    // Eye
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(9*s, -3*s, 2.5*s, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(10*s, -3*s, 1.2*s, 0, Math.PI*2); ctx.fill();
+                    // Smile
+                    ctx.strokeStyle = '#1565c0'; ctx.lineWidth = 0.8*s;
+                    ctx.beginPath(); ctx.arc(10*s, 1*s, 3*s, 0.2, Math.PI*0.7); ctx.stroke();
+                    return true;
+                case 'player-human':
+                    // Simple human figure
+                    ctx.fillStyle = '#8ec6e6';
+                    ctx.beginPath(); ctx.arc(0, -6*s, 6*s, 0, Math.PI*2); ctx.fill(); // head
+                    ctx.fillStyle = '#3a8ec4';
+                    ctx.fillRect(-5*s, 0, 10*s, 12*s); // body
+                    // Eyes
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-2*s, -7*s, 1.5*s, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(2*s, -7*s, 1.5*s, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(-1.5*s, -7*s, 0.7*s, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(2.5*s, -7*s, 0.7*s, 0, Math.PI*2); ctx.fill();
+                    return true;
+                case 'merperson':
+                    // Already have PNG, but just in case
+                    ctx.fillStyle = '#9467bd';
+                    ctx.beginPath(); ctx.arc(0, -5*s, 6*s, 0, Math.PI*2); ctx.fill(); // head
+                    ctx.fillStyle = '#7b4fa8';
+                    ctx.beginPath(); ctx.ellipse(0, 5*s, 5*s, 10*s, 0, 0, Math.PI*2); ctx.fill(); // tail
+                    ctx.fillStyle = '#b794d6';
+                    ctx.beginPath(); ctx.moveTo(-5*s, 14*s); ctx.lineTo(0, 10*s); ctx.lineTo(5*s, 14*s); ctx.fill(); // fluke
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(-2*s, -6*s, 1.5*s, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(2*s, -6*s, 1.5*s, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(-1.5*s, -6*s, 0.7*s, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(2.5*s, -6*s, 0.7*s, 0, Math.PI*2); ctx.fill();
+                    return true;
+
+                // === AMBIENT FISH ===
+                case 'ambient-fish-1':
+                    drawFishBody('#7ec8e3', '#5599bb', s, {ew:8, eh:5}); return true;
+                case 'ambient-fish-2':
+                    drawFishBody('#a8d8a8', '#66aa66', s, {ew:9, eh:5}); return true;
+                case 'ambient-puffer':
+                    ctx.fillStyle = '#e8cc66';
+                    ctx.beginPath(); ctx.arc(0, 0, 7*s, 0, Math.PI*2); ctx.fill();
+                    ctx.strokeStyle = '#bb9933'; ctx.lineWidth = 0.8*s;
+                    ctx.beginPath(); ctx.arc(0, 0, 7*s, 0, Math.PI*2); ctx.stroke();
+                    for (let i = 0; i < 8; i++) { const a = (Math.PI*2/8)*i;
+                        ctx.beginPath(); ctx.moveTo(Math.cos(a)*7*s, Math.sin(a)*7*s);
+                        ctx.lineTo(Math.cos(a)*9*s, Math.sin(a)*9*s); ctx.stroke(); }
+                    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(3*s, -2*s, 1*s, 0, Math.PI*2); ctx.fill();
+                    return true;
+
+                // === DECORATIONS ===
+                case 'coral-1':
+                    ctx.fillStyle = '#ff6b6b';
+                    for (let i = -2; i <= 2; i++) {
+                        ctx.beginPath(); ctx.moveTo(i*3*s, 8*s); ctx.quadraticCurveTo(i*3*s + 2*s, -4*s, i*3*s, -8*s + Math.abs(i)*2*s);
+                        ctx.quadraticCurveTo(i*3*s - 2*s, -4*s, i*3*s, 8*s); ctx.fill(); }
+                    return true;
+                case 'coral-2':
+                    ctx.fillStyle = '#ffa07a';
+                    for (let i = -2; i <= 2; i++) {
+                        ctx.beginPath(); ctx.arc(i*3*s, -2*s + Math.abs(i)*2*s, 4*s, 0, Math.PI*2); ctx.fill(); }
+                    return true;
+                case 'seaweed':
+                    ctx.strokeStyle = '#2d8a5e'; ctx.lineWidth = 2.5*s; ctx.lineCap = 'round';
+                    for (let i = -1; i <= 1; i++) {
+                        ctx.beginPath(); ctx.moveTo(i*3*s, 10*s);
+                        ctx.quadraticCurveTo(i*3*s + 4*s, 0, i*3*s, -10*s); ctx.stroke(); }
+                    return true;
+                case 'treasure-chest':
+                    ctx.fillStyle = '#8b4513';
+                    ctx.fillRect(-8*s, -2*s, 16*s, 10*s); // base
+                    ctx.fillStyle = '#a0522d';
+                    ctx.beginPath(); ctx.ellipse(0, -2*s, 8*s, 5*s, 0, Math.PI, 0); ctx.fill(); // lid
+                    ctx.fillStyle = '#ffd700';
+                    ctx.fillRect(-2*s, -3*s, 4*s, 3*s); // latch
+                    // Gold coins peeking out
+                    ctx.fillStyle = '#ffd700';
+                    ctx.beginPath(); ctx.arc(-3*s, -4*s, 2*s, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(2*s, -5*s, 1.5*s, 0, Math.PI*2); ctx.fill();
+                    return true;
+                case 'pineapple-house':
+                    ctx.fillStyle = '#e8a818';
+                    ctx.beginPath(); ctx.ellipse(0, 2*s, 8*s, 10*s, 0, 0, Math.PI*2); ctx.fill();
+                    ctx.strokeStyle = '#b8800c'; ctx.lineWidth = 0.6*s;
+                    for (let r = -6; r <= 6; r += 3) { ctx.beginPath(); ctx.moveTo(-8*s, r*s); ctx.lineTo(8*s, r*s); ctx.stroke(); }
+                    // Door
+                    ctx.fillStyle = '#4a3000';
+                    ctx.beginPath(); ctx.ellipse(0, 6*s, 3*s, 4*s, 0, Math.PI, 0); ctx.fill();
+                    // Leaves on top
+                    ctx.fillStyle = '#228b22';
+                    ctx.beginPath(); ctx.moveTo(0, -8*s); ctx.lineTo(-4*s, -14*s); ctx.lineTo(0, -12*s); ctx.lineTo(4*s, -14*s); ctx.closePath(); ctx.fill();
+                    return true;
+                case 'tiki-head':
+                    ctx.fillStyle = '#a0825a';
+                    ctx.fillRect(-7*s, -10*s, 14*s, 20*s);
+                    ctx.fillStyle = '#8b6c42';
+                    ctx.fillRect(-5*s, -6*s, 4*s, 3*s); ctx.fillRect(1*s, -6*s, 4*s, 3*s); // eye sockets
+                    ctx.fillStyle = '#222'; ctx.fillRect(-4*s, -5*s, 2*s, 1.5*s); ctx.fillRect(2*s, -5*s, 2*s, 1.5*s); // eyes
+                    ctx.fillStyle = '#6b4e2e'; ctx.fillRect(-4*s, 2*s, 8*s, 3*s); // mouth
+                    return true;
+                case 'patrick-rock':
+                    ctx.fillStyle = '#8b7d6b';
+                    ctx.beginPath(); ctx.ellipse(0, 2*s, 10*s, 7*s, 0, 0, Math.PI*2); ctx.fill();
+                    ctx.strokeStyle = '#6b5d4b'; ctx.lineWidth = 1*s;
+                    ctx.beginPath(); ctx.ellipse(0, 2*s, 10*s, 7*s, 0, 0, Math.PI*2); ctx.stroke();
+                    return true;
+                case 'river-log':
+                    ctx.fillStyle = '#6b4e2e';
+                    ctx.beginPath(); ctx.ellipse(0, 0, 14*s, 4*s, 0, 0, Math.PI*2); ctx.fill();
+                    ctx.strokeStyle = '#4a3520'; ctx.lineWidth = 0.8*s;
+                    ctx.beginPath(); ctx.ellipse(0, 0, 14*s, 4*s, 0, 0, Math.PI*2); ctx.stroke();
+                    // Ring detail
+                    ctx.beginPath(); ctx.arc(12*s, 0, 3.5*s, 0, Math.PI*2); ctx.stroke();
+                    return true;
+                case 'river-stones':
+                    ctx.fillStyle = '#889098';
+                    ctx.beginPath(); ctx.ellipse(-4*s, 2*s, 6*s, 4*s, 0.2, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#7a828a';
+                    ctx.beginPath(); ctx.ellipse(5*s, 0, 5*s, 3.5*s, -0.1, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#99a0a8';
+                    ctx.beginPath(); ctx.ellipse(0, -3*s, 4*s, 3*s, 0, 0, Math.PI*2); ctx.fill();
+                    return true;
+                case 'lily-pad-root':
+                    ctx.fillStyle = '#3a7a4a';
+                    ctx.beginPath(); ctx.ellipse(0, -6*s, 9*s, 3*s, 0, 0, Math.PI*2); ctx.fill(); // pad
+                    ctx.strokeStyle = '#2a5a3a'; ctx.lineWidth = 1.5*s;
+                    ctx.beginPath(); ctx.moveTo(0, -3*s); ctx.lineTo(0, 10*s); ctx.stroke(); // stem
+                    return true;
+                case 'cattails':
+                    ctx.strokeStyle = '#5a8a3a'; ctx.lineWidth = 1.5*s; ctx.lineCap = 'round';
+                    ctx.beginPath(); ctx.moveTo(0, 10*s); ctx.lineTo(0, -8*s); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(-3*s, 10*s); ctx.lineTo(-2*s, -5*s); ctx.stroke();
+                    ctx.fillStyle = '#6b4e2e';
+                    ctx.beginPath(); ctx.ellipse(0, -10*s, 2*s, 4*s, 0, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.ellipse(-2*s, -7*s, 1.5*s, 3*s, 0.2, 0, Math.PI*2); ctx.fill();
+                    return true;
+                case 'stone-lantern':
+                    ctx.fillStyle = '#808888';
+                    ctx.fillRect(-2*s, 2*s, 4*s, 8*s); // post
+                    ctx.fillRect(-5*s, -2*s, 10*s, 4*s); // body
+                    ctx.beginPath(); ctx.moveTo(-7*s, -2*s); ctx.lineTo(0, -8*s); ctx.lineTo(7*s, -2*s); ctx.fill(); // roof
+                    ctx.fillStyle = '#ffcc44'; ctx.globalAlpha = 0.6;
+                    ctx.beginPath(); ctx.arc(0, -1*s, 2*s, 0, Math.PI*2); ctx.fill(); // glow
+                    ctx.globalAlpha = 1;
+                    return true;
+                case 'bamboo-shoot':
+                    ctx.strokeStyle = '#6aaa4a'; ctx.lineWidth = 3*s; ctx.lineCap = 'round';
+                    ctx.beginPath(); ctx.moveTo(0, 12*s); ctx.lineTo(0, -10*s); ctx.stroke();
+                    ctx.strokeStyle = '#4a8a2a'; ctx.lineWidth = 1*s;
+                    ctx.beginPath(); ctx.moveTo(0, -2*s); ctx.lineTo(0, -1*s); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(0, 4*s); ctx.lineTo(0, 5*s); ctx.stroke();
+                    // Leaves
+                    ctx.fillStyle = '#5aaa3a';
+                    ctx.beginPath(); ctx.ellipse(5*s, -6*s, 5*s, 1.5*s, 0.3, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.ellipse(-5*s, -2*s, 5*s, 1.5*s, -0.3, 0, Math.PI*2); ctx.fill();
+                    return true;
+                case 'amazon-sword':
+                    ctx.fillStyle = '#3a8a3a';
+                    for (let i = -2; i <= 2; i++) {
+                        ctx.beginPath(); ctx.ellipse(i*2.5*s, -3*s, 2*s, 10*s, i*0.15, 0, Math.PI*2); ctx.fill(); }
+                    return true;
+                case 'driftwood':
+                    ctx.fillStyle = '#7a6a5a'; ctx.strokeStyle = '#5a4a3a'; ctx.lineWidth = 1*s;
+                    ctx.beginPath(); ctx.moveTo(-14*s, 2*s); ctx.quadraticCurveTo(-6*s, -4*s, 0, 0);
+                    ctx.quadraticCurveTo(6*s, 3*s, 14*s, -1*s);
+                    ctx.lineTo(14*s, 3*s); ctx.quadraticCurveTo(6*s, 6*s, 0, 4*s);
+                    ctx.quadraticCurveTo(-6*s, 2*s, -14*s, 5*s); ctx.closePath(); ctx.fill(); ctx.stroke();
+                    return true;
+                case 'old-boot':
+                    ctx.fillStyle = '#5a4a3a';
+                    ctx.fillRect(-4*s, -4*s, 8*s, 10*s); // shaft
+                    ctx.beginPath(); ctx.ellipse(4*s, 6*s, 8*s, 4*s, 0, 0, Math.PI); ctx.fill(); // sole
+                    ctx.strokeStyle = '#3a2a1a'; ctx.lineWidth = 0.8*s;
+                    ctx.strokeRect(-4*s, -4*s, 8*s, 10*s);
+                    return true;
+                case 'warning-sign':
+                    ctx.fillStyle = '#ffd700';
+                    ctx.beginPath(); ctx.moveTo(0, -10*s); ctx.lineTo(8*s, 6*s); ctx.lineTo(-8*s, 6*s); ctx.closePath(); ctx.fill();
+                    ctx.strokeStyle = '#333'; ctx.lineWidth = 1*s; ctx.stroke();
+                    ctx.fillStyle = '#333'; ctx.font = `900 ${10*s}px Inter, sans-serif`;
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText('!', 0, 1*s);
+                    return true;
+
+                // === SPECIAL NPCs ===
+                case 'denise':
+                    drawFishBody('#f5a623', '#d4880a', s);
+                    // Dorsal fin
+                    ctx.fillStyle = '#ffbb44';
+                    ctx.beginPath(); ctx.moveTo(-4*s, -7*s); ctx.lineTo(2*s, -13*s); ctx.lineTo(6*s, -7*s); ctx.closePath(); ctx.fill();
+                    // Smile
+                    ctx.strokeStyle = '#d4880a'; ctx.lineWidth = 1*s;
+                    ctx.beginPath(); ctx.arc(7*s, 1*s, 3*s, 0.1, Math.PI*0.7); ctx.stroke();
+                    // Rubber ducky on head
+                    ctx.fillStyle = '#ffe033';
+                    ctx.beginPath(); ctx.ellipse(1*s, -11*s, 4*s, 3.5*s, 0, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(4*s, -13*s, 2.5*s, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#ff8800';
+                    ctx.beginPath(); ctx.moveTo(6*s, -13*s); ctx.lineTo(8.5*s, -12.5*s); ctx.lineTo(6*s, -12*s); ctx.closePath(); ctx.fill();
+                    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(4.5*s, -13.5*s, 0.6*s, 0, Math.PI*2); ctx.fill();
+                    return true;
+                case 'safety-sealion':
+                    ctx.fillStyle = '#38bdf8';
+                    ctx.beginPath(); ctx.ellipse(0, 2*s, 12*s, 8*s, 0, 0, Math.PI*2); ctx.fill(); // body
+                    ctx.strokeStyle = '#1a8dd0'; ctx.lineWidth = 1*s;
+                    ctx.beginPath(); ctx.ellipse(0, 2*s, 12*s, 8*s, 0, 0, Math.PI*2); ctx.stroke();
+                    // Head
+                    ctx.fillStyle = '#38bdf8';
+                    ctx.beginPath(); ctx.arc(10*s, -4*s, 6*s, 0, Math.PI*2); ctx.fill();
+                    ctx.strokeStyle = '#1a8dd0'; ctx.beginPath(); ctx.arc(10*s, -4*s, 6*s, 0, Math.PI*2); ctx.stroke();
+                    // Flippers
+                    ctx.fillStyle = '#2ea0d8';
+                    ctx.beginPath(); ctx.ellipse(-10*s, 6*s, 6*s, 2*s, 0.5, 0, Math.PI*2); ctx.fill();
+                    // Eye
+                    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(12*s, -5*s, 2.5*s, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#222'; ctx.beginPath(); ctx.arc(12.5*s, -5*s, 1.2*s, 0, Math.PI*2); ctx.fill();
+                    // Whiskers
+                    ctx.strokeStyle = '#1a8dd0'; ctx.lineWidth = 0.5*s;
+                    ctx.beginPath(); ctx.moveTo(14*s, -2*s); ctx.lineTo(18*s, -3*s); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(14*s, -1*s); ctx.lineTo(18*s, 0); ctx.stroke();
+                    return true;
+                case 'delete-me-ad':
+                    ctx.fillStyle = '#fbbf24';
+                    ctx.fillRect(-10*s, -7*s, 20*s, 14*s);
+                    ctx.strokeStyle = '#d4a017'; ctx.lineWidth = 1*s;
+                    ctx.strokeRect(-10*s, -7*s, 20*s, 14*s);
+                    ctx.fillStyle = '#333'; ctx.font = `900 ${5*s}px Inter, sans-serif`;
+                    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText('DELETE', 0, -2*s);
+                    ctx.fillText('ME', 0, 3*s);
+                    return true;
+
+                default: return false;
+            }
         }
 
         // =====================================================================
