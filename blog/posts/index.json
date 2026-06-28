@@ -1,6 +1,15 @@
 {
   "posts": [
     {
+      "slug": "community-resource-commons",
+      "title": "From 1:1 Referrals to a Community Resource Library",
+      "subtitle": "How scaling from hundreds to 8,000+ students forced us to rethink mutual aid — and led to an AI-assisted, community-maintained resource commons.",
+      "date": "2026-06-28",
+      "tags": ["Mutual Aid", "System Architecture", "Ship Safely"],
+      "project": "Multiverse Campus",
+      "readTime": "9 min"
+    },
+    {
       "slug": "the-ocean-incident",
       "title": "I Accidentally Spawned an Ocean in the Middle of Campus",
       "subtitle": "One wrong coordinate, 47 minutes of panic, and the most important lesson about mistakes I've ever learned.",
