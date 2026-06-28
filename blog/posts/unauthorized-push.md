@@ -45,4 +45,4 @@ Because I flagged it and investigated instead of just accepting the commits, we 
 3. **Vetting external endpoints.** Any commit that introduces a new external API endpoint gets flagged automatically. Student data doesn't go to services the team hasn't reviewed.
 4. **Revert first, investigate second.** If something looks wrong, revert it. You can always un-revert once you understand what happened. The revert commit message becomes documentation for the team.
 
-The incident looked scarier than it was, but the response was worth it. We now have real protocols around agent identity and automated code review that we wouldn't have built otherwise.
+The incident looked scarier than it was, but it pushed us to make these protocol changes faster than we would have otherwise. Agent identity and automated code review were already on the list. This moved them to the top.
