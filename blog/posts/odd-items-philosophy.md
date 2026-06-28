@@ -54,8 +54,8 @@ So students end up exploring the campus without realizing it. They talk to NPCs 
 | 📊 Almost Done Project™ | Epic | Cosmetic "Scope Creep" counter |
 | 💭 Unsolicited Opinion | Abhorrent | Auto-sends helpful-ish advice in chat |
 
-## What happened when we shipped them
+## What I'm hoping happens
 
-Students found the items within hours. The Slack channels lit up with screenshots, laughter, and "HOW DO I GET ONE OF THOSE?" People were trading Unmatched Socks. Someone Glitter Bombed the main lecture hall and it's *still* sparkling. A student got the Cursed USB Drive and loved it so much they kept the shuffled styles for a week.
+These aren't live yet, but they will be soon. I keep thinking about the moment a student opens their inventory and finds a Cursed USB Drive that shuffles their UI styles. Or discovers they can trade an Unmatched Sock for something better. Or Glitter Bombs the main lecture hall and leaves it sparkling.
 
-They gave people a reason to explore, a reason to laugh together, and a reason to keep coming back. And then everyone went back to coding, a little more connected to the people around them.
+I'm genuinely excited to see what people do with them. The whole point is to give people a reason to explore, a reason to laugh together, and a reason to keep coming back. And then go back to coding, a little more connected to the people around them.
