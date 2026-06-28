@@ -2,6 +2,8 @@ When I needed to build a meeting room system for our virtual campus, I had a cho
 
 Instead, I built a giant duck.
 
+![Five novelty architecture meeting rooms on campus \u2014 a massive yellow Giant Duck building (the centerpiece, students walk in through a door in the duck's chest), a pink frosted Donut building, a brown Shoe Room, a Coffee Cup meeting room with steam rising from the top, and a Hot Dog Hut. Students mill about on pathways between the buildings. Fountains, trees, and lamp posts fill the spaces between.](images/novelty-meeting-rooms.png)
+
 ## The buildings
 
 Our meeting rooms are inspired by real-world novelty architecture — buildings shaped like the things they sell or represent. This is a real architectural tradition called *mimetic architecture*, and it produced some of the most delightfully absurd buildings in America:

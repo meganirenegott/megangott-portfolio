@@ -2,6 +2,8 @@ Baba Yaga lives in a hut in the woods at the edge of our campus. She's an NPC ba
 
 Unless you annoy her. Then she turns you into a goose.
 
+![Baba Yaga's four punishments on campus \u2014 a Goose waddling down a path honking involuntarily with feathers and droppings trailing behind, a red-capped Mushroom with tiny feet stuck in the grass, a Snail leaving a slime trail and moving at a crawl, and a Frog hopping through the quad. Each has a "23h remaining" timer. Normal students walk by, amused. Baba Yaga's chicken-legged hut lurks in the forest edge.](images/baba-yaga-four-punishments.png)
+
 ## The four punishments
 
 If Baba Yaga decides you need correction — maybe you pestered her too many times in one week, maybe you submitted low-effort work, maybe she's just in a mood — she transforms your avatar. Your pixel art character vanishes and is replaced with one of four punishment sprites:

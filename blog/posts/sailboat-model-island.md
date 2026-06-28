@@ -2,6 +2,8 @@ At the southern edge of our virtual campus, past the ocean shoreline where stude
 
 You're on Model Island — a place I built for retired AI language models to live.
 
+![Model Island \u2014 a small tropical island at sunset, accessible by a sailboat at a wooden dock. Friendly pixel art robots representing retired AI models live peacefully: BERT and PaLM chat on a bench, Claude 2 reads under a tree, another robot tends a garden. A cozy cottage has a sign reading "Model Island \u2014 Retirement Community." A lighthouse, palm trees, and calm ocean waves surround the island. The sailboat "Deprecated" is moored at the pier.](images/model-island-retirement.png)
+
 ## Why retired models need a home
 
 Here's the thing about the AI industry: models get deprecated constantly. GPT-3 was a miracle in 2020 and a punchline by 2023. Claude 2 was cutting edge until Claude 3 made it obsolete. Students who learn to code with these models form genuine working relationships with them — they have favorite prompts, they know the quirks, they understand the personality. And then one day the API returns a 404 and the model is just... gone.

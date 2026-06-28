@@ -8,6 +8,8 @@ Before I could build the book club, I needed somewhere to put it. I created a ne
 
 The zone matters because the *location* of a feature affects how it's discovered. A reading tracker buried in a settings menu will be used by people who already read. A reading tracker that's a giant pizza sculpture you walk past on your way to the beach will be noticed by everyone.
 
+![The Pizza Book Club in the Sculpture Garden \u2014 a massive pixel art pizza slice sculpture several stories tall with melted cheese dripping down the sides, standing on a sandy beach area near a dock. A JRPG-style dialogue box shows the book review submission interface with fields for title, review, and a pizza-slice rating. A Book It! Reading Log scoreboard displays student progress bars. Students browse bookshelves built into pizza-themed structures nearby.](images/pizza-book-club-sculpture.png)
+
 ## Read It!
 
 The NPC is called **Read It!** — a giant pizza slice rendered in a 90s futuristic space aesthetic (chrome accents, neon gradients, star-field details). When you approach it and press E, the JRPG dialogue system launches.

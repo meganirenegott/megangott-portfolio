@@ -6,6 +6,8 @@ But students graduate. Or they take breaks. Or life gets complicated and they di
 
 I couldn't just delete them.
 
+![The Pet Sanctuary \u2014 a peaceful meadow with a wooden arch entrance. A fox naps under a tree while a student kneels to feed it. A black cat perches on a fence post, a capybara grazes near a pond, rabbits hop through wildflowers, and a crow watches from a lamp post. Each animal has a golden sanctuary paw-print badge floating nearby. Hay bales, small shelters, food bowls, and a bird bath dot the area.](images/sanctuary-pets-zone.png)
+
 ## The Sanctuary system
 
 After 90 days of owner inactivity, a pet transitions from "owned pet" to "Sanctuary Animal." It doesn't vanish. It doesn't get reassigned. Instead, it becomes a *campus wanderer* — a free-roaming creature with its own routines, its own preferred spots, and its own life.
