@@ -27,6 +27,8 @@
   --glow-violet-dim: rgba(168, 85, 247, 0.15);
   --glow-teal: #2dd4bf;
   --glow-teal-dim: rgba(45, 212, 191, 0.15);
+  --glow-rose: #fb7185;
+  --glow-rose-dim: rgba(251, 113, 133, 0.15);
 
   /* Text */
   --text-primary: #e4e9f2;
@@ -923,6 +925,7 @@ section {
 .skill-group--security .skill-list li::before { background: var(--glow-magenta); }
 .skill-group--systems .skill-list li::before { background: var(--glow-amber); }
 .skill-group--ai .skill-list li::before { background: var(--glow-teal); }
+.skill-group--mutual-aid .skill-list li::before { background: var(--glow-rose); }
 
 
 /* ============================================
