@@ -187,12 +187,12 @@
     },
     {
       "slug": "novelty-meeting-rooms",
-      "title": "Five Buildings That Shouldn't Exist",
-      "subtitle": "Meeting rooms modeled after real-world novelty architecture — a giant duck, a basket, a whale. Because meeting inside a duck changes the nature of meetings.",
+      "title": "Novelty Architecture Meeting Rooms: A Giant Duck, a Basket, and a Whale",
+      "subtitle": "Meeting rooms modeled after real-world novelty buildings, because a virtual campus is the perfect place to bring mimetic architecture back.",
       "date": "2026-05-28",
       "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra"],
       "project": "Meeting Rooms",
-      "readTime": "6 min",
+      "readTime": "5 min",
       "demo": "../demos/meeting-rooms-demo.html"
     },
     {
