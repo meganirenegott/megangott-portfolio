@@ -6,7 +6,9 @@ The Community Resource Commons is what mutual aid looks like at scale. It's a co
 
 ## How the system grew
 
-The [first version of the Mutual Aid Database](/blog/post.html?slug=mutual-aid-database) was a static site with Leaflet.js maps and a JSON file I curated by hand. That was the right tool for a small school. As we grew, three things needed to change: community members needed to be able to contribute resources themselves, students needed to be able to look things up without asking someone, and the data needed to stay current automatically.
+I wrote about the first version in [Building a Mutual Aid Database from Scratch](/blog/post.html?slug=mutual-aid-database). It was a static site with Leaflet.js maps and a JSON file I curated by hand. That was the right tool for a small school.
+
+As we grew, three things needed to change: community members needed to be able to contribute resources themselves, students needed to be able to look things up without asking someone, and the data needed to stay current automatically.
 
 So I designed the Commons around three layers:
 
