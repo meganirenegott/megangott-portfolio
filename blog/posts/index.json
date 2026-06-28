@@ -114,8 +114,8 @@
     },
     {
       "slug": "unauthorized-push",
-      "title": "I Caught an Unauthorized Push and Reverted It",
-      "subtitle": "Someone pushed 4 commits to our repo that would have exfiltrated student data. Here's how I found it and what I did.",
+      "title": "A Misconfigured Agent, a Suspicious Push, and the Security Review That Followed",
+      "subtitle": "What looked like an intruder turned out to be an unnamed AI agent. The revert was the easy part. The protocol changes were the real work.",
       "date": "2026-06-18",
       "tags": ["Ship Safely"],
       "project": "Resource Commons",
