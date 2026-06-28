@@ -150,12 +150,12 @@
     },
     {
       "slug": "baba-yaga-architecture",
-      "title": "Why Baba Yaga's Hut Has 19 Sprites and One Canvas",
-      "subtitle": "Architecture decisions behind a 1,200-line interactive NPC encounter.",
+      "title": "Building Baba Yaga's Hut on a Single Canvas",
+      "subtitle": "How I built a 1,200-line interactive NPC encounter with 19 sprites, hit-test zones, and a dialogue state machine, all in one HTML file.",
       "date": "2026-06-10",
       "tags": ["System Architecture", "Build UIs", "Interactive Worlds"],
       "project": "Baba Yaga's Hut",
-      "readTime": "7 min"
+      "readTime": "5 min"
     },
     {
       "slug": "backrooms-noclip",
