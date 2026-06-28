@@ -2,7 +2,7 @@ We do a lot upfront to discourage and minimize phishing on our campus. Spam filt
 
 And then we turn them into fish.
 
-![The Phishing Training Tank. Scammer fish swim around with their sanitized tactics in thought bubbles.](images/phishing-aquarium-hero.png)
+![The Phishing Training Tank. Four pixel art scammer fish swim around with thought bubbles showing their sanitized phishing tactics: a hooded crab with a fishing rod, a masked octopus, a nervous puffer fish, and a toothy shark.](images/phishing-aquarium-hero.png)
 
 ## The idea
 
@@ -37,7 +37,7 @@ What's left is pure educational content: the *language* of phishing. The urgency
 
 The Campus Aquarium is a building on campus with a Phishing Training Tank. Inside the tank, scammer fish swim around in real-time. Each fish is one of four species (a crab, an octopus, a puffer fish, or a shark) randomly assigned when the phishing report is created.
 
-![Close-up of the Phishing Training Tank. Scammer fish swimming with their sanitized tactics in thought bubbles.](images/phishing-aquarium-demo-tank.png)
+![Close-up of the Phishing Training Tank. A hooded crab says "Send me $50, get $500!" while a masked octopus says "Your bank account is locked!" Denise the friendly goldfish swims between them.](images/phishing-aquarium-demo-tank.png)
 
 The fish drift around the tank with simple physics: velocity-based movement, wall bouncing, and periodic direction changes. Every few seconds, a fish displays its thought bubble, the sanitized phishing text floating above it like the most transparent inner monologue in the animal kingdom.
 
