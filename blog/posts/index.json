@@ -208,11 +208,11 @@
     {
       "slug": "capybara-spa",
       "title": "Why Our Campus Has a Spa Run by Capybaras",
-      "subtitle": "Designing animal behavior that feels genuinely alive — circadian rhythms, emergent friendships, and the case for features that do absolutely nothing productive.",
+      "subtitle": "Designing animal behavior that feels genuinely alive: circadian rhythms, emergent friendships, and a feature that does absolutely nothing productive.",
       "date": "2026-05-22",
       "tags": ["Interactive Worlds", "System Architecture", "Build UIs"],
       "project": "Capybara Spa",
-      "readTime": "7 min",
+      "readTime": "6 min",
       "demo": "../demos/capybara-spa-demo.html"
     },
     {
