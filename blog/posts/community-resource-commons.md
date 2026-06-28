@@ -86,9 +86,9 @@ The system rolls out in three phases. Phase 1 delivers the core browser, contrib
 
 ## What I learned
 
-Our students come from all over the world. Under the old 1:1 model, the mutual aid coordinator would spend hours researching local resources for each student's area — food banks in São Paulo, housing assistance in Lagos, healthcare programs in rural Tennessee. They were doing their best, but they were searching from the outside. No matter how skilled you are at Googling, you can't match the quality of someone who actually lives there and already knows what's available.
+Our students come from all over the world. Under the old 1:1 model, a facilitator would research what was available in a student's area — food banks in São Paulo, housing assistance in Lagos, healthcare programs in rural Tennessee. With many requests coming in, that research added up to hours every week. They were doing their best, but they were searching from the outside. No matter how thorough you are, you can't match the quality of someone who actually lives there and already knows what's available.
 
-That's the core insight behind the Commons: **people in a community are the best source of knowledge about their own community.** A student in Berlin who knows which food bank actually has capacity on Tuesdays contributes something no amount of online research can replicate. The system lets that knowledge flow in, get verified, and reach the people who need it — without waiting for a single coordinator to find it first.
+That's the core insight behind the Commons: **people in a community are the best source of knowledge about their own community.** A student in Berlin who knows which food bank actually has capacity on Tuesdays contributes something no amount of online research can replicate. The system lets more people connect, share resources, and check them for being current and relevant — without waiting for a single facilitator to find everything first.
 
 The first principle: *"Nothing about us without us."* The AI verifies, but humans decide. Automation handles URL checks, deduplication, and cross-referencing so people can spend their time on questions that actually need a person.
 
