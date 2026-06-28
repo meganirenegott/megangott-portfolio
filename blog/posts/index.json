@@ -70,9 +70,9 @@
     {
       "slug": "cursed-usb-and-chaos",
       "title": "The Cursed USB Drive and Other Things That Break Your UI",
-      "subtitle": "Why deliberately weird items create the best stories on campus.",
+      "subtitle": "Digital safety advice turned into toys, and a developer's excuse to build the worst UI on purpose.",
       "date": "2026-06-25",
-      "tags": ["Interactive Worlds", "Build UIs"],
+      "tags": ["Interactive Worlds", "Build UIs", "Ship Safely"],
       "project": "Odd Discoverable Items",
       "readTime": "5 min"
     },

@@ -1,60 +1,65 @@
-Every inventory system has its crown jewel. Ours is a floppy disk that playfully rearranges your CSS.
+You wouldn't plug a mysterious USB drive into your computer, right?
 
-The Cursed USB Drive is an "Abhorrent" rarity item — a tier we invented because some items are so wonderfully weird they transcend every other category. When you receive one and inspect it, it starts gently shuffling your UI styles. Your sidebar might tilt. Your font might become something unexpected. Your avatar might start doing a little spin.
+That's digital safety 101. Don't click unknown links. Don't open attachments from strangers. Don't stick a random thumb drive into your laptop just because someone left it on a table. Everyone knows this. Very few people actually follow it, because curiosity is stronger than caution.
 
-![The Cursed USB Drive — "No one knows what is on it. That is for the best."](images/odd-items-cursed-usb.png)
+So we made it a feature.
 
-It's silly. It's harmless. And it's one of the most beloved items on campus — because the moment it happens, you laugh, you screenshot it, and you show everyone.
+## The Cursed USB Drive
 
-## Surprise as a design tool
+The Cursed USB Drive is an item you can receive on campus. It's rated "Abhorrent," a rarity tier we invented for things that are too wonderfully weird for any normal category. When you inspect it, it starts playfully shuffling your UI styles. Your sidebar might tilt. Your font changes to something unexpected. Your color scheme goes somewhere you didn't ask for.
 
-The items in this post share a common quality: **they're unexpected.** They do something you didn't see coming, and that surprise is the whole point. In a learning environment where students spend most of their time debugging hard problems, a moment of genuine "wait, what?" resets the energy in the room.
+Nothing breaks. You can still work, still code, still navigate. It's a cosmetic remix of your own interface, and it looks terrible in the best way.
 
-### 💾 Cursed USB Drive
+![The Cursed USB Drive: "No one knows what is on it. That is for the best."](images/odd-items-cursed-usb.png)
 
-**Rarity:** Abhorrent · **Source:** Baba Yaga (10%)
+As a developer, this was also a chance to play with the "worst UI" awards concept. There's a whole genre of intentionally bad design that's genuinely funny: text that's technically readable but rotated 3 degrees, colors that clash on purpose, buttons that drift slightly when you hover. The Cursed USB Drive turns your campus interface into a contestant, and the result is always worth screenshotting.
 
-The mechanic picks from a pool of harmless style overrides — gentle rotations, playful color shifts, font swaps. Nothing breaks. Nothing prevents you from working. It's a cosmetic remix of your own interface, and students treat it like a badge of honor. People *want* this item. They actively seek out Baba Yaga hoping for the 10% drop.
+## Digital safety advice, but make it a toy
 
-The best part: students screenshot their remixed UIs and share them with each other. It becomes a conversation starter — "look what happened to my screen!" — and that conversation is worth more than any feature spec.
+The items in this post are all digital safety lessons disguised as jokes. Each one takes a real piece of advice and turns it into something you can hold, use, and laugh about.
 
 ### 🐍 Box of Snakes
 
-**Rarity:** Uncommon · **Source:** Baba Yaga (15%)
+**Rarity:** Common · **Source:** Baba Yaga (15%)
 
-The spec describes this as opening "like an email" — you click it, and out comes a surprise. The flavor text reads: *"You open your email and out pours a box of snakes. Who would send this?"*
+*"You open your email and out pours a box of snakes. Who would send this?"*
 
-![The Box of Snakes — "Something is moving inside. Shaking it seems unwise."](images/odd-items-box-of-snakes.png)
+Don't open suspicious attachments. This one is suspicious. You open it anyway because it's a game, and out comes a surprise. The lesson sticks because the experience is memorable: you clicked the thing you shouldn't have clicked, and something wild happened.
 
-It's a mystery gift. The joy is in the discovery — clicking something you've never seen before and getting an unexpected, playful result. Students who receive one always tell someone about it. The telling is the feature.
+![The Box of Snakes: "Something is moving inside. Shaking it seems unwise."](images/odd-items-box-of-snakes.png)
 
 ### 📊 Almost Done Project™
 
 **Rarity:** Epic · **Source:** Cornelius (20%)
 
-This is the most relatable item in the game. When you hold the Almost Done Project™, you gain a cosmetic "Scope Creep" counter that ticks up. The tasks aren't real — it's a gentle, knowing nod to every developer who's ever said "just one more thing" and watched the scope triple.
+When you hold this item, a cosmetic "Scope Creep" counter starts ticking up. The tasks aren't real. It's a knowing nod to every developer who's ever said "just one more thing" and watched the project triple in size.
 
-![The Almost Done Project™ — "It has been 'almost done' for six weeks."](images/odd-items-almost-done.png)
+This one isn't a safety lesson, it's a work culture roast. But it earns its place because the recognition is instant. Every developer who sees "It has been 'almost done' for six weeks" has lived that exact sentence.
 
-Every developer who reads that description smiles, because they've been there. That shared recognition — *I know exactly what that feels like* — is what makes it work. It's not a punishment; it's a hug for anyone who's ever had a project that kept growing.
+![The Almost Done Project™: "It has been 'almost done' for six weeks."](images/odd-items-almost-done.png)
 
 ### 💭 Unsolicited Opinion
 
 **Rarity:** Abhorrent · **Source:** Emma Goldman (30%)
 
-When you hold this item, it helpfully auto-sends a few well-meaning-but-unsolicited suggestions in chat. The suggestions are drawn from a pool of genuinely encouraging (if slightly over-eager) advice — the kind of thing a supportive friend says when you didn't quite ask.
+When you hold this item, it auto-sends well-meaning but unsolicited suggestions in chat. Other people can see them. They know you have the item. Everyone laughs.
 
-Other people see the messages. They know you have the item. They laugh with you, not at you. It's a shared joke about that universal experience of getting advice you didn't request — something every student and every developer has experienced with fondness.
+The safety angle here is about social engineering. Real phishing often comes disguised as helpful advice from someone who seems like they're looking out for you. The Unsolicited Opinion is the friendly, harmless version of that pattern: unsolicited input that's technically nice but nobody asked for.
 
-## Why surprise matters in education
+## Why "worst UI" is actually good UI design
 
-All four of these items follow the same pattern:
+Building the Cursed USB Drive meant writing a system that intentionally makes things worse, which turns out to be a surprisingly interesting design problem. The style overrides have to be noticeable but not unusable. Funny but not frustrating. Broken-looking but still functional.
 
-1. **Unexpected discovery.** You find something you didn't know existed.
-2. **Shareable moment.** You want to show someone what happened.
-3. **Temporary and gentle.** Effects are cosmetic and fleeting.
-4. **No downside.** Nothing breaks. Nothing is lost. You just experienced something weird and wonderful.
+The pool of effects includes gentle rotations, color shifts, font swaps, and layout nudges. Each one is hand-tuned to land in the sweet spot between "this is wrong" and "I love this." It's the opposite of my normal job, where I spend all day making sure nothing looks broken. Here, the broken look *is* the feature.
 
-The result is that campus has its own folklore — stories that students tell each other over and over. "The time my whole UI went sideways and I loved it." "The day I opened a box of snakes right before class." "The week I couldn't stop the Scope Creep counter."
+```css
+/* One of the Cursed USB style overrides */
+.cursed-tilt {
+  transform: rotate(-2deg);
+  filter: hue-rotate(45deg);
+  font-family: 'Comic Sans MS', cursive;
+  transition: all 0.5s ease;
+}
+```
 
-These stories have nothing to do with code. But they're the reason people feel at home on campus. And feeling at home is where the best learning happens.
+Students who get the Cursed USB Drive tend to keep the shuffled styles for a while. It becomes a badge: "yeah, I plugged in the USB." Which, if you think about it, is exactly what happens in real life too. People plug in the USB. At least here, the worst thing that happens is Comic Sans.
