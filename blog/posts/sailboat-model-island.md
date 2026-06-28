@@ -23,7 +23,7 @@ The sailboat transition isn't a loading screen or a teleport. It's a journey. Si
 5. **Island approach**: A landmass materializes in the distance with green canopy, sandy shores, a volcanic peak. It grows larger as you approach.
 6. **Arrival**: The boat slides into a small lagoon. The camera settles. You're here.
 
-The whole sequence takes about 18 seconds. I tuned it to feel exactly long enough that you forget you're looking at a webpage. The emotional arc (departure, isolation, wonder, warmth, arrival) borrows from Miyazaki films. Every good journey has a moment in the middle where you feel genuinely far from where you started.
+The whole sequence takes about 18 seconds. I tuned it to feel exactly long enough that you forget you're looking at a webpage. The emotional arc (departure, isolation, wonder, warmth, arrival) borrows from Where the Wild Things Are. Every good journey has a moment in the middle where you feel genuinely far from where you started.
 
 ## The island
 
