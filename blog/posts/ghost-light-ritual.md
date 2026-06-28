@@ -8,7 +8,7 @@ If you've never worked in theater: a ghost light is a single bare bulb on a tall
 
 Every theater I ever worked in had one. You'd be the last person out, and you'd wheel the ghost light to center stage, plug it in, and stand there for a second in that huge dark room with just this one warm light. It was one of my favorite moments in the whole job.
 
-![The ghost light on an empty stage — a single warm bulb on a stand, casting a soft amber glow in the darkness](images/ghost-light-stage.png)
+![A ghost light on an empty theater stage. A single bare incandescent bulb on a tall metal stand, center stage, casting a warm amber pool of light on the wooden floor. Empty seats fade into darkness beyond. Dust motes float in the beam. Burgundy curtains frame the edges.](images/ghost-light-stage.png)
 
 ## How it became a feature
 
@@ -95,7 +95,7 @@ The event-driven architecture means each feature's visual celebration is decoupl
 
 ## The reflections are the feature
 
-![Past reflections — a list of student entries showing what gives them hope](images/ghost-light-reflections.png)
+![The ghost light's warm glow rendered on the virtual campus. A single bulb with layered amber halos radiates against a deep dark background. Tiny translucent dust motes drift upward through the scene, barely visible, creating depth and atmosphere like real theater dust caught in a spotlight beam.](images/ghost-light-reflections.png)
 
 The most important design decision was making the reflections private. This isn't a social feature. Nobody sees your hopes but you. That privacy is what makes people honest:
 
