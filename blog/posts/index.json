@@ -218,11 +218,11 @@
     {
       "slug": "pizza-book-club",
       "title": "A 90s Pizza Hut Homage That Actually Gets Students Reading",
-      "subtitle": "A giant pizza sculpture, a JRPG dialogue box, and a slice economy. Nostalgia is a design tool — and pizza is the only valid unit of reading achievement.",
+      "subtitle": "A giant pizza sculpture, a JRPG dialogue box, and a slice economy. Pizza is the only valid unit of reading achievement.",
       "date": "2026-05-18",
       "tags": ["Interactive Worlds", "Full-Stack APIs", "Data & Infra", "Ship Safely"],
       "project": "Pizza Book Club",
-      "readTime": "7 min",
+      "readTime": "6 min",
       "demo": "../demos/pizza-book-club-demo.html"
     },
     {
