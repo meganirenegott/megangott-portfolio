@@ -1,20 +1,22 @@
 There's a rubber duck on our campus that asks clarifying questions.
 
-It doesn't quack. It doesn't float. It listens to your code problem and reflects it back to you in a way that helps you see the answer you already knew. It's called The Consulting Duck, and it might be the most genuinely useful joke I've ever put in a game.
+It doesn't quack. It doesn't float. It walks you through a structured debugging prompt, and by the end you've usually found the bug yourself. It's called The Consulting Duck, and it's one of 17 odd items designed to roast work culture while quietly being useful.
 
-![The Consulting Duck — "It does not quack. It asks clarifying questions."](images/odd-items-consulting-duck.png)
+![The Consulting Duck: "It does not quack. It asks clarifying questions."](images/odd-items-consulting-duck.png)
 
-## Items that make you feel good
+## The ones that actually help
 
-Not every odd item is designed to surprise you. Some are designed to create moments of genuine warmth — small, unexpected kindnesses that make a hard day of learning feel a little lighter. These are the delight items, and they might be my favorites.
+Some of the odd items are pure jokes. The Consulting Duck is a joke that also teaches you a real skill. Rubber duck debugging is a legitimate technique: you explain your code out loud to something that can't respond, and the act of explaining reveals the bug. Developers have been doing this for decades. We just gave the duck a name tag and a drop rate.
+
+The items in this post are the "helpful" ones, in the loosest possible sense. They do something nice for you, or for the people around you, or they at least make a bad day slightly funnier.
 
 ### 🦆 The Consulting Duck
 
 **Rarity:** Uncommon · **Source:** Night Owl (20%)
 
-Rubber duck debugging is a real technique: you explain your code to a rubber duck, and the act of explaining reveals the bug. The Consulting Duck takes this literally — when you use it, it walks you through a structured debugging prompt.
+When you use it, the duck walks you through a series of prompts: What are you trying to do? What did you expect to happen? What happened instead? It's the same framework a senior developer would use to help you, except it's a duck and it has no opinions about your variable names.
 
-It's genuinely useful. It teaches a real skill. And it's wrapped in enough whimsy that students pick it up out of curiosity and accidentally learn something. That's the best kind of design.
+Students pick it up out of curiosity and accidentally learn a debugging technique they'll use for the rest of their career. That's the best version of this kind of design: the toy is real.
 
 ### 🎂 Birthday Cake
 
@@ -22,19 +24,17 @@ It's genuinely useful. It teaches a real skill. And it's wrapped in enough whims
 
 *"Half eaten. There was no party. You are not sure whose it was."*
 
-When you use the Birthday Cake, it sends a +Happy sparkle effect to everyone nearby. Little particles appear around affected players. And here's what actually happens every single time: someone uses the cake, everyone in the room gets sparkles, and people start saying "thanks!" and "🎂!" in chat.
-
-It turns out that sharing joy is a perfectly good game mechanic. The Birthday Cake is proof that an item doesn't need to be complex to make people's day.
+Use the Birthday Cake and it sends a +Happy sparkle effect to everyone nearby. That's it. Little particles appear around people. The flavor text is a corporate birthday roast (you've been to that party, the one with the sheet cake and no decorations), but the mechanic is genuine warmth. Sharing something nice with people near you is a perfectly good reason for an item to exist.
 
 ### ✨ Glitter Bomb
 
 **Rarity:** Uncommon · **Source:** Rinley (20%)
 
-Use a Glitter Bomb and the room fills with shimmering cosmetic particles. The sparkles stay. They're there tomorrow. They're there next week. Someone used one in the main lecture hall and it's still glimmering.
+Use a Glitter Bomb and the room fills with shimmering particles. The sparkles stay. They don't fade. Someone uses one in a lecture hall and that room is glittery from now on.
 
-![The Glitter Bomb — "A harmless celebratory device. Mostly harmless."](images/odd-items-glitter-bomb.png)
+![The Glitter Bomb: "A harmless celebratory device. Mostly harmless."](images/odd-items-glitter-bomb.png)
 
-The permanence is what makes it special. A temporary effect fades from memory. A permanent one becomes part of the space's story. "Why is this room so sparkly?" is a question that someone gets to answer with pride: "I did that."
+The permanence is the whole point. A temporary effect fades from memory. A permanent one becomes part of the space. "Why is this room so sparkly?" is a question someone gets to answer with: "I did that."
 
 ### 🤖 Roomba (Googly Eyes)
 
@@ -42,11 +42,11 @@ The permanence is what makes it special. A temporary effect fades from memory. A
 
 *"It has been decorated. It is doing its best."*
 
-The Roomba follows you around campus. It bumps into walls. It changes direction with determination. It has googly eyes. It contributes nothing to your coursework. It is, by a wide margin, one of the most wanted items in the game.
+The Roomba follows you around campus. It bumps into walls. It changes direction with determination. It has googly eyes. It contributes nothing to your coursework and it's one of the most wanted items in the collection.
 
-![The Roomba with Googly Eyes — a loyal companion doing its best](images/odd-items-roomba.png)
+![The Roomba with Googly Eyes, a loyal companion doing its best](images/odd-items-roomba.png)
 
-The 8% drop rate from Rinley means getting a Roomba feels like finding a treasure. Students who have one are genuinely excited about it. There's something beautiful about a whole community getting attached to a small robot with googly eyes that bumps into things.
+The 8% drop rate from Rinley means getting one feels like finding treasure. There's something about a small robot with googly eyes doing its best that makes people genuinely protective of it.
 
 ### 📅 Fake Meeting
 
@@ -54,14 +54,12 @@ The 8% drop rate from Rinley means getting a Roomba feels like finding a treasur
 
 *"A calendar invite that blocks off 3 hours for no reason."*
 
-The Fake Meeting is a lighthearted shield — while you hold it, other items can't be used on you for a few minutes. It's a playful way to opt out of the silliness for a moment, framed as the most relatable corporate humor: you're in a very important meeting.
+While you hold the Fake Meeting, other items can't be used on you for a few minutes. It's a shield, framed as the most relatable piece of corporate satire: you're very busy, you're in a meeting, no you can't be disturbed.
 
-It works because every student who's worked in tech (or heard about it) immediately gets the joke. Self-care as satire.
+If you've ever blocked off your own calendar just to get an hour of uninterrupted work, you already understand this item at a cellular level.
 
-## Why delight matters
+## Why these matter as social lubricant
 
-These items aren't essential. The campus would function without them. But they serve a purpose that no metric captures: they make the space feel like someone cared.
+Every one of these items gives you something to talk about. The Consulting Duck gives you a shared debugging ritual. The Birthday Cake gives everyone in the room a reason to type "🎂" in chat. The Glitter Bomb gives a room a story. The Roomba gives you a companion that other people ask about. The Fake Meeting gives you an inside joke with anyone who's ever worked in an office.
 
-Someone designed a rubber duck that helps you debug. Someone put googly eyes on a Roomba. Someone decided that birthday cake should make everyone nearby sparkle.
-
-When students discover these items, they experience something rare in educational software: the feeling that this place was built to bring them joy. That feeling — that someone thought about how to make you smile while you're learning something hard — is worth more than any feature on the roadmap.
+These aren't live yet, but they're coming soon. I keep thinking about the first time someone uses a Birthday Cake in a study session and everyone nearby gets sparkles. That's the moment this stops being a feature and starts being a memory.

@@ -78,8 +78,8 @@
     },
     {
       "slug": "consulting-duck-and-delight",
-      "title": "The Consulting Duck — Tools That Actually Help (Sort Of)",
-      "subtitle": "A rubber duck that asks clarifying questions, a Roomba with googly eyes, and the case for delight in educational software.",
+      "title": "The Consulting Duck and Other Tools That Actually Help (Sort Of)",
+      "subtitle": "A rubber duck that teaches debugging, a Roomba with googly eyes, and corporate birthday cake as a game mechanic.",
       "date": "2026-06-24",
       "tags": ["Interactive Worlds", "Build UIs"],
       "project": "Odd Discoverable Items",
