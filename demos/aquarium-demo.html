@@ -51,6 +51,63 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
         }
 
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .panel-header h2 {
+            margin-bottom: 0;
+        }
+
+        .collapse-toggle {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: #5a7d9a;
+            font-size: 12px;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s;
+            flex-shrink: 0;
+        }
+
+        .collapse-toggle:hover {
+            background: rgba(0, 180, 216, 0.15);
+            border-color: rgba(0, 180, 216, 0.3);
+            color: #48cae4;
+        }
+
+        .collapse-toggle .chevron {
+            transition: transform 0.25s ease;
+            display: inline-block;
+        }
+
+        .panel.collapsed .collapse-toggle .chevron {
+            transform: rotate(-90deg);
+        }
+
+        .panel-body {
+            overflow: hidden;
+            max-height: 600px;
+            transition: max-height 0.3s ease, opacity 0.25s ease, margin-top 0.3s ease;
+            opacity: 1;
+            margin-top: 0;
+        }
+
+        .panel.collapsed .panel-body {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
+        }
+
         .panel h2 {
             font-size: 15px;
             font-weight: 900;
@@ -249,22 +306,27 @@
     <canvas id="canvas"></canvas>
 
     <div id="hud">
-        <div class="panel">
-            <h2>🐠 Campus Aquarium</h2>
-            <p>Swim through the aquarium! <b>Transform</b> into an aquatic creature when you enter the water. Your pet
-                follows you — and <b>stays behind when you leave</b>.</p>
+        <div class="panel" id="mainPanel">
+            <div class="panel-header" onclick="togglePanel()">
+                <h2>🐠 Campus Aquarium</h2>
+                <div class="collapse-toggle"><span class="chevron">▼</span></div>
+            </div>
+            <div class="panel-body">
+                <p>Swim through the aquarium! <b>Transform</b> into an aquatic creature when you enter the water. Your pet
+                    follows you — and <b>stays behind when you leave</b>.</p>
 
-            <div style="font-size:10px; color:#9467bd; margin: 6px 0 2px;">✨ Your aquatic form:</div>
-            <div class="form-picker" id="formPicker"></div>
+                <div style="font-size:10px; color:#9467bd; margin: 6px 0 2px;">✨ Your aquatic form:</div>
+                <div class="form-picker" id="formPicker"></div>
 
-            <div style="font-size:10px; color:#5a7d9a; margin: 6px 0 2px;">🐠 Your aquatic pet:</div>
-            <div class="pet-picker" id="petPicker"></div>
+                <div style="font-size:10px; color:#5a7d9a; margin: 6px 0 2px;">🐠 Your aquatic pet:</div>
+                <div class="pet-picker" id="petPicker"></div>
 
-            <div id="playerStatus"></div>
+                <div id="playerStatus"></div>
 
-            <div class="controls-hint">
-                <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> to
-                swim &nbsp;·&nbsp; <kbd>E</kbd> leave aquarium
+                <div class="controls-hint">
+                    <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> to
+                    swim &nbsp;·&nbsp; <kbd>E</kbd> leave aquarium
+                </div>
             </div>
         </div>
     </div>
@@ -288,6 +350,11 @@
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         resize();
         window.addEventListener('resize', resize);
+
+        // Panel collapse toggle
+        function togglePanel() {
+            document.getElementById('mainPanel').classList.toggle('collapsed');
+        }
 
         // =====================================================================
         // SPRITE LOADING
