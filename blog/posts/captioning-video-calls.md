@@ -4,13 +4,13 @@ That means video conferencing isn't a third-party integration we bolted on. It's
 
 ## Captioning as a priority, not an afterthought
 
-I'm hard of hearing. When our team started building live captioning into the video call system, I became one of the primary testers. Not because testing was assigned to me, but because I'm one of the people on the team who actually depends on captions to follow a conversation.
+I'm hard of hearing. When our team started building live captioning into the video call system, I was in the room helping design the specs. I sat with the other developers as we planned out how these features should work, what the edge cases were, and what "good enough" actually meant for someone who depends on captions to follow a conversation.
 
-There's a difference between testing captions from a QA checklist and testing captions because you need them to work. I notice when captions lag behind the speaker by two seconds, because that delay means I miss the context for a question someone just asked. I notice when the transcription engine drops a word mid-sentence, because I'm the one trying to piece together what was said. I catch things that a hearing tester might not flag, because for them captions are a feature. For me they're how I participate.
+That meant I wasn't just reviewing specs after they were written. I was shaping them. When we discussed how long a caption could lag before it stopped being useful, I had the answer because I live it. When we debated whether to auto-start transcription or require a toggle, I could say from experience what the friction of an extra click feels like when you're already trying to keep up. And then once features shipped, I was one of the primary testers, because I catch things a hearing tester might not flag. For them captions are a feature. For me they're how I participate.
 
 ## What the team built
 
-The captioning system went through several major iterations, and I was testing each one. The engineering work was substantial:
+The captioning system went through several major iterations. I was part of the planning for each one and testing every build. The engineering work was substantial:
 
 **Voice Activity Detection (VAD).** The system uses a state machine to detect when someone is actually speaking versus ambient noise. Early versions would transcribe keyboard clicks, background music, someone's dog barking. The VAD pipeline improved to speculative-start detection, where it begins buffering audio at the first hint of speech and only commits to transcription once it confirms a real utterance.
 
