@@ -572,6 +572,42 @@ section {
 .hero-content {
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 60px;
+}
+
+.hero-text {
+  flex: 1;
+}
+
+.hero-headshot {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--glow-cyan), var(--glow-magenta), var(--glow-violet));
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.15), 0 0 60px rgba(0, 240, 255, 0.05);
+  animation: headshot-glow 6s ease-in-out infinite alternate;
+  flex-shrink: 0;
+  margin-top: 40px;
+}
+
+@keyframes headshot-glow {
+  0% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.15), 0 0 60px rgba(0, 240, 255, 0.05); }
+  100% { box-shadow: 0 0 30px rgba(255, 46, 170, 0.15), 0 0 60px rgba(168, 85, 247, 0.05); }
+}
+
+.hero-headshot-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+[data-theme="light"] .hero-headshot {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .hero-greeting {
@@ -1601,6 +1637,17 @@ footer {
 
   .projects-grid {
     grid-template-columns: 1fr;
+  }
+
+  .hero-content {
+    flex-direction: column-reverse;
+    gap: 32px;
+    text-align: center;
+  }
+
+  .hero-headshot {
+    width: 160px;
+    height: 160px;
   }
 
   .skills-grid {
