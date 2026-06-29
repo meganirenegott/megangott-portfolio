@@ -937,17 +937,87 @@
         // =====================================================================
         const ambientFish = [];
         function spawnAmbient() {
-            const AMBIENT_SPECIES = [
-                { sprite: 'ambient-fish-1', size: 10, speed: 1.0 }, { sprite: 'ambient-fish-2', size: 12, speed: 0.8 },
-                { sprite: 'ambient-fish-1', size: 8, speed: 1.3 }, { sprite: 'ambient-puffer', size: 14, speed: 0.5 },
+            // Zone-themed fish populations — each tank gets species that match its theme
+            const ZONE_FISH = {
+                'fw-river': [
+                    { sprite: 'ambient-fish-1', size: 10, speed: 1.2 },
+                    { sprite: 'ambient-fish-2', size: 12, speed: 0.9 },
+                    { sprite: 'turtle-fw', size: 22, speed: 0.4 },
+                    { sprite: 'axolotl', size: 18, speed: 0.5 },
+                ],
+                'fw-lake': [
+                    { sprite: 'turtle-fw', size: 24, speed: 0.35 },
+                    { sprite: 'ambient-fish-2', size: 10, speed: 1.0 },
+                    { sprite: 'axolotl', size: 20, speed: 0.5 },
+                    { sprite: 'ambient-fish-1', size: 9, speed: 1.1 },
+                ],
+                'fw-pond': [
+                    { sprite: 'koi', size: 22, speed: 0.6 },
+                    { sprite: 'koi', size: 18, speed: 0.7 },
+                    { sprite: 'goldfish', size: 14, speed: 0.9 },
+                    { sprite: 'ambient-fish-2', size: 10, speed: 1.0 },
+                ],
+                'fw-tropical': [
+                    { sprite: 'betta', size: 16, speed: 1.0 },
+                    { sprite: 'clownfish', size: 14, speed: 1.2 },
+                    { sprite: 'goldfish', size: 13, speed: 1.1 },
+                    { sprite: 'ambient-fish-1', size: 9, speed: 1.3 },
+                    { sprite: 'ambient-fish-2', size: 10, speed: 1.1 },
+                ],
+                'sw-reef': [
+                    { sprite: 'clownfish', size: 14, speed: 1.2 },
+                    { sprite: 'seahorse', size: 16, speed: 0.4 },
+                    { sprite: 'pufferfish', size: 18, speed: 0.6 },
+                    { sprite: 'ambient-fish-1', size: 9, speed: 1.3 },
+                    { sprite: 'ambient-puffer', size: 11, speed: 0.7 },
+                ],
+                'sw-deep': [
+                    { sprite: 'octopus', size: 24, speed: 0.5 },
+                    { sprite: 'jellyfish', size: 18, speed: 0.3 },
+                    { sprite: 'shark', size: 28, speed: 0.7 },
+                    { sprite: 'sea-turtle', size: 26, speed: 0.35 },
+                ],
+                'sw-bikini': [
+                    { sprite: 'clownfish', size: 14, speed: 1.1 },
+                    { sprite: 'seahorse', size: 16, speed: 0.5 },
+                    { sprite: 'pufferfish', size: 16, speed: 0.7 },
+                    { sprite: 'ambient-fish-1', size: 9, speed: 1.2 },
+                    { sprite: 'ambient-puffer', size: 12, speed: 0.6 },
+                ],
+                'sw-jelly': [
+                    { sprite: 'jellyfish', size: 20, speed: 0.3 },
+                    { sprite: 'jellyfish', size: 16, speed: 0.4 },
+                    { sprite: 'jellyfish-form', size: 14, speed: 0.35 },
+                    { sprite: 'ambient-fish-1', size: 8, speed: 1.0 },
+                ],
+                'fw-phishing': [
+                    { sprite: 'ambient-fish-1', size: 9, speed: 1.0 },
+                    { sprite: 'ambient-fish-2', size: 10, speed: 0.8 },
+                    { sprite: 'ambient-puffer', size: 12, speed: 0.5 },
+                ],
+                'sw-safety': [
+                    { sprite: 'ambient-fish-1', size: 10, speed: 1.0 },
+                    { sprite: 'dolphin', size: 22, speed: 0.6 },
+                    { sprite: 'ambient-fish-2', size: 9, speed: 1.1 },
+                ],
+            };
+
+            // Fallback for any zone without a specific set
+            const DEFAULT_SPECIES = [
+                { sprite: 'ambient-fish-1', size: 10, speed: 1.0 },
+                { sprite: 'ambient-fish-2', size: 12, speed: 0.8 },
+                { sprite: 'ambient-puffer', size: 14, speed: 0.5 },
             ];
+
             for (const zone of WATER_ZONES) {
-                const count = Math.floor((zone.w * zone.h) / 12000) + 2;
+                const species = ZONE_FISH[zone.id] || DEFAULT_SPECIES;
+                // Bigger tanks get more fish, minimum 4 per tank
+                const count = Math.max(4, Math.floor((zone.w * zone.h) / 10000) + 3);
                 for (let i = 0; i < count; i++) {
-                    const sp = AMBIENT_SPECIES[Math.floor(Math.random() * AMBIENT_SPECIES.length)];
+                    const sp = species[i % species.length];
                     ambientFish.push({
-                        x: zone.x + 20 + Math.random() * (zone.w - 40),
-                        y: zone.y + 20 + Math.random() * (zone.h - 40),
+                        x: zone.x + 40 + Math.random() * (zone.w - 80),
+                        y: zone.y + 40 + Math.random() * (zone.h - 80),
                         vx: (Math.random() - 0.5) * sp.speed * 2,
                         vy: (Math.random() - 0.5) * sp.speed,
                         zone, species: sp, facing: 1,
