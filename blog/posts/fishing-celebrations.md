@@ -4,13 +4,13 @@ That's when I realized the fishing system had a celebration problem.
 
 ## The problem with invisible milestones
 
-Our fishing game already had good bones. Eight species weighted by rarity, a satisfying cast-wait-bite-reel state machine, a real-time progress bar with bite-shake animation. The mechanics were solid. But the *emotional arc* was flat.
+Our fishing game already had good bones. Eight species weighted by rarity, a satisfying cast-wait-bite-reel state machine, a real-time progress bar with bite-shake animation. The mechanics were solid. But the emotional arc was flat.
 
 ![The fishing state machine in four panels — Cast: the line arcs out with a splash. Wait: the student sits patiently as the bobber floats. Bite!: the bobber dips sharply with exclamation marks. Reel: the rod bends as a progress bar shows reel tension and a fish fights on the line.](images/fishing-cast-reel-loop.png)
 
-In any good game, the feeling of accomplishment scales with the accomplishment itself. Your first fish is exciting because everything is new. Your 10th fish should feel different from your 3rd — not because the fish is rarer, but because *you've done something*. The act of returning to something 10 times, of developing a habit, deserves recognition.
+In any good game, the feeling of accomplishment scales with the accomplishment itself. Your first fish is exciting because everything is new. Your 10th fish should feel different from your 3rd, not because the fish is rarer, but because *you've done something*. The act of returning to something 10 times, of developing a habit, deserves recognition.
 
-And legendary catches — the one-in-hundreds golden koi that most students never see — absolutely deserve a moment. If you catch something that rare and the only feedback is a line item in your catches list, the game has failed you.
+And legendary catches (the one-in-hundreds golden koi that most students never see) absolutely deserve a moment. If you catch something that rare and the only feedback is a line item in your catches list, the game has failed you.
 
 ## What I built
 
@@ -25,9 +25,9 @@ When you reel in a legendary-rarity fish, a golden celebration banner drops from
 🐟 Golden Koi
 ```
 
-The banner uses a warm amber-to-gold gradient with a `pulseGlow` keyframe animation that alternates the `box-shadow` intensity between subtle (40px spread) and bright (80px spread) on a 1.5-second cycle. It lasts for about five seconds — long enough to feel meaningful, short enough not to interrupt.
+The banner uses a warm amber-to-gold gradient with a `pulseGlow` keyframe animation that alternates the `box-shadow` intensity between subtle (40px spread) and bright (80px spread) on a 1.5-second cycle. It lasts for about five seconds. Long enough to feel meaningful, short enough not to interrupt.
 
-No confetti. No sound effects. No popup modal. Just a banner that says "this was rare and you should feel good about it." The restraint matters — if every uncommon fish triggered fireworks, nothing would feel special.
+No confetti. No sound effects. No popup modal. Just a banner that says "this was rare and you should feel good about it." The restraint matters. If every uncommon fish triggered fireworks, nothing would feel special.
 
 ![A student reels in a glowing Golden Koi that leaps from the water with sparkles — a golden "LEGENDARY CATCH!" banner with amber-to-gold gradient and pulsing glow drops from the top of the screen. The scene is serene: lily pads, cattails, campus buildings, and warm sunset light reflecting off the pond.](images/fishing-legendary-catch.png)
 
@@ -53,11 +53,11 @@ The milestone messages are hand-written, not templated. Each one has personality
 
 ## The product decision
 
-The original feature request included gem rewards, inventory items, and badge unlocks. I pushed back. The celebrations are text-only — no currency, no items, no persistent rewards.
+The original feature request included gem rewards, inventory items, and badge unlocks. I pushed back. The celebrations are text-only. No currency, no items, no persistent rewards.
 
 This was a deliberate design choice: **joy should be the reward, not stuff.**
 
-If catching your 50th fish earns you 10 gems, the celebration becomes transactional. You're not fishing because you enjoy fishing — you're fishing because you want gems. The moment you introduce an extrinsic reward, the intrinsic motivation starts to erode. Psychologists call this the overjustification effect: adding external incentives to an already enjoyable activity can actually reduce enjoyment of the activity itself.
+If catching your 50th fish earns you 10 gems, the celebration becomes transactional. You're not fishing because you enjoy fishing. You're fishing because you want gems. The moment you introduce an extrinsic reward, the intrinsic motivation starts to erode. Psychologists call this the overjustification effect: adding external incentives to an already enjoyable activity can actually reduce enjoyment of the activity itself.
 
 A golden banner that says "you've been doing this for 30 days straight" is pure acknowledgment. It doesn't change your character or your wallet. It just says: *I noticed. This matters.* And that's enough.
 
@@ -74,12 +74,12 @@ const STREAK_MILESTONES = [7, 14, 30, 60, 90];
 
 If the new total matches a milestone, the store dispatches a celebration event to the `FishingPanel` component, which renders the banner with the appropriate CSS animation class.
 
-For legendary catches, the check is simpler — the rarity field on the caught fish is "legendary," and the banner fires.
+For legendary catches, the check is simpler: the rarity field on the caught fish is "legendary," and the banner fires.
 
 10 tests cover the celebration logic: milestone thresholds, streak calculations (including edge cases for timezone boundaries and same-day multiple catches), and legendary detection. All passing in under 250ms as part of the 150-test suite.
 
-## Joy as feedback
+## Why this matters
 
 The fishing celebrations taught me something I keep applying elsewhere: **feedback is emotional design.** Every interaction in a system produces a response, and that response shapes how the user feels about what they just did. A silent response says "this didn't matter." A golden banner says "this mattered."
 
-The art is in calibrating *how much* something matters. Not every catch deserves a banner — that would be noise. But the catches that represent persistence, luck, or dedication deserve a moment. Just a moment. Just enough to say: *hey, nice fish.*
+The art is in calibrating *how much* something matters. Not every catch deserves a banner, that would be noise. But the catches that represent persistence, luck, or dedication deserve a moment. Just a moment. Just enough to say: *hey, nice fish.*
