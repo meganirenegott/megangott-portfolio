@@ -258,7 +258,8 @@
       "date": "2026-03-27",
       "tags": ["Interactive Worlds", "Build UIs", "System Architecture"],
       "project": "Campus Aquarium",
-      "readTime": "7 min"
+      "readTime": "7 min",
+      "demo": "../demos/aquarium-demo.html"
     },
     {
       "slug": "wheel-hub-speed",
