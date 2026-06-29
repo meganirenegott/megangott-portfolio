@@ -474,4 +474,58 @@
     });
   }
 
+  // ======================== CONTACT FORM ========================
+
+  const contactForm = document.getElementById('contact-form');
+  const contactSuccess = document.getElementById('contact-success');
+  const contactSubmitBtn = document.getElementById('contact-submit');
+  const contactResetBtn = document.getElementById('contact-reset');
+
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Remove any previous error
+      const prevError = contactForm.querySelector('.form-error');
+      if (prevError) prevError.remove();
+
+      // Show loading state
+      contactSubmitBtn.classList.add('loading');
+
+      try {
+        const formData = new FormData(contactForm);
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' },
+        });
+
+        if (response.ok) {
+          // Show success
+          contactForm.classList.add('hidden');
+          contactSuccess.classList.add('active');
+          contactSuccess.setAttribute('aria-hidden', 'false');
+        } else {
+          throw new Error('Form submission failed');
+        }
+      } catch (err) {
+        const errorEl = document.createElement('div');
+        errorEl.className = 'form-error';
+        errorEl.textContent = 'Something went wrong — try emailing me directly at meganirenegott@gmail.com';
+        contactForm.appendChild(errorEl);
+      } finally {
+        contactSubmitBtn.classList.remove('loading');
+      }
+    });
+  }
+
+  if (contactResetBtn) {
+    contactResetBtn.addEventListener('click', () => {
+      contactForm.reset();
+      contactForm.classList.remove('hidden');
+      contactSuccess.classList.remove('active');
+      contactSuccess.setAttribute('aria-hidden', 'true');
+    });
+  }
+
 })();
