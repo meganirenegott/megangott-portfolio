@@ -34,4 +34,8 @@ The team building this, the engineers writing the VAD state machines and Whisper
 
 The campus serves students around the world. Different time zones, different internet speeds, different hardware, different native languages. Captioning and transcription aren't just accessibility features for hard of hearing users. They help students learning in their second language. They help students in noisy environments. They help students who process information better by reading than by listening.
 
+I know what it's like to be a student who can't hear and has to rely on documentation to fill in the gaps from lectures. You miss a word, you miss a concept, and then you're spending twice as long after class piecing things together from docs and Stack Overflow. Learning to code has its own set of challenges on top of that. So much of programming education happens through live instruction, pair programming, and verbal walkthroughs where someone talks through their thinking out loud.
+
+This is one area where learning to code with AI has been genuinely transformative for me. Having an AI that I can ask "what did this concept mean" or "why isn't this working" on my own time, without needing to hear a lecture or wait for office hours, has been extremely helpful. It's become a core part of how I research, debug, and learn additional developer tools and accessibility tools. It fills the gaps that captions can't always cover.
+
 When we prioritize captioning quality, we're not building a niche feature for a small group. We're making the entire learning experience better for everyone. That's what accessibility work looks like when it's done with care: it lifts the floor for the whole platform.
