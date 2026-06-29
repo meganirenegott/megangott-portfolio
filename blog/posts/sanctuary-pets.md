@@ -6,7 +6,9 @@ I grew up with knockoff Tamagotchis. We didn't have animals at home, so these li
 
 My mom's solution was quietly brilliant and a little absurd: she started feeding our digital pets while we were at school. She'd carry these tiny plastic keychains around the house, pressing buttons between laundry loads, making sure nobody's pet starved while we sat through math class. Was it inconvenient? Yes. Was it ridiculous? Absolutely. But it was one of the ways she showed us she loved us, and I never forgot that.
 
-Years later, I started going to cat cafes. The thing I love about them is the concept of resident cats. These are ambassador cats who aren't up for adoption. They live at the cafe, they're well cared for by staff, and the regulars bond with them over time. You can have a cat friend who you visit every week, who recognizes you, who hops into your lap when you sit in your usual spot. That cat is loved and looked after, but it isn't "yours." And somehow that makes the relationship more generous, not less.
+Years later, I worked on a cruise ship and started visiting the same cat cafe in Portland once a week when I had shore leave. They had resident cats, ambassador cats who aren't up for adoption. They live at the cafe, they're well cared for by staff, and if you become a regular, you bond with them. I had my favorites. I knew which one would hop into my lap when I sat in my usual spot, which one would ignore me until I'd been there twenty minutes, which one liked chin scratches but not belly rubs.
+
+The weeks I couldn't go because the ship was behind schedule taught me how much I cared about this ritual. I genuinely missed my cafe cat friends. It surprised me how attached I'd gotten to animals that weren't mine. But that's the thing about cat cafes: a creature can be loved and looked after by a community without belonging to any one person. And somehow that makes the relationship more generous, not less.
 
 Both of those experiences shaped how I thought about what should happen when a student graduates or takes a break and their virtual pet is left behind.
 
