@@ -53,15 +53,15 @@ The milestone messages are hand-written, not templated. Each one has personality
 
 ## The product decision
 
-The original feature request included gem rewards, inventory items, and badge unlocks. I pushed back. The celebrations are text-only. No currency, no items, no persistent rewards.
+The original feature request included point rewards, inventory items, and badge unlocks. I pushed back. The celebrations are text-only. No currency, no items, no persistent rewards.
 
 This was a deliberate design choice: **joy should be the reward, not stuff.**
 
-If catching your 50th fish earns you 10 gems, the celebration becomes transactional. You're not fishing because you enjoy fishing. You're fishing because you want gems. The moment you introduce an extrinsic reward, the intrinsic motivation starts to erode. Psychologists call this the overjustification effect: adding external incentives to an already enjoyable activity can actually reduce enjoyment of the activity itself.
+If catching your 50th fish earns you points or unlocks, the celebration becomes transactional. You're not fishing because you enjoy fishing. You're fishing because you want the reward. The moment you introduce an extrinsic reward, the intrinsic motivation starts to erode. Psychologists call this the overjustification effect: adding external incentives to an already enjoyable activity can actually reduce enjoyment of the activity itself.
 
 A golden banner that says "you've been doing this for 30 days straight" is pure acknowledgment. It doesn't change your character or your wallet. It just says: *I noticed. This matters.* And that's enough.
 
-![Extrinsic Rewards vs Joy as Feedback — on the left, a grey transactional UI with "+10 Gems", badge unlocks, and inventory notifications. On the right, a warm golden banner reading "You've been doing this for 30 days straight" with the message "I noticed. This matters." Below: "The overjustification effect: adding external incentives to an already enjoyable activity can reduce enjoyment."](images/fishing-joy-not-gems.png)
+![Extrinsic Rewards vs Joy as Feedback — on the left, a grey transactional UI with point counters, badge unlocks, and inventory notifications. On the right, a warm golden banner reading "You've been doing this for 30 days straight" with the message "I noticed. This matters." Below: "The overjustification effect: adding external incentives to an already enjoyable activity can reduce enjoyment."](images/fishing-joy-not-gems.png)
 
 ## The technical implementation
 
