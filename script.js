@@ -1,5 +1,67 @@
 /* ============================================
-   BIOLUMINESCENT PARTICLE SYSTEM
+   THEME TOGGLE — LIGHT / DARK MODE
+   ============================================ */
+
+(function initTheme() {
+  'use strict';
+
+  // Determine theme: localStorage > system preference > default (dark)
+  const stored = localStorage.getItem('theme');
+  let theme;
+  if (stored === 'light' || stored === 'dark') {
+    theme = stored;
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    theme = 'light';
+  } else {
+    theme = 'dark';
+  }
+
+  // Apply immediately to prevent flash
+  document.documentElement.setAttribute('data-theme', theme);
+
+  // Update toggle button once DOM is ready
+  function updateToggleButton(currentTheme) {
+    const btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    const icon = btn.querySelector('.toggle-icon');
+    if (currentTheme === 'light') {
+      if (icon) icon.textContent = '🌙';
+      btn.setAttribute('aria-label', 'Switch to dark mode');
+    } else {
+      if (icon) icon.textContent = '☀️';
+      btn.setAttribute('aria-label', 'Switch to light mode');
+    }
+  }
+
+  function handleToggle() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateToggleButton(next);
+
+    // Dispatch event so particle system can react
+    window.dispatchEvent(new CustomEvent('themechange', { detail: { theme: next } }));
+  }
+
+  // Bind once DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      updateToggleButton(theme);
+      const btn = document.getElementById('theme-toggle');
+      if (btn) btn.addEventListener('click', handleToggle);
+    });
+  } else {
+    updateToggleButton(theme);
+    const btn = document.getElementById('theme-toggle');
+    if (btn) btn.addEventListener('click', handleToggle);
+  }
+})();
+
+
+/* ============================================
+   BIOLUMINESCENT PARTICLE SYSTEM (Dark Mode)
+   + AMBIENT GRADIENT ORBS (Light Mode)
    ============================================ */
 
 (function () {
@@ -9,13 +71,28 @@
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
 
-  const COLORS = [
+  // ---- Color palettes ----
+  const COLORS_DARK = [
     { r: 0, g: 240, b: 255 },    // cyan
     { r: 77, g: 124, b: 255 },   // blue
     { r: 255, g: 46, b: 170 },   // magenta
     { r: 0, g: 255, b: 163 },    // green
   ];
 
+  const COLORS_LIGHT_ORBS = [
+    { r: 8, g: 145, b: 178 },    // teal
+    { r: 124, g: 58, b: 237 },   // violet
+    { r: 5, g: 150, b: 105 },    // green
+    { r: 217, g: 119, b: 6 },    // amber
+    { r: 37, g: 99, b: 235 },    // blue
+    { r: 192, g: 38, b: 163 },   // magenta
+  ];
+
+  function isLightMode() {
+    return document.documentElement.getAttribute('data-theme') === 'light';
+  }
+
+  // ---- Shared state ----
   const CONFIG = {
     particleCount: 70,
     connectionDistance: 140,
@@ -27,6 +104,7 @@
   };
 
   let particles = [];
+  let orbs = [];
   let mouse = { x: -1000, y: -1000 };
   let width, height;
   let animationId;
@@ -35,6 +113,9 @@
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
   }
+
+
+  /* ========== DARK MODE — Bioluminescent Particles ========== */
 
   class Particle {
     constructor() {
@@ -46,7 +127,7 @@
       this.y = Math.random() * height;
       this.radius = Math.random() * 2.5 + 0.8;
       this.baseRadius = this.radius;
-      this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+      this.color = COLORS_DARK[Math.floor(Math.random() * COLORS_DARK.length)];
       this.opacity = Math.random() * 0.5 + 0.15;
       this.baseOpacity = this.opacity;
       this.vx = (Math.random() - 0.5) * CONFIG.baseSpeed;
@@ -57,17 +138,14 @@
     }
 
     update(time) {
-      // Pulse
       const pulse = Math.sin(time * this.pulseSpeed + this.pulsePhase);
       this.radius = this.baseRadius + pulse * 0.6;
       this.opacity = this.baseOpacity + pulse * 0.12;
 
-      // Gentle drift
       const drift = Math.sin(time * 0.001 + this.driftPhase) * 0.02;
       this.x += this.vx + drift;
       this.y += this.vy + Math.cos(time * 0.0008 + this.driftPhase) * 0.015;
 
-      // Mouse repel
       const dx = this.x - mouse.x;
       const dy = this.y - mouse.y;
       const dist = Math.sqrt(dx * dx + dy * dy);
@@ -77,7 +155,6 @@
         this.y += (dy / dist) * force;
       }
 
-      // Wrap around
       if (this.x < -20) this.x = width + 20;
       if (this.x > width + 20) this.x = -20;
       if (this.y < -20) this.y = height + 20;
@@ -87,7 +164,6 @@
     draw() {
       const { r, g, b } = this.color;
 
-      // Outer glow
       const gradient = ctx.createRadialGradient(
         this.x, this.y, 0,
         this.x, this.y, this.radius * 6
@@ -101,7 +177,6 @@
       ctx.fillStyle = gradient;
       ctx.fill();
 
-      // Core
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.opacity})`;
@@ -130,25 +205,108 @@
     }
   }
 
+
+  /* ========== LIGHT MODE — Ambient Gradient Orbs ========== */
+
+  class GradientOrb {
+    constructor() {
+      this.reset();
+    }
+
+    reset() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.radius = Math.random() * 250 + 200; // large: 200–450px
+      this.color = COLORS_LIGHT_ORBS[Math.floor(Math.random() * COLORS_LIGHT_ORBS.length)];
+      this.opacity = Math.random() * 0.07 + 0.08; // visible but soft: 0.08–0.15
+      this.baseOpacity = this.opacity;
+      this.vx = (Math.random() - 0.5) * 0.08; // very slow
+      this.vy = (Math.random() - 0.5) * 0.06;
+      this.pulsePhase = Math.random() * Math.PI * 2;
+      this.pulseSpeed = 0.0008 + Math.random() * 0.0006; // slow breathing
+      this.driftPhase = Math.random() * Math.PI * 2;
+    }
+
+    update(time) {
+      // Very slow breathing pulse
+      const pulse = Math.sin(time * this.pulseSpeed + this.pulsePhase);
+      this.opacity = this.baseOpacity + pulse * 0.03;
+
+      // Gentle floating drift
+      const driftX = Math.sin(time * 0.0003 + this.driftPhase) * 0.06;
+      const driftY = Math.cos(time * 0.00025 + this.driftPhase * 1.3) * 0.04;
+      this.x += this.vx + driftX;
+      this.y += this.vy + driftY;
+
+      // Soft wrap (allow orbs to drift mostly offscreen before wrapping)
+      const margin = this.radius;
+      if (this.x < -margin) this.x = width + margin * 0.5;
+      if (this.x > width + margin) this.x = -margin * 0.5;
+      if (this.y < -margin) this.y = height + margin * 0.5;
+      if (this.y > height + margin) this.y = -margin * 0.5;
+    }
+
+    draw() {
+      const { r, g, b } = this.color;
+
+      const gradient = ctx.createRadialGradient(
+        this.x, this.y, 0,
+        this.x, this.y, this.radius
+      );
+      gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${this.opacity})`);
+      gradient.addColorStop(0.4, `rgba(${r}, ${g}, ${b}, ${this.opacity * 0.5})`);
+      gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+    }
+  }
+
+
+  /* ========== Animation Loop ========== */
+
   function animate(time) {
     ctx.clearRect(0, 0, width, height);
 
-    drawConnections();
-
-    for (const p of particles) {
-      p.update(time);
-      p.draw();
+    if (isLightMode()) {
+      // Light mode: ambient orbs only
+      for (const orb of orbs) {
+        orb.update(time);
+        orb.draw();
+      }
+    } else {
+      // Dark mode: bioluminescent particles
+      drawConnections();
+      for (const p of particles) {
+        p.update(time);
+        p.draw();
+      }
     }
 
     animationId = requestAnimationFrame(animate);
   }
 
-  function init() {
-    resize();
+  function initParticles() {
     particles = [];
     for (let i = 0; i < CONFIG.particleCount; i++) {
       particles.push(new Particle());
     }
+  }
+
+  function initOrbs() {
+    const orbCount = window.innerWidth < 768 ? 4 : 7;
+    orbs = [];
+    for (let i = 0; i < orbCount; i++) {
+      orbs.push(new GradientOrb());
+    }
+  }
+
+  function init() {
+    resize();
+    initParticles();
+    initOrbs();
     if (animationId) cancelAnimationFrame(animationId);
     animationId = requestAnimationFrame(animate);
   }
@@ -175,6 +333,11 @@
   }
 
   init();
+
+  // Reinitialize orbs when theme changes (particles stay as-is)
+  window.addEventListener('themechange', () => {
+    initOrbs();
+  });
 
 
   /* ============================================

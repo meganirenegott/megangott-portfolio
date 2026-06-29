@@ -60,6 +60,305 @@
 
 
 /* ============================================
+   LIGHT THEME OVERRIDES
+   ============================================ */
+
+[data-theme="light"] {
+  /* Background layers */
+  --bg-abyss: #f8f7f4;
+  --bg-deep: #f2f0eb;
+  --bg-primary: #ffffff;
+  --bg-surface: #f5f3ef;
+  --bg-card: rgba(255, 255, 255, 0.8);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
+
+  /* Glow palette — deeper, saturated for light backgrounds */
+  --glow-cyan: #0891b2;
+  --glow-cyan-dim: rgba(8, 145, 178, 0.12);
+  --glow-cyan-faint: rgba(8, 145, 178, 0.06);
+  --glow-magenta: #c026a3;
+  --glow-magenta-dim: rgba(192, 38, 163, 0.12);
+  --glow-blue: #2563eb;
+  --glow-blue-dim: rgba(37, 99, 235, 0.12);
+  --glow-green: #059669;
+  --glow-green-dim: rgba(5, 150, 105, 0.12);
+  --glow-amber: #d97706;
+  --glow-amber-dim: rgba(217, 119, 6, 0.12);
+  --glow-violet: #7c3aed;
+  --glow-violet-dim: rgba(124, 58, 237, 0.12);
+  --glow-teal: #0d9488;
+  --glow-teal-dim: rgba(13, 148, 136, 0.12);
+  --glow-rose: #e11d48;
+  --glow-rose-dim: rgba(225, 29, 72, 0.12);
+
+  /* Text — high contrast on warm backgrounds */
+  --text-primary: #1a1a2e;
+  --text-secondary: #4a4a68;
+  --text-muted: #8888a0;
+  --text-glow: #0e7490;
+
+  /* Borders & cards */
+  --border-card: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Light theme — nav */
+[data-theme="light"] .nav {
+  background: rgba(248, 247, 244, 0.85);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Light theme — hero gradient text */
+[data-theme="light"] .hero-name {
+  background: linear-gradient(135deg, #1a1a2e 0%, #0891b2 50%, #7c3aed 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Light theme — tech pills */
+[data-theme="light"] .tech-pill {
+  border-color: rgba(8, 145, 178, 0.2);
+  background: rgba(8, 145, 178, 0.05);
+  color: #0e7490;
+}
+
+[data-theme="light"] .tech-pill:hover {
+  background: rgba(8, 145, 178, 0.1);
+  border-color: rgba(8, 145, 178, 0.3);
+  box-shadow: 0 0 16px rgba(8, 145, 178, 0.08);
+}
+
+/* Light theme — primary button */
+[data-theme="light"] .btn-primary {
+  background: #0891b2;
+  color: #fff;
+}
+
+[data-theme="light"] .btn-primary:hover {
+  background: #0e7490;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(8, 145, 178, 0.25);
+}
+
+/* Light theme — ghost button */
+[data-theme="light"] .btn-ghost {
+  border-color: rgba(8, 145, 178, 0.25);
+  color: #0891b2;
+}
+
+[data-theme="light"] .btn-ghost:hover {
+  background: rgba(8, 145, 178, 0.06);
+  border-color: rgba(8, 145, 178, 0.35);
+  color: #0891b2;
+}
+
+/* Light theme — project cards */
+[data-theme="light"] .project-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .project-card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(8, 145, 178, 0.2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(8, 145, 178, 0.1);
+}
+
+/* Light theme — card visuals (softer gradients) */
+[data-theme="light"] .card-visual--resource {
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(8, 145, 178, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 30%, rgba(37, 99, 235, 0.06) 0%, transparent 50%),
+    var(--bg-surface);
+}
+
+[data-theme="light"] .card-visual--security {
+  background:
+    radial-gradient(ellipse at 40% 40%, rgba(192, 38, 163, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 60%, rgba(217, 119, 6, 0.06) 0%, transparent 50%),
+    var(--bg-surface);
+}
+
+[data-theme="light"] .card-visual--bookclub {
+  background:
+    radial-gradient(ellipse at 60% 50%, rgba(5, 150, 105, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 30%, rgba(8, 145, 178, 0.06) 0%, transparent 50%),
+    var(--bg-surface);
+}
+
+[data-theme="light"] .card-visual--ocean {
+  background:
+    radial-gradient(ellipse at 50% 60%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 30%, rgba(8, 145, 178, 0.08) 0%, transparent 50%),
+    var(--bg-surface);
+}
+
+[data-theme="light"] .card-visual--baba {
+  background:
+    radial-gradient(ellipse at 40% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 30%, rgba(192, 38, 163, 0.06) 0%, transparent 50%),
+    var(--bg-surface);
+}
+
+[data-theme="light"] .card-visual--goose {
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(225, 29, 72, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 70%, rgba(217, 119, 6, 0.06) 0%, transparent 50%),
+    var(--bg-surface);
+}
+
+[data-theme="light"] .card-visual--fishing {
+  background:
+    radial-gradient(ellipse at 50% 60%, rgba(8, 145, 178, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 30% 30%, rgba(5, 150, 105, 0.06) 0%, transparent 50%),
+    var(--bg-surface);
+}
+
+/* Light theme — card visual grid overlay */
+[data-theme="light"] .card-visual::before {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+}
+
+/* Light theme — card tags */
+[data-theme="light"] .card-tag {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Light theme — skill groups */
+[data-theme="light"] .skill-group {
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .skill-group:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(8, 145, 178, 0.15);
+}
+
+/* Light theme — section label dot */
+[data-theme="light"] .section-label::before {
+  box-shadow: 0 0 6px var(--glow-cyan), 0 0 12px var(--glow-cyan-dim);
+}
+
+/* Light theme — stats bar */
+[data-theme="light"] .stats-bar {
+  background: var(--bg-card);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+/* Light theme — demo modal */
+[data-theme="light"] .demo-modal-overlay {
+  background: rgba(248, 247, 244, 0.92);
+}
+
+[data-theme="light"] .demo-modal-frame {
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .demo-modal-close {
+  border-color: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .demo-modal-close:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+/* Light theme — demo button */
+[data-theme="light"] .btn-demo {
+  border-color: rgba(37, 99, 235, 0.2);
+  background: rgba(37, 99, 235, 0.05);
+}
+
+[data-theme="light"] .btn-demo:hover {
+  background: rgba(37, 99, 235, 0.1);
+  border-color: rgba(37, 99, 235, 0.3);
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.08);
+}
+
+/* Light theme — footer */
+[data-theme="light"] footer {
+  border-top-color: rgba(0, 0, 0, 0.06);
+}
+
+/* Light theme — links */
+[data-theme="light"] a:hover {
+  color: #0e7490;
+}
+
+/* Light theme — scroll indicator */
+[data-theme="light"] .scroll-indicator .arrow {
+  border-color: var(--text-muted);
+}
+
+
+/* ============================================
+   THEME TOGGLE BUTTON
+   ============================================ */
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  background: rgba(0, 240, 255, 0.04);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-out);
+  padding: 0;
+  margin-left: 8px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  background: rgba(0, 240, 255, 0.1);
+  border-color: rgba(0, 240, 255, 0.3);
+  transform: scale(1.08);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--glow-cyan);
+  outline-offset: 2px;
+}
+
+.theme-toggle .toggle-icon {
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.theme-toggle:hover .toggle-icon {
+  transform: rotate(20deg);
+}
+
+[data-theme="light"] .theme-toggle {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+[data-theme="light"] .theme-toggle:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="light"] .theme-toggle:focus-visible {
+  outline-color: var(--glow-cyan);
+}
+
+
+/* ============================================
    RESET & BASE
    ============================================ */
 
@@ -122,6 +421,7 @@ body {
 .nav-links {
   display: flex;
   gap: 32px;
+  margin-left: auto;
 }
 
 .nav-links a {

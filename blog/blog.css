@@ -409,3 +409,101 @@
     padding-left: 8px;
   }
 }
+
+
+/* ============================================
+   LIGHT THEME — BLOG OVERRIDES
+   ============================================ */
+
+/* Blog hero title */
+[data-theme="light"] .blog-hero-title {
+  background: linear-gradient(135deg, #1a1a2e 0%, rgba(26, 26, 46, 0.65) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Blog cards */
+[data-theme="light"] .blog-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme="light"] .blog-card:hover {
+  border-color: rgba(8, 145, 178, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .blog-card::before {
+  background: linear-gradient(90deg, #0891b2, #7c3aed);
+}
+
+[data-theme="light"] .blog-card-meta {
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .blog-read-time {
+  border-left-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .blog-tag {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: color-mix(in srgb, var(--tag-color, #4a4a68) 20%, transparent);
+}
+
+/* Post page */
+[data-theme="light"] .post-title {
+  background: linear-gradient(135deg, #1a1a2e 0%, rgba(26, 26, 46, 0.65) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="light"] .post-read-time,
+[data-theme="light"] .post-project {
+  border-left-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Post content — code blocks */
+[data-theme="light"] .post-content code {
+  background: rgba(8, 145, 178, 0.08);
+  color: #0e7490;
+}
+
+[data-theme="light"] .post-content pre {
+  background: #1e1e2e;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .post-content pre code {
+  background: none;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Post content — links */
+[data-theme="light"] .post-content a {
+  color: #0891b2;
+  text-decoration-color: rgba(8, 145, 178, 0.3);
+}
+
+[data-theme="light"] .post-content a:hover {
+  text-decoration-color: rgba(8, 145, 178, 0.8);
+}
+
+/* Post images */
+[data-theme="light"] .post-figure img {
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Demo embed */
+[data-theme="light"] .post-demo-embed {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .post-demo-frame-wrapper {
+  border-color: rgba(8, 145, 178, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  background: #f5f3ef;
+}

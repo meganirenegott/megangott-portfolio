@@ -10,6 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="blog.css">
+
+  <!-- Prevent flash of wrong theme -->
+  <script>
+    (function(){var t=localStorage.getItem('theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}document.documentElement.setAttribute('data-theme',t)})();
+  </script>
 </head>
 <body>
 
@@ -23,6 +28,9 @@
         <a href="index.html" class="nav-active">Blog</a>
         <a href="../index.html#contact">Contact</a>
       </div>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light mode">
+        <span class="toggle-icon" aria-hidden="true">☀️</span>
+      </button>
     </div>
   </nav>
 
