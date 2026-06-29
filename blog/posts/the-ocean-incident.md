@@ -8,11 +8,11 @@ I sat there staring at my screen, watching animated waves lap against the Studen
 
 ## How it happened
 
-I was building the fishing feature. Our campus is a 2D game world with procedurally generated terrain (plaza, urban zone, park, forest, wilds) arranged in concentric rings radiating out from Town Square at the center. The ocean was supposed to go at the very southern edge, past ring 8, where nobody would stumble into it accidentally.
+I was still pretty new to the codebase, building the fishing feature as one of my first major additions. Our campus is a 2D game world with procedurally generated terrain (plaza, urban zone, park, forest, wilds) arranged in concentric rings radiating out from Town Square at the center. The ocean was supposed to go at the very southern edge, past ring 8, where nobody would stumble into it accidentally.
 
-The ocean rendering code needed a `baseShorelineY` coordinate, the Y position where sand meets water. I was working with Claude, and we were going back and forth about the coordinate system. Our campus uses tile coordinates, but the rendering code works in world pixels. I kept confusing the two.
+The ocean rendering code needed a `baseShorelineY` coordinate, the Y position where sand meets water. I was working with Claude, and we were going back and forth about the coordinate system. The campus uses tile coordinates in some places and world pixels in others, and when you're still learning the architecture, it's easy to mix the two up. I hadn't built the mental model yet for what specific Y values actually meant in terms of where things show up on screen.
 
-It was day 2 of a campus hackathon. I was more tired than I realized, in that state where you think you're being productive but you're actually making everything worse. I set `baseShorelineY` to 520.
+It was day 2 of a campus hackathon and I was more tired than I realized. I set `baseShorelineY` to 520.
 
 ```javascript
 const baseShorelineY = 520  // 🫠 this is the urban zone
@@ -62,7 +62,7 @@ The PR that fixed THE-542? `fix: swap dorm grid axes so buildings stay on land`.
 
 The ocean incident is still my favorite mistake. Here's why:
 
-**Mistakes are how you learn the coordinate system.** Before the ocean bug, I had a vague understanding of how our world coordinates worked. After it, I had a visceral, physical understanding. I will never confuse tile coordinates with world pixels again, because I once flooded a campus with my confusion.
+**Mistakes are how you learn a codebase.** I was still onboarding onto the project's coordinate system when this happened. Before the ocean bug, I was working from documentation and code comments. After it, I had a visceral, physical understanding of what every Y value meant. There's no faster way to learn an architecture than to accidentally break it in a spectacular way.
 
 **Coding past your bedtime is a choice.** Not always a bad one, but always a choice with consequences. I don't regret the late night. The fishing feature shipped and students love it. But I do remember the ocean every time I think "I'll just push one more commit before bed."
 
