@@ -4,21 +4,21 @@ The question nobody asks when you build a virtual campus is: what happens to a p
 
 I grew up with knockoff Tamagotchis. We didn't have animals at home, so these little digital creatures were my first pets. My siblings and I got *deeply* attached to them. We named them, we checked on them constantly, and when one of them "died" because we couldn't feed it during the school day, the resulting sob fest was... a lot.
 
-My mom's solution was quietly brilliant and a little absurd: she started feeding our digital pets while we were at school. She'd carry these tiny plastic keychains around the house, pressing buttons between laundry loads, making sure nobody's pet starved while we sat through math class. Was it inconvenient? Yes. Was it ridiculous? Absolutely. But it was one of the ways she showed us she loved us, and I never forgot that.
+My mom's solution was quietly brilliant and a little absurd: she started feeding our digital pets while we were at school. She'd carry these tiny plastic keychains around the house, pressing buttons between laundry loads, making sure nobody's pet starved while we sat through math class. Was it inconvenient? Yes. Was it ridiculous? Absolutely. But it was one of the ways she showed us she loved us.
 
-Years later, I worked on a cruise ship and started visiting the same cat cafe in Portland once a week when I had shore leave. They had resident cats, ambassador cats who aren't up for adoption. They live at the cafe, they're well cared for by staff, and if you become a regular, you bond with them. I had one favorite who was aloof at first. Completely uninterested. But over the weeks she slowly warmed up to me, and eventually she'd come find me when I sat in my usual spot.
+Years later, I worked on a cruise ship and started visiting the same cat cafe in Portland once a week when I had shore leave. They had two resident cats who aren't up for adoption. They lived at the cafe, they were well cared for by staff, and if you became a regular, you could bond with them. I had one favorite who was aloof at first. Completely uninterested. But over the weeks she slowly warmed up to me, and eventually she'd come find me when I sat in my usual spot.
 
-The weeks I couldn't go because the ship was behind schedule taught me how much I cared about this ritual. I genuinely missed my cafe cat friend. That's the thing about cat cafes: a creature can be loved and looked after by a community without belonging to any one person. And somehow that makes the relationship more generous, not less.
+The weeks I couldn't go because the ship was behind schedule showed me how much I cared about this ritual. A creature can be loved and looked after by a community without belonging to any one person.
 
 Both of those experiences shaped how I thought about what should happen when a student graduates or takes a break and their virtual pet is left behind.
 
 ## The problem
 
-On our platform, students adopt pets. Pixel art companions that follow them around campus: cats, foxes, capybaras, crows, rabbits. The pets have names and personalities, and the students get genuinely attached to them.
+On our platform, students adopt pets. Pixel art companions that follow them around campus: cats, foxes, capybaras, crows, rabbits etc. The pets have names and personalities, and the students get genuinely attached to them.
 
-But students graduate. They take breaks. Life gets complicated and they disappear for three months. Their pet is still in the database, following a ghost. Waiting for someone who isn't coming back.
+But students graduate. They take breaks. Life gets complicated and they disappear for three months. Their pet is still in the database.
 
-I couldn't just delete them. That felt wrong the same way it felt wrong when my Tamagotchi died at school and there was nothing I could do about it.
+I didn't want to just delete them.
 
 ![The Pet Sanctuary — a peaceful meadow with a wooden arch entrance. A fox naps under a tree while a student kneels to feed it. A black cat perches on a fence post, a capybara grazes near a pond, rabbits hop through wildflowers, and a crow watches from a lamp post. Each animal has a golden sanctuary paw-print badge floating nearby. Hay bales, small shelters, food bowls, and a bird bath dot the area.](images/sanctuary-pets-zone.png)
 
@@ -85,6 +85,4 @@ On the campus roster panel, sanctuary pets appear in their own section: "🏝️
 
 The most rewarding part of building this feature was watching students interact with Cinder and Marshmallow. Creatures that never had owners, that existed from day one, that belong to the campus itself.
 
-Students gave them stories. "Cinder's been here since the beginning." "Marshmallow basically runs the spa." These aren't lore I wrote. These are things students told each other, building mythology around two rows in a database table.
 
-That's the thing about building virtual spaces: you don't get to decide what matters. You can only create the conditions for meaning to emerge. A capybara named Marshmallow. A crow named Cinder. A community that feeds them both, every day, because someone decided that virtual pets shouldn't just disappear.
