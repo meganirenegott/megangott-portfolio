@@ -1,6 +1,15 @@
 {
   "posts": [
     {
+      "slug": "captioning-video-calls",
+      "title": "Testing Captions as Someone Who Needs Them",
+      "subtitle": "Live captioning on a virtual campus where classes happen over video calls. Built by a team, tested by someone who's hard of hearing, shipped with care.",
+      "date": "2026-04-20",
+      "tags": ["Accessibility", "Ship Safely"],
+      "project": "Multiverse Campus",
+      "readTime": "5 min"
+    },
+    {
       "slug": "community-resource-commons",
       "title": "From 1:1 Referrals to a Community Resource Library",
       "subtitle": "How scaling from hundreds to 8,000+ students forced us to rethink mutual aid — and led to an AI-assisted, community-maintained resource commons.",
