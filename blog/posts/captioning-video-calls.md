@@ -2,6 +2,8 @@ Our campus isn't just a game world with pixel art and fishing ponds. It's also w
 
 That means video conferencing isn't a third-party integration we bolted on. It's a core piece of infrastructure, and the quality of that experience directly affects whether students can learn.
 
+![A live video call on the virtual campus — an instructor explains recursion at a whiteboard while real-time captions appear in a semi-transparent overlay at the bottom of the video window. A green CC button glows in the corner. The campus classroom building is visible behind the call interface.](images/captions-video-call-overlay.png)
+
 ## Captioning as a priority, not an afterthought
 
 I'm hard of hearing. When our team started building live captioning into the video call system, I was in the room helping design the specs. I sat with the other developers as we planned out how these features should work, what the edge cases were, and what "good enough" actually meant for someone who depends on captions to follow a conversation.
@@ -12,11 +14,15 @@ Captioning and transcription are tools I use every day in my work. I've tried a 
 
 The captioning system went through several major iterations. I was part of the planning for each one and testing every build. The engineering work was substantial:
 
+![The captioning pipeline — audio input flows through a VAD state machine (Silence → Speculative Start → Confirmed Speech → End of Utterance), then parallel audio chunks feed into Whisper transcription with a hallucination filter and dedup layer, through a client reorder buffer, and finally to the caption display](images/captions-vad-pipeline.png)
+
 **Voice Activity Detection (VAD).** The system uses a state machine to detect when someone is actually speaking versus ambient noise. Early versions would transcribe keyboard clicks, background music, someone's dog barking. The VAD pipeline improved to speculative-start detection, where it begins buffering audio at the first hint of speech and only commits to transcription once it confirms a real utterance.
 
 **Whisper transcription with hallucination filtering.** The audio chunks go to Whisper for transcription. Raw Whisper output sometimes hallucinates, repeating phrases or inserting text that was never spoken. The team built a dedup layer and hallucination filter that catches these artifacts. I helped identify the patterns because I'd see them in real-time during calls and flag exactly what went wrong.
 
 **Latency tuning.** Shorter audio chunks processed in parallel, with client-side reordering so captions arrive in the right sequence. This was one of the changes I pushed hardest for. Captions that arrive three seconds after someone speaks are decorative, not functional. By the time you read them, the conversation has moved on.
+
+![Before and after latency optimization — on the left, a 3.2-second caption delay causes captions to lag behind speech with missed words. On the right, sub-second latency keeps captions synchronized with the speaker. Timeline bars show the alignment improvement between spoken words and displayed text.](images/captions-latency-comparison.png)
 
 **Mic-mute awareness.** An early bug: the system kept transcribing even when someone's mic was muted, picking up bleed-through audio and generating ghost captions. The fix tied transcription state to the mic mute toggle so captions stop cleanly when you mute.
 

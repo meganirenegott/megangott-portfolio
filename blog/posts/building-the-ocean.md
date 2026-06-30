@@ -30,6 +30,8 @@ There are 18 of them in the `bottleStore`, selected deterministically by positio
 
 The design philosophy behind the bottles is something I think about a lot: **the environment can care for you without telling you it's caring for you.** A popup that says "REMINDER: DRINK WATER" is patronizing. A bottle that washes ashore at low tide, that you choose to pick up, that contains the same gentle suggestion — that's a gift from a place.
 
+![Low tide on the campus shoreline — rocky tide pools teem with starfish, crabs, shells, and coral. A golden message in a bottle glows on the wet sand, its parchment unfurling to read "Drink some water. You've been at your computer a while." Campus buildings sit on the cliffs above.](images/ocean-tide-pools-bottle.png)
+
 ## Phase 3: The ocean at night
 
 The third commit was pure beauty. At night (after 8 PM local time), the shoreline comes alive with bioluminescence.
@@ -45,6 +47,8 @@ The rendering has two zones:
 When the player stands in the surf at night, footstep-disturbed bioluminescence circles emanate from their position and fade out. The effect simulates walking through the glowing water and it's... honestly, it's beautiful. I spent a long time getting the color right — it's a deep teal with a cyan edge, not the purple-blue that most "glow" effects default to, because real bioluminescence is specifically that cyan-green wavelength.
 
 And the jellyfish. A `renderBioluminescentJellyfish` function draws rare, procedurally-generated jellyfish below the water surface. They're deterministic by world-tile position — so the same tile always shows the same jellyfish — and they only become visible at night. They bob gently, drift with the current, and one in fifty is a vivid green variant. The jellyfish span multiple tiles, so they're drawn in a separate post-pass after the ground tile loop, following the same rendering pattern used for decorations.
+
+![The campus shoreline at night — a student stands ankle-deep in the surf as concentric rings of cyan-teal bioluminescence radiate from their footsteps. Glowing wave lines shimmer along the waterline. Below the surface, translucent jellyfish drift with soft teal light, one rare vivid green variant among them. The dark ocean sparkles with scattered cyan points fading into the distance under a crescent moon.](images/ocean-bioluminescence-night.png)
 
 The bioluminescence is drawn *before* the night darkness overlay, so the dark filter still applies on top. The glow is calibrated to cut through at 35% alpha night darkness, giving the visual impression that the water itself is luminous rather than having a light source above it.
 
